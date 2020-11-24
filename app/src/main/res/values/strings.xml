@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ElectricUnitXlsToDb_20201124</string>
+    <string name="add_button">Add</string>
+    <string name="update_button">Update</string>
+    <string name="description_label">Description:</string>
+    <string name="unit_label">Title:</string>
+</resources>

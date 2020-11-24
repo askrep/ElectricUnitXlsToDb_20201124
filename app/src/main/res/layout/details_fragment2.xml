@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/fragment_horizontal_margin"
+        android:paddingTop="8dp"
+        android:paddingRight="@dimen/fragment_horizontal_margin"
+        android:paddingBottom="8dp"
+        tools:context=".MainActivity">
+
+        <TextView
+            android:id="@+id/unit_label"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:textAppearance="?attr/textAppearanceListItem"
+            app:layout_constraintBottom_toBottomOf="@+id/unit"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/unit"
+            tools:text="@string/unit_label" />
+
+        <EditText
+            android:id="@+id/unit"
+            style="@style/TextAppearance.AppCompat.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/text_margin"
+            android:textAppearance="?attr/textAppearanceListItem"
+            app:layout_constraintStart_toEndOf="@+id/unit_label"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Unit Unit Unit Unit" />
+
+        <TextView
+            android:id="@+id/unit_description_label"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textAppearance="?attr/textAppearanceListItem"
+            app:layout_constraintStart_toStartOf="@+id/unit_label"
+            app:layout_constraintTop_toBottomOf="@+id/unit"
+            tools:text="@string/description_label" />
+
+        <EditText
+            android:id="@+id/unit_description"
+            style="@style/TextAppearance.AppCompat.Small"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceListItem"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/unit_description_label"
+            app:layout_constraintTop_toBottomOf="@+id/unit_description_label"
+            tools:text="Unit description Unit description Unit description
+                      Unit description Unit description Unit description" />
+
+        <Button
+            android:id="@+id/details_save_btn"
+            style="@style/TextAppearance.AppCompat.Large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/add_button"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/unit_description"
+            app:layout_constraintTop_toBottomOf="@+id/unit_description" />
+
+
+        <Button
+            android:id="@+id/update_btn"
+            style="@style/TextAppearance.AppCompat.Large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:text="@string/update_button"
+            app:layout_constraintBottom_toBottomOf="@+id/details_save_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/details_save_btn"
+            app:layout_constraintTop_toTopOf="@+id/details_save_btn" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
