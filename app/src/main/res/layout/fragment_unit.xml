@@ -1,36 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ImageView
-        android:id="@+id/unit_icon"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:src="@android:drawable/ic_menu_today"
-        android:contentDescription="Image" />
-
-    <TextView
-        android:id="@+id/unit_title"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:autofillHints="Unit title"
-        android:inputType="text"
-        android:textAppearance="?attr/textAppearanceListItem"
-        tools:text="Unit title" />
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/unit_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:autofillHints="Unit description"
-        android:inputType="text"
-        android:textAppearance="?attr/textAppearanceListItem"
-        tools:text="Unit description" />
-</LinearLayout>
+        <ImageView
+            android:id="@+id/unit_icon"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:contentDescription="Image"
+            android:src="@android:drawable/ic_menu_today" />
+
+        <TextView
+            android:id="@+id/unit_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
+            android:autofillHints="Unit title"
+            android:inputType="text"
+            android:textAppearance="?attr/textAppearanceListItem"
+            tools:text="Unit title" />
+
+        <TextView
+            android:id="@+id/unit_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/text_margin"
+            android:autofillHints="Unit description"
+            android:inputType="text"
+            android:textAppearance="?attr/textAppearanceListItem"
+            tools:text="Unit description" />
+    </LinearLayout>
+</layout>

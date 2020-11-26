@@ -21,7 +21,7 @@ public class DummyContent {
     /**
      * A map of sample (dummy) items, by ID.
      */
-    public static final Map<String, DummyItem> ITEM_MAP = new HashMap<String, DummyItem>();
+    public static final Map<Integer, DummyItem> ITEM_MAP = new HashMap<Integer, DummyItem>();
 
     private static final int COUNT = 25;
 
@@ -38,7 +38,7 @@ public class DummyContent {
     }
 
     private static DummyItem createDummyItem(int position) {
-        return new DummyItem(String.valueOf(position), "Item " + position, makeDetails(position));
+        return new DummyItem(position, "Item " + position, makeDetails(position));
     }
 
     private static String makeDetails(int position) {
@@ -54,19 +54,23 @@ public class DummyContent {
      * A dummy item representing a piece of content.
      */
     public static class DummyItem {
-        public final String id;
-        public final String content;
-        public final String details;
+        public final int id;
+        public final String title;
+        public final String description;
 
-        public DummyItem(String id, String content, String details) {
+        public DummyItem(int id, String title, String description) {
             this.id = id;
-            this.content = content;
-            this.details = details;
+            this.title = title;
+            this.description = description;
         }
 
         @Override
         public String toString() {
-            return content;
+            return title;
+        }
+
+        public int getId() {
+            return id;
         }
     }
 }

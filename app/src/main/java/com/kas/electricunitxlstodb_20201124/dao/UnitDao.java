@@ -13,7 +13,7 @@ import java.util.List;
 public interface UnitDao {
 
     @Query("Select * From units")
-    List<UnitEntry> selectAll(); // SELECT ALL
+    LiveData<List<UnitEntry>> selectAll(); // SELECT ALL
 
     @Query("Select * From units Where id = :unitId")
     LiveData<UnitEntry> loadUnitById(int unitId);

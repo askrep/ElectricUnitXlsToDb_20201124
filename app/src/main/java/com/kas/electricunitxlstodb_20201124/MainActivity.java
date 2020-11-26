@@ -6,14 +6,22 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.kas.electricunitxlstodb_20201124.dao.AppDatabase;
+import com.kas.electricunitxlstodb_20201124.dao.UnitEntry;
 import com.kas.electricunitxlstodb_20201124.ui.ListFragment;
+import com.kas.electricunitxlstodb_20201124.ui.dummy.DummyContent;
 
 public class MainActivity extends AppCompatActivity {
+
+    private AppDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+        database = AppDatabase.getInstance(this);
+
+
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, ListFragment.newInstance(1))
@@ -25,5 +33,8 @@ public class MainActivity extends AppCompatActivity {
             Intent detailsUnitIntent = new Intent(MainActivity.this, DetailsActivity.class);
             startActivity(detailsUnitIntent);
         });
+
+
+
     }
 }
