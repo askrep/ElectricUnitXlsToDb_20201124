@@ -1,8 +1,8 @@
 package com.kas.electricunitxlstodb_20201124.ui;
 
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +10,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,11 +33,14 @@ public class DetailsFragment extends Fragment {
     private static final int DEFAULT_UNIT_ID = -1;
     private static final String LOG_TAG = "# DETAILS FRAGMENT";
 
-    private DetailsViewModel viewModel;
+    private DetailsViewModel detailsViewModel;
     private DetailsFragmentBinding binding;
     private List<DummyContent.DummyItem> ITEMS = DummyContent.ITEMS;
     private AppDatabase database;
     private int unitId = DEFAULT_UNIT_ID;
+    private String title;
+    private String description;
+    private Button detailsButton;
 
 
     public static DetailsFragment newInstance() {
@@ -54,29 +56,52 @@ public class DetailsFragment extends Fragment {
         Context context = getContext();
         database = AppDatabase.getInstance(context);
 
-        Intent intent = getActivity().getIntent();
+        title = binding.unit.getText().toString();
+        description = binding.unitDescription.getText().toString();
+        detailsButton = binding.detailsButton;
 
-        if (null != intent && intent.hasExtra(EXTRA_UNIT_ID)) {
-
-            unitId = intent.getIntExtra(EXTRA_UNIT_ID, DEFAULT_UNIT_ID);
-            DummyContent.DummyItem dummyItem = ITEMS.get(unitId);
-            binding.unit.setText(dummyItem.title);
-            binding.unitDescription.setText(dummyItem.description);
-        }
-
-        Button save = binding.detailsSaveBtn;
-        save.setOnClickListener(view -> onSaveButtonClicked());
+        detailsButton.setOnClickListener(view -> onSaveButtonClicked());
+        Log.d(LOG_TAG, "On Create View");
         return inflate;
+    }
+
+    private void fillUi(UnitEntry unitEntry) {
+        String title = unitEntry.getTitle();
+        String description = unitEntry.getDescription();
+        binding.unit.setText(title);
+        binding.unitDescription.setText(description);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         // viewModel = new ViewModelProvider(this).get(DetailsViewModel.class);
-        DetailsViewModelFactory viewModelFactory = new DetailsViewModelFactory(database, unitId);
-        viewModel = new ViewModelProvider(this, viewModelFactory).get(DetailsViewModel.class);
+
         // TODO: Use the ViewModel
 
+// if clicked on present unit
+        Intent intent = getActivity().getIntent();
+
+        if (null != intent && intent.hasExtra(EXTRA_UNIT_ID)) {
+            detailsButton.setText(R.string.update_button);
+
+            if (unitId == DEFAULT_UNIT_ID) {
+                unitId = intent.getIntExtra(EXTRA_UNIT_ID, DEFAULT_UNIT_ID);
+
+                DetailsViewModelFactory viewModelFactory = new DetailsViewModelFactory(database, unitId);
+                detailsViewModel = new ViewModelProvider(this, viewModelFactory).get(DetailsViewModel.class);
+
+                detailsViewModel.getUnitEntry().observe(getViewLifecycleOwner(), new Observer<UnitEntry>() {
+                    @Override
+                    public void onChanged(UnitEntry unitEntry) {
+                        Log.d(LOG_TAG, "On Changed unitEntry");
+                        if (null != unitEntry) {
+                            fillUi(unitEntry);
+                        }
+                    }
+                });
+            }
+        }
     }
 
     @Override
@@ -86,9 +111,6 @@ public class DetailsFragment extends Fragment {
     }
 
     public void onSaveButtonClicked() {
-        String title = binding.unit.getText().toString();
-        String description = binding.unitDescription.getText().toString();
-
         final UnitEntry unitEntry = new UnitEntry(title, description);
 
         AppExecutors.getInstance().diskIO().execute(new Runnable() {
@@ -100,7 +122,7 @@ public class DetailsFragment extends Fragment {
                     unitEntry.setId(unitId);
                     database.unitDao().updateUnit(unitEntry);
                 }
-
+                getActivity().finish();
             }
         });
     }
