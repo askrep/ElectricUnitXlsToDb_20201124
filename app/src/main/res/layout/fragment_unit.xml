@@ -9,9 +9,9 @@
 
         <ImageView
             android:id="@+id/unit_icon"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_marginStart="8dp"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            android:layout_marginStart="0dp"
             android:layout_marginTop="16dp"
             android:contentDescription="Image"
             android:src="@android:drawable/ic_menu_today" />

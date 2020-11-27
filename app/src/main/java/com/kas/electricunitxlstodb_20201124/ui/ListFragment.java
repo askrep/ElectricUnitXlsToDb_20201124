@@ -114,10 +114,11 @@ public class ListFragment extends Fragment implements UnitRecyclerViewAdapter.It
     }
 
     @Override
-    public void onItemClickListener(int itemId) {
-        Log.d(LOG_TAG, "ON ITEM CLICKED");
+    public void onItemClickListener(int unitId) {
+        Log.d(LOG_TAG, "ON ITEM CLICKED, ID==" + unitId);
         Intent intent = new Intent(getActivity().getBaseContext(), DetailsActivity.class);
-        intent.putExtra(DetailsFragment.EXTRA_UNIT_ID, itemId-1);
+
+        intent.putExtra(DetailsFragment.EXTRA_UNIT_ID, unitId);
         startActivity(intent);
     }
 }

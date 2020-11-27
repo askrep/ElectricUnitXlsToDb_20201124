@@ -23,7 +23,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/unit"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/unit"
-            tools:text="@string/unit_label" />
+            android:text="@string/unit_label" />
 
         <EditText
             android:id="@+id/unit"
@@ -45,7 +45,7 @@
             android:textAppearance="?attr/textAppearanceListItem"
             app:layout_constraintStart_toStartOf="@+id/unit_label"
             app:layout_constraintTop_toBottomOf="@+id/unit"
-            tools:text="@string/description_label" />
+            android:text="@string/description_label" />
 
         <EditText
             android:id="@+id/unit_description"
@@ -69,6 +69,20 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/unit_description"
             app:layout_constraintTop_toBottomOf="@+id/unit_description" />
+
+        <Button
+            android:id="@+id/delete_button"
+            style="@style/TextAppearance.AppCompat.Large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:clickable="false"
+            android:text="@string/delete_button"
+            app:layout_constraintBottom_toBottomOf="@+id/details_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.9"
+            app:layout_constraintStart_toEndOf="@+id/details_button"
+            app:layout_constraintTop_toTopOf="@+id/details_button" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

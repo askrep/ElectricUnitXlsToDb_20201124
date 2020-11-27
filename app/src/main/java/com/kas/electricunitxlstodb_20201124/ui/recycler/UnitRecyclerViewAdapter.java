@@ -3,6 +3,7 @@ package com.kas.electricunitxlstodb_20201124.ui.recycler;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +12,12 @@ import android.widget.TextView;
 import com.kas.electricunitxlstodb_20201124.R;
 import com.kas.electricunitxlstodb_20201124.dao.UnitEntry;
 import com.kas.electricunitxlstodb_20201124.databinding.FragmentUnitListBinding;
-import com.kas.electricunitxlstodb_20201124.ui.dummy.DummyContent.DummyItem;
+
 
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem}.
+ * {@link RecyclerView.Adapter} that can display a {@link UnitEntry}.
  * TODO: Replace the implementation with code for your data type.
  */
 public class UnitRecyclerViewAdapter extends RecyclerView.Adapter<UnitRecyclerViewAdapter.ViewHolder> {
@@ -53,6 +54,7 @@ public class UnitRecyclerViewAdapter extends RecyclerView.Adapter<UnitRecyclerVi
         @Override
         public void onClick(View view) {
             int elementId = units.get(getAdapterPosition()).getId();
+            Log.d("# VIEW HOLDER", "On Click ID==" + elementId);
             itemClickListener.onItemClickListener(elementId);
         }
     }/********** END VIEW HOLDER CLASS ************/

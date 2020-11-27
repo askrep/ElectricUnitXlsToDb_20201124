@@ -1,15 +1,16 @@
 package com.kas.electricunitxlstodb_20201124;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.kas.electricunitxlstodb_20201124.dao.AppDatabase;
-import com.kas.electricunitxlstodb_20201124.dao.UnitEntry;
 import com.kas.electricunitxlstodb_20201124.ui.ListFragment;
-import com.kas.electricunitxlstodb_20201124.ui.dummy.DummyContent;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,7 +21,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
         database = AppDatabase.getInstance(this);
-
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
@@ -33,8 +33,35 @@ public class MainActivity extends AppCompatActivity {
             Intent detailsUnitIntent = new Intent(MainActivity.this, DetailsActivity.class);
             startActivity(detailsUnitIntent);
         });
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                showSettingsActivity();
+                return true;
+            case R.id.action_load_table:
+                showLoadingDialog();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
+    private void showLoadingDialog() {
+    }
+
+    private void showSettingsActivity() {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
     }
 }
