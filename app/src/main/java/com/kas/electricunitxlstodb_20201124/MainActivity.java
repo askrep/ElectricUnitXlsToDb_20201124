@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.kas.electricunitxlstodb_20201124.dao.AppDatabase;
+import com.kas.electricunitxlstodb_20201124.menu.SettingsActivity;
 import com.kas.electricunitxlstodb_20201124.ui.ListFragment;
 
 public class MainActivity extends AppCompatActivity {

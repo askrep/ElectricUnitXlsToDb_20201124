@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase;
 
 @Database(entities = {UnitEntry.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
-    private static final String LOG_TAG = "APP_DATABASE";
+    private static final String LOG_TAG = "# APP_DATABASE";
     private static final String DATABASE_NAME = "units_db";
 
     private static final Object LOCK = new Object();
