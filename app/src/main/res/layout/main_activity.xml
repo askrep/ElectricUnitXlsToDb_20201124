@@ -16,4 +16,13 @@
         android:focusable="true"
         android:src="@android:drawable/ic_input_add"
         android:tint="@android:color/white" />
+
+    <SearchView
+        android:id="@+id/search"
+        android:tooltipText="Unit search query"
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
 </FrameLayout>

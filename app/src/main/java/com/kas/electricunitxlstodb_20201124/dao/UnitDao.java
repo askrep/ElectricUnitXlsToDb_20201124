@@ -19,6 +19,9 @@ public interface UnitDao {
     @Query("Select * From units Where id = :unitId")
     LiveData<UnitEntry> loadUnitById(int unitId);
 
+    @Query("Select * From units Where title Like :text OR description Like :text")
+    LiveData<List<UnitEntry>> loadUnitListByText(String text);
+
     @Insert
     void insertUnit(UnitEntry unitEntry); // INSERT
 

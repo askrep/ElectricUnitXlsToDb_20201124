@@ -2,7 +2,6 @@ package com.kas.electricunitxlstodb_20201124;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProvider.NewInstanceFactory;
 
 import com.kas.electricunitxlstodb_20201124.dao.AppDatabase;

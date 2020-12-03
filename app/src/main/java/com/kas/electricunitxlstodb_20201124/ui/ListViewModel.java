@@ -22,7 +22,8 @@ public class ListViewModel extends AndroidViewModel {
 
         AppDatabase database = AppDatabase.getInstance(this.getApplication());
         Log.d(LOG_TAG, "Load task from database");
-        tasks = database.unitDao().selectAll();
+        tasks = database.unitDao().loadUnitListByText("%2%");
+      //  tasks = database.unitDao().selectAll();
     }
 
 
