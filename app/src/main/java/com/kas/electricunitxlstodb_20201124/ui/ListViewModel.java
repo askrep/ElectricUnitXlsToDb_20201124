@@ -6,7 +6,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.kas.electricunitxlstodb_20201124.dao.AppDatabase;
 import com.kas.electricunitxlstodb_20201124.dao.UnitEntry;
@@ -14,6 +13,7 @@ import com.kas.electricunitxlstodb_20201124.dao.UnitEntry;
 import java.util.List;
 
 public class ListViewModel extends AndroidViewModel {
+
     private static final String LOG_TAG = "# LIST ViewModel";
     private LiveData<List<UnitEntry>> tasks;
 
@@ -23,7 +23,7 @@ public class ListViewModel extends AndroidViewModel {
         AppDatabase database = AppDatabase.getInstance(this.getApplication());
         Log.d(LOG_TAG, "Load task from database");
         tasks = database.unitDao().loadUnitListByText("%2%");
-      //  tasks = database.unitDao().selectAll();
+        tasks = database.unitDao().selectAll();
     }
 
 
