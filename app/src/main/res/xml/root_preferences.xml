@@ -41,6 +41,8 @@
 
         <Preference
             android:key="@string/pref_load_data"
+            android:defaultValue="DEFAULT"
+
             android:summary="@string/data_uri"
             android:title="Load data">
 

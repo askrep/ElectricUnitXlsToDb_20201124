@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,7 +22,6 @@ import com.kas.electricunitxlstodb_20201124.DetailsActivity;
 import com.kas.electricunitxlstodb_20201124.dao.AppDatabase;
 import com.kas.electricunitxlstodb_20201124.dao.UnitEntry;
 import com.kas.electricunitxlstodb_20201124.databinding.FragmentUnitListBinding;
-import com.kas.electricunitxlstodb_20201124.ui.recycler.UnitRecyclerViewAdapter;
 
 import java.util.List;
 
@@ -32,6 +32,7 @@ public class ListFragment extends Fragment implements UnitRecyclerViewAdapter.It
 
     private static final String LOG_TAG = "# LIST FRAGMENT";
     private ListViewModel listViewModel;
+    private MainViewModel mainViewModel;
     private FragmentUnitListBinding binding;
     private AppDatabase database;
 
@@ -69,6 +70,9 @@ public class ListFragment extends Fragment implements UnitRecyclerViewAdapter.It
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
+        mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
+        listViewModel = new ViewModelProvider(this).get(ListViewModel.class);
+        listViewModel.setUnitsFilter("");
     }
 
     @Override
@@ -99,12 +103,18 @@ public class ListFragment extends Fragment implements UnitRecyclerViewAdapter.It
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        listViewModel = new ViewModelProvider(this).get(ListViewModel.class);
-        // TODO: Use the ViewModel
-        listViewModel.getTasks().observe(getViewLifecycleOwner(), (List<UnitEntry> unitEntries) -> {
+
+        mainViewModel.getFilter().observe(getViewLifecycleOwner(), (String filter) -> {
+            listViewModel.setUnitsFilter(filter);
+        });
+        // Change displaying Unit list when unitEntries was changed
+        listViewModel.getUnits().observe(getViewLifecycleOwner(), (List<UnitEntry> unitEntries) -> {
             Log.d(LOG_TAG, "Updating list of tasks from LiveData in ViewModel");
             adapter.setUnits(unitEntries);
         });
+
+        //Set filter for Units
+
     }
 
     @Override
@@ -121,4 +131,9 @@ public class ListFragment extends Fragment implements UnitRecyclerViewAdapter.It
         intent.putExtra(DetailsFragment.EXTRA_UNIT_ID, unitId);
         startActivity(intent);
     }
+
+    public interface FilterTextListener {
+        String OnFilterTextChanged(String filterText);
+    }
+
 }

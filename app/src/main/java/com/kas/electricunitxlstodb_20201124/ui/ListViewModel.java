@@ -15,20 +15,28 @@ import java.util.List;
 public class ListViewModel extends AndroidViewModel {
 
     private static final String LOG_TAG = "# LIST ViewModel";
-    private LiveData<List<UnitEntry>> tasks;
+    private LiveData<List<UnitEntry>> units;
+    private final AppDatabase database;
 
     public ListViewModel(@NonNull Application application) {
         super(application);
 
-        AppDatabase database = AppDatabase.getInstance(this.getApplication());
+        database = AppDatabase.getInstance(this.getApplication());
         Log.d(LOG_TAG, "Load task from database");
-        tasks = database.unitDao().loadUnitListByText("%2%");
-        tasks = database.unitDao().selectAll();
+        //tasks = database.unitDao().loadUnitListByText("%2%");
+        units = database.unitDao().selectAll();
     }
 
-
-    public LiveData<List<UnitEntry>> getTasks() {
-        return tasks;
+    public void setUnitsFilter(String filter) {
+        if (filter != null && filter.length() > 0)
+            units = database.unitDao().loadUnitListFiltered("%" + filter + "%");
     }
-    // TODO: Implement the ViewModel
+
+    public void setUnits(List<UnitEntry> units) {
+
+    }
+
+    public LiveData<List<UnitEntry>> getUnits() {
+        return units;
+    }
 }

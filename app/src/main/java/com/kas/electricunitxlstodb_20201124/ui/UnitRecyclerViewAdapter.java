@@ -1,4 +1,4 @@
-package com.kas.electricunitxlstodb_20201124.ui.recycler;
+package com.kas.electricunitxlstodb_20201124.ui;
 
 import androidx.recyclerview.widget.RecyclerView;
 
