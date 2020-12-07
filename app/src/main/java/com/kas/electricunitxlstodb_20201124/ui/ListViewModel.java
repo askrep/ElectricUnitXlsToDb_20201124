@@ -16,20 +16,28 @@ public class ListViewModel extends AndroidViewModel {
 
     private static final String LOG_TAG = "# LIST ViewModel";
     private LiveData<List<UnitEntry>> units;
+    private LiveData<String> filterText;
     private final AppDatabase database;
 
     public ListViewModel(@NonNull Application application) {
         super(application);
 
         database = AppDatabase.getInstance(this.getApplication());
-        Log.d(LOG_TAG, "Load task from database");
-        //tasks = database.unitDao().loadUnitListByText("%2%");
         units = database.unitDao().selectAll();
+
+        Log.d(LOG_TAG, "Load task from database");
     }
 
-    public void setUnitsFilter(String filter) {
-        if (filter != null && filter.length() > 0)
+    public void setFilter(String filter) {
+        if (filter != null && filter.length() > 0) {
             units = database.unitDao().loadUnitListFiltered("%" + filter + "%");
+
+            Log.d(LOG_TAG, "FILTER SETUP");
+        }
+    }
+
+    public LiveData<String> getFilter() {
+        return filterText;
     }
 
     public void setUnits(List<UnitEntry> units) {
@@ -39,4 +47,6 @@ public class ListViewModel extends AndroidViewModel {
     public LiveData<List<UnitEntry>> getUnits() {
         return units;
     }
+
+
 }

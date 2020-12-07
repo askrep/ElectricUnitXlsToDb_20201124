@@ -5,15 +5,14 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -21,63 +20,41 @@ import com.kas.electricunitxlstodb_20201124.dao.AppDatabase;
 import com.kas.electricunitxlstodb_20201124.databinding.MainActivityBinding;
 import com.kas.electricunitxlstodb_20201124.menu.SettingsActivity;
 import com.kas.electricunitxlstodb_20201124.ui.ListFragment;
-import com.kas.electricunitxlstodb_20201124.ui.ListViewModel;
 import com.kas.electricunitxlstodb_20201124.ui.MainViewModel;
+import com.kas.electricunitxlstodb_20201124.ui.SearchFragment;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = "# MainActivity";
     private MainActivityBinding mainActivityBinding;
-    private AppDatabase database;
-    private MainViewModel mainViewModel;
-
-    private EditText search;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-        database = AppDatabase.getInstance(this);
-        mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
-        mainActivityBinding = MainActivityBinding.inflate(getLayoutInflater());
 
-        search = mainActivityBinding.search;
-        search.setOnEditorActionListener((textView, i, keyEvent) -> {
+        MainViewModel mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
+        AppDatabase database = AppDatabase.getInstance(this);
+        mainActivityBinding = DataBindingUtil.setContentView(this, R.layout.main_activity);
 
-            return true;
-        });
-        search.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String filter = charSequence.toString();
-                Log.d(LOG_TAG, "Search onChanged = "+ filter);
-                mainViewModel.setFilter(filter);
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-
-        if (savedInstanceState == null) {
+/*        if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .setReorderingAllowed(true)
-                    .replace(R.id.container, ListFragment.newInstance(1))
+                    .add(R.id.fragment_list_container, ListFragment.newInstance(1))
+                    .add(R.id.search_container, SearchFragment.newInstance())
                     .commitNow();
-        }
+
+            getSupportFragmentManager().beginTransaction()
+                    .setReorderingAllowed(true)
+                    .replace(R.id.search_container, SearchFragment.newInstance())
+                    .commitNow();
+        }*/
 
         FloatingActionButton fab = mainActivityBinding.floatingActionButton;
         fab.setOnClickListener(view -> {
             Intent detailsUnitIntent = new Intent(MainActivity.this, DetailsActivity.class);
             startActivity(detailsUnitIntent);
         });
-
     }
 
     @Override
@@ -87,9 +64,13 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    private void showSettingsActivity() {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
         switch (item.getItemId()) {
             case R.id.action_settings:
                 showSettingsActivity();
@@ -105,8 +86,5 @@ public class MainActivity extends AppCompatActivity {
     private void showLoadingDialog() {
     }
 
-    private void showSettingsActivity() {
-        Intent intent = new Intent(this, SettingsActivity.class);
-        startActivity(intent);
-    }
+
 }

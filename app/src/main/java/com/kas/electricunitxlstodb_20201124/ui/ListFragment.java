@@ -7,7 +7,6 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -36,9 +35,8 @@ public class ListFragment extends Fragment implements UnitRecyclerViewAdapter.It
     private FragmentUnitListBinding binding;
     private AppDatabase database;
 
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
+
     private int mColumnCount = 1;
     private RecyclerView recyclerView;
     private UnitRecyclerViewAdapter adapter;
@@ -46,15 +44,9 @@ public class ListFragment extends Fragment implements UnitRecyclerViewAdapter.It
     public static final int HORIZONTAL = 0;
     public static final int VERTICAL = 1;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
     public ListFragment() {
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
     public static ListFragment newInstance(int columnCount) {
         ListFragment fragment = new ListFragment();
         Bundle args = new Bundle();
@@ -72,8 +64,7 @@ public class ListFragment extends Fragment implements UnitRecyclerViewAdapter.It
         }
         mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
         listViewModel = new ViewModelProvider(this).get(ListViewModel.class);
-        listViewModel.setUnitsFilter("");
-    }
+     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -93,8 +84,8 @@ public class ListFragment extends Fragment implements UnitRecyclerViewAdapter.It
             }
             adapter = new UnitRecyclerViewAdapter(this.getContext(), this);
             recyclerView.setAdapter(adapter);
-        }
 
+        }
         DividerItemDecoration decoration = new DividerItemDecoration(getContext(), VERTICAL);
         recyclerView.addItemDecoration(decoration);
         return view;
@@ -104,18 +95,11 @@ public class ListFragment extends Fragment implements UnitRecyclerViewAdapter.It
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mainViewModel.getFilter().observe(getViewLifecycleOwner(), (String filter) -> {
-            listViewModel.setUnitsFilter(filter);
-        });
-        // Change displaying Unit list when unitEntries was changed
-        listViewModel.getUnits().observe(getViewLifecycleOwner(), (List<UnitEntry> unitEntries) -> {
+        listViewModel.getUnits().observe(getViewLifecycleOwner(), (List<UnitEntry> units) -> {
             Log.d(LOG_TAG, "Updating list of tasks from LiveData in ViewModel");
-            adapter.setUnits(unitEntries);
+            adapter.setUnits(units);
         });
-
-        //Set filter for Units
-
-    }
+     }
 
     @Override
     public void onDestroyView() {

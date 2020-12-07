@@ -14,7 +14,7 @@ public class DetailsActivity extends AppCompatActivity {
         setContentView(R.layout.details_activity);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, DetailsFragment.newInstance())
+                    .replace(R.id.fragment_unit_container, DetailsFragment.newInstance())
                     .commitNow();
         }
     }

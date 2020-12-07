@@ -4,19 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
         <androidx.fragment.app.FragmentContainerView
-            android:id="@+id/container"
+            android:id="@+id/fragment_list_container"
+            android:name=".ui.ListFragment"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-
-            app:layout_constraintBottom_toTopOf="@+id/search_icon"
+            android:layout_height="500dp"
+            app:layout_constraintBottom_toTopOf="@+id/search_container"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/search_container"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:name=".ui.SearchFragment"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/fragment_list_container"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_list_container"
+            tools:text="Sample text" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/floatingActionButton"
@@ -29,30 +38,8 @@
             android:focusable="true"
             android:src="@android:drawable/ic_input_add"
             android:tint="@android:color/white"
-            app:layout_constraintBottom_toTopOf="@+id/search"
+            app:layout_constraintBottom_toTopOf="@+id/search_container"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <ImageView
-            android:id="@+id/search_icon"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_margin="8dp"
-            android:src="@drawable/ic_baseline_search_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/container"
-            app:layout_constraintTop_toBottomOf="@+id/container" />
-
-        <EditText
-            android:id="@+id/search"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@color/design_default_color_secondary"
-            android:textSize="18dp"
-            android:tooltipText="edit filter"
-            android:contentDescription="Edit Filter"
-            app:layout_constraintBottom_toBottomOf="@id/search_icon"
-            app:layout_constraintEnd_toEndOf="@id/container"
-            app:layout_constraintStart_toEndOf="@+id/search_icon"
-            app:layout_constraintTop_toTopOf="@+id/search_icon" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
