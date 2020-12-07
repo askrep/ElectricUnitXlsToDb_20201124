@@ -22,11 +22,11 @@ import com.kas.electricunitxlstodb_20201124.dao.UnitEntry;
 import com.kas.electricunitxlstodb_20201124.databinding.DetailsFragmentBinding;
 
 public class DetailsFragment extends Fragment {
-
+    
     public static final String EXTRA_UNIT_ID = "extraUnitId";
     private static final int DEFAULT_UNIT_ID = -1;
     private static final String LOG_TAG = "# DETAILS FRAGMENT";
-
+    
     private DetailsViewModel detailsViewModel;
     private DetailsFragmentBinding binding;
     private AppDatabase database;
@@ -35,12 +35,11 @@ public class DetailsFragment extends Fragment {
     private String description;
     private Button detailsButton;
     private Button deleteButton;
-
-
+    
     public static DetailsFragment newInstance() {
         return new DetailsFragment();
     }
-
+    
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -49,18 +48,18 @@ public class DetailsFragment extends Fragment {
         View inflate = binding.getRoot();
         Context context = getContext();
         database = AppDatabase.getInstance(context);
-
+        
         title = binding.unit.getText().toString();
         description = binding.unitDescription.getText().toString();
         detailsButton = binding.detailsButton;
         deleteButton = binding.deleteButton;
-
+        
         detailsButton.setOnClickListener(view -> onSaveButtonClicked());
         deleteButton.setOnClickListener(view -> onDeleteButtonClicked());
         Log.d(LOG_TAG, "On Create View");
         return inflate;
     }
-
+    
     private void fillingUi(UnitEntry unitEntry) {
         if (unitEntry == null) return;
         String title = unitEntry.getTitle();
@@ -68,28 +67,23 @@ public class DetailsFragment extends Fragment {
         binding.unit.setText(title);
         binding.unitDescription.setText(description);
     }
-
+    
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        // viewModel = new ViewModelProvider(this).get(DetailsViewModel.class);
-
-        // TODO: Use the ViewModel
-
-// if clicked on present unit
         Intent intent = getActivity().getIntent();
-
+        
         if (null != intent && intent.hasExtra(EXTRA_UNIT_ID)) {
             detailsButton.setText(R.string.update_button);
             deleteButton.setVisibility(View.VISIBLE);
             deleteButton.setClickable(true);
-
+            
             if (unitId == DEFAULT_UNIT_ID) {
                 unitId = intent.getIntExtra(EXTRA_UNIT_ID, DEFAULT_UNIT_ID);
                 Log.d(LOG_TAG, "ID==" + unitId);
                 DetailsViewModelFactory viewModelFactory = new DetailsViewModelFactory(database, unitId);
                 detailsViewModel = new ViewModelProvider(this, viewModelFactory).get(DetailsViewModel.class);
-
+                
                 detailsViewModel.getUnitEntry().observe(getViewLifecycleOwner(), unitEntry -> {
                     Log.d(LOG_TAG, "On Changed unitEntry");
                     if (null != unitEntry) {
@@ -99,18 +93,18 @@ public class DetailsFragment extends Fragment {
             }
         }
     }
-
+    
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
     }
-
+    
     public void onSaveButtonClicked() {
         String title = binding.unit.getText().toString();
         String description = binding.unitDescription.getText().toString();
         final UnitEntry unitEntry = new UnitEntry(title, description);
-
+        
         AppExecutors.getInstance().diskIO().execute(() -> {
             if (unitId == DEFAULT_UNIT_ID) {
                 database.unitDao().insertUnit(unitEntry);
@@ -121,7 +115,7 @@ public class DetailsFragment extends Fragment {
             getActivity().finish();
         });
     }
-
+    
     public void onDeleteButtonClicked() {
         AppExecutors.getInstance().diskIO().execute(() -> {
             Log.d(LOG_TAG, "On Delete Clicked, ID==" + unitId);
