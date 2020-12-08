@@ -1,7 +1,5 @@
 package com.kas.electricunitxlstodb_20201124.ui;
 
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,10 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.kas.electricunitxlstodb_20201124.R;
 import com.kas.electricunitxlstodb_20201124.dao.UnitEntry;
-import com.kas.electricunitxlstodb_20201124.databinding.FragmentUnitListBinding;
-
 
 import java.util.List;
 
@@ -26,7 +24,7 @@ public class UnitRecyclerViewAdapter extends RecyclerView.Adapter<UnitRecyclerVi
     private final ItemClickListener itemClickListener;
     private Context context;
     // private final List<UnitEntry> unitEntries;
-    private FragmentUnitListBinding binding;
+    //private FragmentUnitListBinding binding;
 
 
     /********** INNER ViewHolder CLASS ************/

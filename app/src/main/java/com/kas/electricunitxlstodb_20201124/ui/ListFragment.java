@@ -3,6 +3,10 @@ package com.kas.electricunitxlstodb_20201124.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -12,15 +16,10 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.kas.electricunitxlstodb_20201124.DetailsActivity;
+import com.kas.electricunitxlstodb_20201124.R;
 import com.kas.electricunitxlstodb_20201124.dao.AppDatabase;
 import com.kas.electricunitxlstodb_20201124.dao.UnitEntry;
-import com.kas.electricunitxlstodb_20201124.databinding.FragmentUnitListBinding;
 
 import java.util.List;
 
@@ -32,7 +31,7 @@ public class ListFragment extends Fragment implements UnitRecyclerViewAdapter.It
     private static final String LOG_TAG = "# LIST FRAGMENT";
     private ListViewModel listViewModel;
     private MainViewModel mainViewModel;
-    private FragmentUnitListBinding binding;
+   // private FragmentUnitListBinding binding;
     private AppDatabase database;
 
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -45,6 +44,8 @@ public class ListFragment extends Fragment implements UnitRecyclerViewAdapter.It
     public static final int VERTICAL = 1;
 
     public ListFragment() {
+        super(R.layout.fragment_unit_list);
+        Log.d(LOG_TAG, "CONSTRUCTOR");
     }
 
     public static ListFragment newInstance(int columnCount) {
@@ -54,7 +55,6 @@ public class ListFragment extends Fragment implements UnitRecyclerViewAdapter.It
         fragment.setArguments(args);
         return fragment;
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,16 +64,19 @@ public class ListFragment extends Fragment implements UnitRecyclerViewAdapter.It
         }
         mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
         listViewModel = new ViewModelProvider(this).get(ListViewModel.class);
-     }
+
+        Log.d(LOG_TAG, "OnCreate");
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentUnitListBinding.inflate(inflater, container, false);
-        View view = binding.getRoot();
+        //binding = FragmentUnitListBinding.inflate(inflater, container, false);
+        View view = inflater.inflate(R.layout.fragment_unit_list, container, false);
+        //View view = binding.getRoot();
 
         database = AppDatabase.getInstance(getContext());
-        // Set the adapter
+
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             recyclerView = (RecyclerView) view;
@@ -88,6 +91,8 @@ public class ListFragment extends Fragment implements UnitRecyclerViewAdapter.It
         }
         DividerItemDecoration decoration = new DividerItemDecoration(getContext(), VERTICAL);
         recyclerView.addItemDecoration(decoration);
+
+        Log.d(LOG_TAG, "OnCreateView");
         return view;
     }
 
@@ -95,16 +100,12 @@ public class ListFragment extends Fragment implements UnitRecyclerViewAdapter.It
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        listViewModel.getUnits().observe(getViewLifecycleOwner(), (List<UnitEntry> units) -> {
+        listViewModel.getUnitsLiveData().observe(getViewLifecycleOwner(), (List<UnitEntry> units) -> {
             Log.d(LOG_TAG, "Updating list of tasks from LiveData in ViewModel");
             adapter.setUnits(units);
         });
-     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+        Log.d(LOG_TAG, "OnActivityCreated");
     }
 
     @Override
@@ -116,8 +117,9 @@ public class ListFragment extends Fragment implements UnitRecyclerViewAdapter.It
         startActivity(intent);
     }
 
-    public interface FilterTextListener {
-        String OnFilterTextChanged(String filterText);
-    }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
 
+    }
 }

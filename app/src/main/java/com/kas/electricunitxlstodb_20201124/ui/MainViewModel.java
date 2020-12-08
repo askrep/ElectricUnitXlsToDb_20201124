@@ -6,17 +6,45 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
-import com.kas.electricunitxlstodb_20201124.databinding.MainActivityBinding;
+import com.kas.electricunitxlstodb_20201124.Repository;
+import com.kas.electricunitxlstodb_20201124.dao.UnitEntry;
 
-public class MainViewModel extends ViewModel {
+import java.util.List;
 
+public class MainViewModel extends AndroidViewModel {
 
-    private MainActivityBinding mainActivityBinding;
+    @NonNull
+    private Repository repository;
 
+    @NonNull
+    private MutableLiveData<List<UnitEntry>> unitsLiveData;
+    private MutableLiveData<List<UnitEntry>> unitsFilteredLiveData;
+    private MutableLiveData<String> filter;
 
-    public void setActivityBinding(MainActivityBinding mainActivityBinding) {
-        this.mainActivityBinding = mainActivityBinding;
+    public MainViewModel(Application application) {
+        super(application);
+        repository = Repository.getInstance(application);
+        unitsLiveData = (MutableLiveData) repository.getUnitsLiveData();
+
+        repository.setUnitListFilter()
+    }
+
+    @NonNull
+    public LiveData<List<UnitEntry>> getUnitsLiveData() {
+        return unitsLiveData;
+    }
+
+    @NonNull
+    public LiveData<List<UnitEntry>> getUnitsFilteredLiveData() {
+        return unitsFilteredLiveData;
+    }
+
+    @NonNull
+    public MutableLiveData<String> getFilter() {
+        if (filter == null) {
+            filter = new MutableLiveData<>();
+        }
+        return filter;
     }
 }
