@@ -13,33 +13,31 @@ import com.kas.electricunitxlstodb_20201124.dao.UnitEntry;
 import java.util.List;
 
 public class MainViewModel extends AndroidViewModel {
-
+    
     @NonNull
     private Repository repository;
-
     @NonNull
-    private MutableLiveData<List<UnitEntry>> unitsLiveData;
-    private MutableLiveData<List<UnitEntry>> unitsFilteredLiveData;
+    private LiveData<List<UnitEntry>> unitsLiveData;
+    private LiveData<List<UnitEntry>> unitsFilteredLiveData;
     private MutableLiveData<String> filter;
-
+    
     public MainViewModel(Application application) {
         super(application);
-        repository = Repository.getInstance(application);
-        unitsLiveData = (MutableLiveData) repository.getUnitsLiveData();
-
-        repository.setUnitListFilter()
+       /* repository = Repository.getInstance(application);
+        unitsLiveData =  repository.getUnitsLiveData();*/
+        
     }
-
+    
     @NonNull
     public LiveData<List<UnitEntry>> getUnitsLiveData() {
         return unitsLiveData;
     }
-
+    
     @NonNull
     public LiveData<List<UnitEntry>> getUnitsFilteredLiveData() {
         return unitsFilteredLiveData;
     }
-
+    
     @NonNull
     public MutableLiveData<String> getFilter() {
         if (filter == null) {

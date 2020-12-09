@@ -18,7 +18,7 @@ import com.kas.electricunitxlstodb_20201124.R;
 
 public class SearchFragment extends Fragment {
 
-    private static final String LOG_TAG = "#SEARCH FRAGMENT";
+    private static final String LOG_TAG = "#_SEARCH_FRAGMENT";
     private SearchViewModel searchViewModel;
     //private FragmentSearchBinding searchFragmentBinding;
 
