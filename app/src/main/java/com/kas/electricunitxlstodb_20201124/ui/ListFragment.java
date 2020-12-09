@@ -28,7 +28,7 @@ import java.util.List;
  */
 public class ListFragment extends Fragment implements UnitRecyclerViewAdapter.ItemClickListener {
 
-    private static final String LOG_TAG = "# LIST FRAGMENT";
+    private static final String LOG_TAG = "#_LIST_FRAGMENT";
     private ListViewModel listViewModel;
     private MainViewModel mainViewModel;
    // private FragmentUnitListBinding binding;

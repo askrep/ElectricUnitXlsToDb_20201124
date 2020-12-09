@@ -4,7 +4,6 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
 import com.kas.electricunitxlstodb_20201124.dao.AppDatabase;
 import com.kas.electricunitxlstodb_20201124.dao.UnitDao;
@@ -14,38 +13,34 @@ import java.util.List;
 
 public class Repository {
 
+    private static final String LOG_TAG = "#_REPOSITORY";
     private static Repository instance;
     private UnitDao unitDao;
 
-    private MutableLiveData<List<UnitEntry>> unitsLiveData;
-    private MutableLiveData<List<UnitEntry>> unitsFilteredLiveData;
+    private LiveData<List<UnitEntry>> unitsLiveData;
+    private LiveData<List<UnitEntry>> unitsFilteredLiveData;
 
     public Repository(Application application) {
         AppDatabase appDatabase = AppDatabase.getInstance(application);
         unitDao = appDatabase.unitDao();
-        List<UnitEntry> units = unitDao.selectAll().getValue();
-        unitsLiveData.setValue(units);
+/*        AppExecutors.getInstance().diskIO().execute(()->{
+
+        });*/
+        unitsLiveData = unitDao.selectAll();
+        unitsFilteredLiveData = unitDao.loadUnitListFiltered("2");
+        //unitsLiveData.setValue(units);
     }
 
     @NonNull
-    public LiveData<List<UnitEntry>> getUnitsLiveData() {
-        if (unitsLiveData == null) {
-            unitsLiveData = new MutableLiveData<>();
-        }
+    public LiveData<List<UnitEntry>> getAllUnitsLiveData() {
         return unitsLiveData;
     }
 
     @NonNull
-    public void setUnits(List<UnitEntry> units) {
-        unitsLiveData.setValue(units);
-    }
-
-    @NonNull
-    public LiveData<List<UnitEntry>> setUnitListFilter(String filter) {
-        unitsFilteredLiveData.setValue(unitDao.loadUnitListFiltered(filter).getValue());
+    public LiveData<List<UnitEntry>> getUnitListFilter(String filter) {
         return unitsFilteredLiveData;
     }
-
+/*
     public static Repository getInstance(Application application) {
         if (instance == null) {
             synchronized (Repository.class) {
@@ -55,7 +50,7 @@ public class Repository {
             }
         }
         return instance;
-    }
+    }*/
 
 
 }

@@ -32,13 +32,12 @@ public class MainActivity extends AppCompatActivity {
         AppDatabase database = AppDatabase.getInstance(this);
 
         mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
-        mainViewModel.getUnitsLiveData().observe(this, units -> {
-            listViewModel.setUnitsLiveData(units);
-        });
-
         listViewModel = new ViewModelProvider(this).get(ListViewModel.class);
         searchViewModel = new ViewModelProvider(this).get(SearchViewModel.class);
 
+        mainViewModel.getUnitsLiveData().observe(this, units -> {
+            listViewModel.getUnitsLiveData().setValue(units);
+        });
         searchViewModel.getFilter().observe(this, filter -> {
             mainViewModel.getFilter().setValue(filter);
 

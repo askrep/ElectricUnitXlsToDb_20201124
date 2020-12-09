@@ -25,7 +25,7 @@ public class DetailsFragment extends Fragment {
     
     public static final String EXTRA_UNIT_ID = "extraUnitId";
     private static final int DEFAULT_UNIT_ID = -1;
-    private static final String LOG_TAG = "# DETAILS FRAGMENT";
+    private static final String LOG_TAG = "#_DETAILS_FRAGMENT";
     
     private DetailsViewModel detailsViewModel;
     private DetailsFragmentBinding binding;

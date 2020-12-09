@@ -18,16 +18,17 @@ public class MainViewModel extends AndroidViewModel {
     private Repository repository;
 
     @NonNull
-    private MutableLiveData<List<UnitEntry>> unitsLiveData;
-    private MutableLiveData<List<UnitEntry>> unitsFilteredLiveData;
+    private LiveData<List<UnitEntry>> unitsLiveData;
+    private LiveData<List<UnitEntry>> unitsFilteredLiveData;
     private MutableLiveData<String> filter;
 
     public MainViewModel(Application application) {
         super(application);
-        repository = Repository.getInstance(application);
-        unitsLiveData = (MutableLiveData) repository.getUnitsLiveData();
+        repository = new Repository(application);
 
-        repository.setUnitListFilter()
+        unitsLiveData = repository.getAllUnitsLiveData();
+        // unitsFilteredLiveData = repository.getUnitListFilter(filter.getValue());
+
     }
 
     @NonNull
