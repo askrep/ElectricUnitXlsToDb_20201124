@@ -15,11 +15,11 @@ public interface UnitDao {
     @Query("Select * From units")
     LiveData<List<UnitEntry>> selectAll(); // SELECT ALL
 
-    @Query("Select * From units Where id = :unitId")
-    LiveData<UnitEntry> loadUnitById(int unitId);
-
     @Query("Select * From units Where title Like :text OR description Like :text")
     LiveData<List<UnitEntry>> loadUnitListFiltered(String text);
+
+    @Query("Select * From units Where id = :unitId")
+    LiveData<UnitEntry> loadUnitById(int unitId);
 
     @Insert
     void insertUnit(UnitEntry unitEntry); // INSERT

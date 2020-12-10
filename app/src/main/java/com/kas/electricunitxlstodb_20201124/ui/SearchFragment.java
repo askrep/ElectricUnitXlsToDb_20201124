@@ -18,8 +18,9 @@ import com.kas.electricunitxlstodb_20201124.R;
 
 public class SearchFragment extends Fragment {
 
-    private static final String LOG_TAG = "#_SEARCH_FRAGMENT";
-    private SearchViewModel searchViewModel;
+    private static final String TAG = "#_SEARCH_FRAGMENT";
+
+    private SharedViewModel sharedViewModel;
     //private FragmentSearchBinding searchFragmentBinding;
 
     public static SearchFragment newInstance() {
@@ -31,8 +32,7 @@ public class SearchFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
-        searchViewModel = new ViewModelProvider(this).get(SearchViewModel.class);
-        //searchFragmentBinding = DataBindingUtil.setContentView(getActivity(), R.layout.fragment_search);
+        sharedViewModel = new ViewModelProvider(getActivity()).get(SharedViewModel.class);
 
         EditText searchField = view.findViewById(R.id.search_field);
         searchField.addTextChangedListener(new TextWatcher() {
@@ -45,11 +45,12 @@ public class SearchFragment extends Fragment {
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 String filter = charSequence.toString();
                 if (!filter.isEmpty()) {
-                    searchViewModel.getFilter().setValue(filter);
+                    sharedViewModel.setFilterLiveData(filter);
 
-                    Log.d(LOG_TAG, "Search onChanged = " + filter);
+                    Log.d(TAG, "Search onTextChanged = " + filter);
                 }
             }
+
             @Override
             public void afterTextChanged(Editable editable) {
 
