@@ -20,14 +20,15 @@
             android:layout_height="wrap_content"
 
             android:textAppearance="?attr/textAppearanceListItem"
-            app:layout_constraintBottom_toBottomOf="@+id/unit"
+            app:layout_constraintBottom_toBottomOf="@+id/title"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/unit"
+            app:layout_constraintTop_toTopOf="@+id/title"
             android:text="@string/unit_label" />
 
         <EditText
-            android:id="@+id/unit"
+            android:id="@+id/title"
             style="@style/TextAppearance.AppCompat.Small"
+            android:enabled="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/text_margin"
@@ -44,12 +45,13 @@
             android:layout_marginTop="8dp"
             android:textAppearance="?attr/textAppearanceListItem"
             app:layout_constraintStart_toStartOf="@+id/unit_label"
-            app:layout_constraintTop_toBottomOf="@+id/unit"
+            app:layout_constraintTop_toBottomOf="@+id/title"
             android:text="@string/description_label" />
 
         <EditText
             android:id="@+id/unit_description"
             style="@style/TextAppearance.AppCompat.Small"
+            android:editable="true"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textAppearance="?attr/textAppearanceListItem"

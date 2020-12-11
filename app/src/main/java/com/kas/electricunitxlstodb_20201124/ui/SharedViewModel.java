@@ -15,22 +15,37 @@ import com.kas.electricunitxlstodb_20201124.dao.UnitEntry;
 import java.util.List;
 
 public class SharedViewModel extends AndroidViewModel {
-    
+
     private static final String TAG = "#_SHARED_VM";
-    @NonNull
     private Repository repository;
-    @NonNull
     private LiveData<List<UnitEntry>> unitsLiveData;
-    private LiveData<List<UnitEntry>> unitsFilteredLiveData;
     private MutableLiveData<String> filterLiveData = new MutableLiveData<>("");
-    ;
-    
+
     public SharedViewModel(Application application) {
         super(application);
         repository = Repository.getInstance(application);
         unitsLiveData = repository.getAllUnitsLiveData();
     }
-    
+
+    public LiveData<List<UnitEntry>> getUnitsLiveData() {
+        LiveData<List<UnitEntry>> listLiveData = Transformations.switchMap(filterLiveData,
+                string -> (string == null || string.isEmpty()) ? getAllUnitsLiveData() : getFilteredUnitsLiveData());
+        Log.d(TAG, "getFilteredUnitsLiveData: ");
+        return listLiveData;
+    }
+
+    @NonNull
+    public LiveData<List<UnitEntry>> getAllUnitsLiveData() {
+        return unitsLiveData;
+    }
+
+    @NonNull
+    public LiveData<List<UnitEntry>> getFilteredUnitsLiveData() {
+        LiveData<List<UnitEntry>> listLiveData = Transformations.switchMap(filterLiveData, filter -> repository.getFilteredUnitsLiveData(filter));
+        Log.d(TAG, "getFilteredUnitsLiveData: ");
+        return listLiveData;
+    }
+
     public void setFilterLiveData(String filter) {
         String f;
         if (filter.isEmpty()) {
@@ -38,23 +53,11 @@ public class SharedViewModel extends AndroidViewModel {
         } else {
             f = "%" + filter + "%";
         }
-        filterLiveData.setValue(f);
+        filterLiveData.postValue(f);
     }
-    
+
     @NonNull
-    public LiveData<List<UnitEntry>> getFilteredUnitsLiveData() {
-        Log.d(TAG, "getFilteredUnitsLiveData: ");
-        return Transformations.switchMap(filterLiveData, filter -> repository.getFilteredUnitsLiveData(filter));
-    }
-    
-    @NonNull
-    public MutableLiveData<String> getFilterLiveData() {
-        Log.d(TAG, "getFilterLiveData = " + filterLiveData.getValue());
+    public LiveData<String> getFilterLiveData() {
         return filterLiveData;
-    }
-    
-    @NonNull
-    public LiveData<List<UnitEntry>> getAllUnitsLiveData() {
-        return unitsLiveData;
     }
 }

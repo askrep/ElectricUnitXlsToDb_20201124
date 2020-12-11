@@ -19,9 +19,7 @@ import com.kas.electricunitxlstodb_20201124.R;
 public class SearchFragment extends Fragment {
 
     private static final String TAG = "#_SEARCH_FRAGMENT";
-
     private SharedViewModel sharedViewModel;
-    //private FragmentSearchBinding searchFragmentBinding;
 
     public static SearchFragment newInstance() {
         return new SearchFragment();
@@ -44,7 +42,7 @@ public class SearchFragment extends Fragment {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 String filter = charSequence.toString();
-                if (!filter.isEmpty()) {
+                if (filter != null || !filter.isEmpty()) {
                     sharedViewModel.setFilterLiveData(filter);
 
                     Log.d(TAG, "Search onTextChanged = " + filter);
@@ -62,6 +60,5 @@ public class SearchFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
     }
 }
