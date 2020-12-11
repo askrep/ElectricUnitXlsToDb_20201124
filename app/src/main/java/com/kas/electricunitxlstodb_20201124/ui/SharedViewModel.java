@@ -20,11 +20,13 @@ public class SharedViewModel extends AndroidViewModel {
     private Repository repository;
     private LiveData<List<UnitEntry>> unitsLiveData;
     private MutableLiveData<String> filterLiveData = new MutableLiveData<>("");
+    LiveData<UnitEntry> unitEntry;
 
     public SharedViewModel(Application application) {
         super(application);
         repository = Repository.getInstance(application);
         unitsLiveData = repository.getAllUnitsLiveData();
+
     }
 
     public LiveData<List<UnitEntry>> getUnitsLiveData() {
@@ -59,5 +61,22 @@ public class SharedViewModel extends AndroidViewModel {
     @NonNull
     public LiveData<String> getFilterLiveData() {
         return filterLiveData;
+    }
+
+
+    public void insertUnit(UnitEntry unitEntry){
+        repository.insertUnit(unitEntry);
+    }
+
+    public LiveData<UnitEntry> getUnitEntry(int id) {
+        return repository.getUnitById(id);
+    }
+
+    public void updateUnit(UnitEntry unitEntry) {
+        repository.updateUnit(unitEntry);
+    }
+
+    public void deleteUnit(int unitId) {
+        repository.deleteUnit(unitId);
     }
 }

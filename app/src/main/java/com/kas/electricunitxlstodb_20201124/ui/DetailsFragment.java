@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.kas.electricunitxlstodb_20201124.AppExecutors;
-import com.kas.electricunitxlstodb_20201124.DetailsViewModelFactory;
 import com.kas.electricunitxlstodb_20201124.R;
 import com.kas.electricunitxlstodb_20201124.dao.AppDatabase;
 import com.kas.electricunitxlstodb_20201124.dao.UnitEntry;
@@ -25,7 +24,7 @@ public class DetailsFragment extends Fragment {
 
     public static final String EXTRA_UNIT_ID = "extraUnitId";
     private static final int DEFAULT_UNIT_ID = -1;
-    private static final String LOG_TAG = "#_DETAILS_FRAGMENT";
+    private static final String TAG = "#_DETAILS_FRAGMENT";
 
     private DetailsViewModel detailsViewModel;
     private DetailsFragmentBinding binding;
@@ -35,6 +34,7 @@ public class DetailsFragment extends Fragment {
     private Button detailsButton;
     private Button deleteButton;
     private boolean isChanging;
+    private SharedViewModel sharedViewModel;
 
     public static DetailsFragment newInstance() {
         return new DetailsFragment();
@@ -51,10 +51,9 @@ public class DetailsFragment extends Fragment {
 
         detailsButton = binding.detailsButton;
         deleteButton = binding.deleteButton;
-
         detailsButton.setOnClickListener(view -> onCommonButtonClicked());
         deleteButton.setOnClickListener(view -> onDeleteButtonClicked());
-        Log.d(LOG_TAG, "On Create View");
+
         return inflate;
     }
 
@@ -64,24 +63,26 @@ public class DetailsFragment extends Fragment {
         Intent intent = getActivity().getIntent();
 
         if (null != intent && intent.hasExtra(EXTRA_UNIT_ID)) {
+            unitSelectedFromList(intent);
+        }
+    }
 
-            detailsButton.setText(R.string.update_button);
-            deleteButton.setVisibility(View.VISIBLE);
-            deleteButton.setClickable(true);
+    private void unitSelectedFromList(Intent intent) {
+        detailsButton.setText(R.string.update_button);
+        deleteButton.setVisibility(View.VISIBLE);
+        deleteButton.setClickable(true);
 
-            if (unitId == DEFAULT_UNIT_ID) {
-                unitId = intent.getIntExtra(EXTRA_UNIT_ID, DEFAULT_UNIT_ID);
-                Log.d(LOG_TAG, "ID==" + unitId);
-                DetailsViewModelFactory viewModelFactory = new DetailsViewModelFactory(database, unitId);
-                detailsViewModel = new ViewModelProvider(this, viewModelFactory).get(DetailsViewModel.class);
+        if (unitId == DEFAULT_UNIT_ID) {
+            unitId = intent.getIntExtra(EXTRA_UNIT_ID, DEFAULT_UNIT_ID);
+            Log.d(TAG, "ID==" + unitId);
 
-                detailsViewModel.getUnitEntry().observe(getViewLifecycleOwner(), unitEntry -> {
-                    Log.d(LOG_TAG, "On Changed unitEntry");
-                    if (null != unitEntry) {
-                        fillingUi(unitEntry);
-                    }
-                });
-            }
+            sharedViewModel = new ViewModelProvider(getActivity()).get(SharedViewModel.class);
+            sharedViewModel.getUnitEntry(unitId).observe(getViewLifecycleOwner(), unitEntry -> {
+                Log.d(TAG, "On Changed unitEntry");
+                if (null != unitEntry) {
+                    fillingUi(unitEntry);
+                }
+            });
         }
     }
 
@@ -96,14 +97,16 @@ public class DetailsFragment extends Fragment {
     public void onCommonButtonClicked() {
         String title = binding.title.getText().toString();
         String description = binding.unitDescription.getText().toString();
-        final UnitEntry unitEntry = new UnitEntry(title, description);
-
+        UnitEntry unitEntry = new UnitEntry(title, description);
+        Log.d(TAG, "onCommonButtonClicked: " + title + " " + description + " id=" + unitId);
         AppExecutors.getInstance().diskIO().execute(() -> {
             if (unitId == DEFAULT_UNIT_ID) {
-                database.unitDao().insertUnit(unitEntry);
+                //database.unitDao().insertUnit(unitEntry);
+                //TODO NullPointerException: Attempt to invoke virtual method on a null object reference
+                sharedViewModel.insertUnit(unitEntry);
             } else {
                 unitEntry.setId(unitId);
-                database.unitDao().updateUnit(unitEntry);
+                sharedViewModel.updateUnit(unitEntry);
             }
             getActivity().finish();
         });
@@ -111,8 +114,7 @@ public class DetailsFragment extends Fragment {
 
     public void onDeleteButtonClicked() {
         AppExecutors.getInstance().diskIO().execute(() -> {
-            Log.d(LOG_TAG, "On Delete Clicked, ID==" + unitId);
-            database.unitDao().deleteUnit(unitId);
+            sharedViewModel.deleteUnit(unitId); //database.unitDao().deleteUnit(unitId);
             getActivity().finish();
         });
     }

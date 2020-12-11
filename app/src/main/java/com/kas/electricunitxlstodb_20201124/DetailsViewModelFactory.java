@@ -19,6 +19,6 @@ public class DetailsViewModelFactory extends NewInstanceFactory {
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        return (T) new DetailsViewModel(database, unitId);
+        return (T) new DetailsViewModel(); //(database, unitId)
     }
 }
