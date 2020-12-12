@@ -3,7 +3,6 @@ package com.kas.electricunitxlstodb_20201124.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +36,6 @@ public class ListFragment extends Fragment implements UnitRecyclerViewAdapter.It
 
     public ListFragment() {
         super(R.layout.fragment_unit_list);
-        Log.d(LOG_TAG, "CONSTRUCTOR");
     }
 
     public static ListFragment newInstance(int columnCount) {
@@ -54,11 +52,8 @@ public class ListFragment extends Fragment implements UnitRecyclerViewAdapter.It
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
-
         sharedViewModel = new ViewModelProvider(getActivity()).get(SharedViewModel.class);
         listViewModel = new ViewModelProvider(getActivity()).get(ListViewModel.class);
-
-        Log.d(LOG_TAG, "OnCreate");
     }
 
     @Override
@@ -86,11 +81,9 @@ public class ListFragment extends Fragment implements UnitRecyclerViewAdapter.It
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         sharedViewModel.getUnitsLiveData().observe(getActivity(), filteredUnits -> {
             adapter.setUnits(filteredUnits);
         });
-
     }
 
     @Override
@@ -98,7 +91,5 @@ public class ListFragment extends Fragment implements UnitRecyclerViewAdapter.It
         Intent intent = new Intent(getActivity().getBaseContext(), DetailsActivity.class);
         intent.putExtra(DetailsFragment.EXTRA_UNIT_ID, unitId);
         startActivity(intent);
-
-        Log.d(LOG_TAG, "ON_ITEM_CLICKED, ID==" + unitId);
     }
 }

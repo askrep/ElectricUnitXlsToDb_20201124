@@ -26,11 +26,6 @@
 
     <PreferenceCategory app:title="@string/data_header">
 
-        <EditTextPreference
-            app:key="pref_signature"
-            app:title="@string/signature_title"
-            app:useSimpleSummaryProvider="true" />
-
         <ListPreference
             app:defaultValue="data"
             app:entries="@array/data_entries"
@@ -40,8 +35,8 @@
             app:useSimpleSummaryProvider="true" />
 
         <Preference
-            android:key="@string/pref_load_data"
             android:defaultValue="DEFAULT"
+            android:key="@string/pref_load_data"
 
             android:summary="@string/data_uri"
             android:title="Load data">

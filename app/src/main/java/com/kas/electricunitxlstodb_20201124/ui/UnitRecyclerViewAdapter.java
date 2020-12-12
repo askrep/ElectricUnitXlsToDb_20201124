@@ -1,7 +1,6 @@
 package com.kas.electricunitxlstodb_20201124.ui;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,48 +22,39 @@ public class UnitRecyclerViewAdapter extends RecyclerView.Adapter<UnitRecyclerVi
     private List<UnitEntry> units;
     private final ItemClickListener itemClickListener;
     private Context context;
-    // private final List<UnitEntry> unitEntries;
-    //private FragmentUnitListBinding binding;
-
 
     /********** INNER ViewHolder CLASS ************/
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private static final String LOG_TAG = "# VIEW HOLDER";
+        private static final String TAG = "#_VIEW_HOLDER";
         public final View view;
-        public final TextView titleView;
-        public final TextView descriptionView;
+        public final TextView title;
+        public final TextView description;
         public UnitEntry item;
 
         public ViewHolder(View view) {
             super(view);
             this.view = view;
-            titleView = (TextView) view.findViewById(R.id.unit_title);
-            descriptionView = (TextView) view.findViewById(R.id.unit_description);
-
+            title =  view.findViewById(R.id.unit_title);
+            description = view.findViewById(R.id.unit_description);
             view.setOnClickListener(this);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + descriptionView.getText() + "'";
+            return super.toString() + " '" + description.getText() + "'";
         }
 
         @Override
         public void onClick(View view) {
             int elementId = units.get(getAdapterPosition()).getId();
-            Log.d("# VIEW HOLDER", "On Click ID==" + elementId);
             itemClickListener.onItemClickListener(elementId);
         }
     }/********** END VIEW HOLDER CLASS ************/
-
 
     /********** INNER ItemClick INTERFACE ************/
     public interface ItemClickListener {
         void onItemClickListener(int itemId);
     }
-
-    /********** END INNER ItemClick INTERFACE ************/
-
 
     public UnitRecyclerViewAdapter(Context context, ItemClickListener itemClickListener) {
         this.context = context;
@@ -74,20 +64,19 @@ public class UnitRecyclerViewAdapter extends RecyclerView.Adapter<UnitRecyclerVi
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_unit, parent, false);
+                .inflate(R.layout.fragment_unit_triple, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-
         UnitEntry unitEntry = units.get(position);
         String title = unitEntry.getTitle();
         String description = unitEntry.getDescription();
 
         holder.item = units.get(position);
-        holder.titleView.setText(title);
-        holder.descriptionView.setText(description);
+        holder.title.setText(title);
+        holder.description.setText(description);
     }
 
     @Override
