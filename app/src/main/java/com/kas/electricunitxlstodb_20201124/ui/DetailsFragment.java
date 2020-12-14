@@ -61,7 +61,7 @@ public class DetailsFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Intent intent = getActivity().getIntent();
-
+        sharedViewModel = new ViewModelProvider(getActivity()).get(SharedViewModel.class);
         if (null != intent && intent.hasExtra(EXTRA_UNIT_ID)) {
             unitSelectedFromList(intent);
         }
@@ -76,7 +76,7 @@ public class DetailsFragment extends Fragment {
             unitId = intent.getIntExtra(EXTRA_UNIT_ID, DEFAULT_UNIT_ID);
             Log.d(TAG, "ID==" + unitId);
 
-            sharedViewModel = new ViewModelProvider(getActivity()).get(SharedViewModel.class);
+
             sharedViewModel.getUnitEntry(unitId).observe(getViewLifecycleOwner(), unitEntry -> {
                 Log.d(TAG, "On Changed unitEntry");
                 if (null != unitEntry) {
@@ -101,9 +101,7 @@ public class DetailsFragment extends Fragment {
         Log.d(TAG, "onCommonButtonClicked: " + title + " " + description + " id=" + unitId);
         AppExecutors.getInstance().diskIO().execute(() -> {
             if (unitId == DEFAULT_UNIT_ID) {
-                //database.unitDao().insertUnit(unitEntry);
-                //TODO NullPointerException: Attempt to invoke virtual method on a null object reference
-                sharedViewModel.insertUnit(unitEntry);
+                   sharedViewModel.insertUnit(unitEntry);
             } else {
                 unitEntry.setId(unitId);
                 sharedViewModel.updateUnit(unitEntry);

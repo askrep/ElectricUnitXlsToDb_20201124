@@ -1,7 +1,6 @@
 package com.kas.electricunitxlstodb_20201124.ui;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,13 +36,12 @@ public class UnitRecyclerViewAdapter extends RecyclerView.Adapter<UnitRecyclerVi
 
         public ViewHolder(View view) {
             super(view);
-            this.view = view;
+            this.view = view.findViewById(R.id.fragment_unit_double);
             titleView = (TextView) view.findViewById(R.id.unit_title);
             descriptionView = (TextView) view.findViewById(R.id.unit_description);
 
             view.setOnClickListener(this);
         }
-
         @Override
         public String toString() {
             return super.toString() + " '" + descriptionView.getText() + "'";
@@ -52,7 +50,7 @@ public class UnitRecyclerViewAdapter extends RecyclerView.Adapter<UnitRecyclerVi
         @Override
         public void onClick(View view) {
             int elementId = units.get(getAdapterPosition()).getId();
-            Log.d("# VIEW HOLDER", "On Click ID==" + elementId);
+
             itemClickListener.onItemClickListener(elementId);
         }
     }/********** END VIEW HOLDER CLASS ************/
@@ -63,9 +61,6 @@ public class UnitRecyclerViewAdapter extends RecyclerView.Adapter<UnitRecyclerVi
         void onItemClickListener(int itemId);
     }
 
-    /********** END INNER ItemClick INTERFACE ************/
-
-
     public UnitRecyclerViewAdapter(Context context, ItemClickListener itemClickListener) {
         this.context = context;
         this.itemClickListener = itemClickListener;
@@ -74,17 +69,15 @@ public class UnitRecyclerViewAdapter extends RecyclerView.Adapter<UnitRecyclerVi
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_unit, parent, false);
+                .inflate(R.layout.fragment_unit_double, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-
         UnitEntry unitEntry = units.get(position);
         String title = unitEntry.getTitle();
         String description = unitEntry.getDescription();
-
         holder.item = units.get(position);
         holder.titleView.setText(title);
         holder.descriptionView.setText(description);

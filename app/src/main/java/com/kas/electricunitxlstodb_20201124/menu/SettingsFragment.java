@@ -16,18 +16,18 @@ import com.kas.electricunitxlstodb_20201124.data.TableUtil;
 import java.io.IOException;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
-    
-    final static private String LOG_TAG = "# SETTINGS FRAGMENT";
+
+    final static private String TAG = "#_SETTINGS_FRAGMENT";
     static final private int OPEN_DIRECTORY_REQUEST_CODE = 364;
+
     private Preference loadData;
-    
+    private Preference theme;
+
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey);
+
         loadData = findPreference(getString(R.string.pref_load_data));
-        
-        Log.d(LOG_TAG, "Preference link ==" + loadData);
-        
         loadData.setOnPreferenceClickListener(preference -> {
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -36,17 +36,20 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             intent.setType("application/vnd.ms-excel"); //application/*
             String[] mimeTypes = new String[]{"application/vnd.ms-excel,application/*"}; //{"application/x-binary,application/octet-stream"}
             intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
-            
+
             if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
                 startActivityForResult(Intent.createChooser(intent, "messageTitle"), OPEN_DIRECTORY_REQUEST_CODE);
             } else {
-                Log.d(LOG_TAG, "Unable to resolve Intent.ACTION_OPEN_DOCUMENT {}");
+                Log.d(TAG, "Unable to resolve Intent.ACTION_OPEN_DOCUMENT {}");
             }
             return true;
         });
-        
+
+        //TODO getPref, set Listener
+        theme = getPreferenceScreen().findPreference(getString(R.string.theme_dark));
+        Log.d(TAG, "Preference link ==" + theme);
     }
-    
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, final Intent resultData) {
         // The ACTION_OPEN_DOCUMENT intent was sent with the request code OPEN_DIRECTORY_REQUEST_CODE.
@@ -59,27 +62,27 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 // provided to this method as a parameter.
                 if (resultData != null && resultData.getData() != null) {
                     Uri uri = resultData.getData();
-                    
+
                     String fileDisplayName = TableUtil.getFileDisplayName(getContext(), uri);
                     if (TableUtil.checkIfExcelFile(fileDisplayName)) {
                         loadData.setSummary(fileDisplayName);
-                        
+
                         AppExecutors.getInstance().diskIO().execute(() -> {
                             try {
                                 TableUtil.readContentFromTable(getContext(), uri);
                             } catch (IOException e) {
                                 e.printStackTrace();
-                                Log.d(LOG_TAG, "Failed read file " + e.getMessage());
+                                Log.d(TAG, "Failed read file " + e.getMessage());
                             }
                         });
                     }
                 } else {
-                    Log.d(LOG_TAG, "File uri not found {}");
+                    Log.d(TAG, "File uri not found {}");
                 }
             } else {
-                Log.d(LOG_TAG, "User cancelled file browsing {}");
+                Log.d(TAG, "User cancelled file browsing {}");
             }
         }
     }
-    
+
 }
