@@ -22,34 +22,39 @@ public class UnitRecyclerViewAdapter extends RecyclerView.Adapter<UnitRecyclerVi
     private List<UnitEntry> units;
     private final ItemClickListener itemClickListener;
     private Context context;
+    // private final List<UnitEntry> unitEntries;
+    //private FragmentUnitListBinding binding;
+
 
     /********** INNER ViewHolder CLASS ************/
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private static final String TAG = "#_VIEW_HOLDER";
+        private static final String LOG_TAG = "# VIEW HOLDER";
         public final View view;
-        public final TextView title;
-        public final TextView description;
+        public final TextView titleView;
+        public final TextView descriptionView;
         public UnitEntry item;
 
         public ViewHolder(View view) {
             super(view);
-            this.view = view;
-            title =  view.findViewById(R.id.unit_title);
-            description = view.findViewById(R.id.unit_description);
+            this.view = view.findViewById(R.id.fragment_unit_double);
+            titleView = (TextView) view.findViewById(R.id.unit_title);
+            descriptionView = (TextView) view.findViewById(R.id.unit_description);
+
             view.setOnClickListener(this);
         }
-
         @Override
         public String toString() {
-            return super.toString() + " '" + description.getText() + "'";
+            return super.toString() + " '" + descriptionView.getText() + "'";
         }
 
         @Override
         public void onClick(View view) {
             int elementId = units.get(getAdapterPosition()).getId();
+
             itemClickListener.onItemClickListener(elementId);
         }
     }/********** END VIEW HOLDER CLASS ************/
+
 
     /********** INNER ItemClick INTERFACE ************/
     public interface ItemClickListener {
@@ -64,7 +69,7 @@ public class UnitRecyclerViewAdapter extends RecyclerView.Adapter<UnitRecyclerVi
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_unit_triple, parent, false);
+                .inflate(R.layout.fragment_unit_double, parent, false);
         return new ViewHolder(view);
     }
 
@@ -73,10 +78,9 @@ public class UnitRecyclerViewAdapter extends RecyclerView.Adapter<UnitRecyclerVi
         UnitEntry unitEntry = units.get(position);
         String title = unitEntry.getTitle();
         String description = unitEntry.getDescription();
-
         holder.item = units.get(position);
-        holder.title.setText(title);
-        holder.description.setText(description);
+        holder.titleView.setText(title);
+        holder.descriptionView.setText(description);
     }
 
     @Override

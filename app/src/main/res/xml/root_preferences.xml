@@ -2,6 +2,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory app:title="@string/design_header">
+        <SwitchPreferenceCompat
+            app:key="pref_theme_dark"
+            app:summaryOff="Disabled"
+            app:summaryOn="Enabled"
+            app:title="@string/theme_dark" />
 
         <SwitchPreferenceCompat
             app:key="pref_sync"
@@ -26,6 +31,7 @@
 
     <PreferenceCategory app:title="@string/data_header">
 
+
         <ListPreference
             app:defaultValue="data"
             app:entries="@array/data_entries"
@@ -37,7 +43,6 @@
         <Preference
             android:defaultValue="DEFAULT"
             android:key="@string/pref_load_data"
-
             android:summary="@string/data_uri"
             android:title="Load data">
 
