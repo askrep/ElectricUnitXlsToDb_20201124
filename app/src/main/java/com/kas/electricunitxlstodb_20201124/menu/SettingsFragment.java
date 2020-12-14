@@ -6,8 +6,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.SwitchPreferenceCompat;
 
 import com.kas.electricunitxlstodb_20201124.AppExecutors;
 import com.kas.electricunitxlstodb_20201124.R;
@@ -16,17 +18,17 @@ import com.kas.electricunitxlstodb_20201124.data.TableUtil;
 import java.io.IOException;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
-
+    
     final static private String TAG = "#_SETTINGS_FRAGMENT";
     static final private int OPEN_DIRECTORY_REQUEST_CODE = 364;
-
+    
     private Preference loadData;
-    private Preference theme;
-
+    private SwitchPreferenceCompat themeSwitch;
+    
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey);
-
+        
         loadData = findPreference(getString(R.string.pref_load_data));
         loadData.setOnPreferenceClickListener(preference -> {
             Intent intent = new Intent();
@@ -36,7 +38,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             intent.setType("application/vnd.ms-excel"); //application/*
             String[] mimeTypes = new String[]{"application/vnd.ms-excel,application/*"}; //{"application/x-binary,application/octet-stream"}
             intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
-
+            
             if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
                 startActivityForResult(Intent.createChooser(intent, "messageTitle"), OPEN_DIRECTORY_REQUEST_CODE);
             } else {
@@ -44,12 +46,22 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             }
             return true;
         });
-
-        //TODO getPref, set Listener
-        theme = getPreferenceScreen().findPreference(getString(R.string.theme_dark));
-        Log.d(TAG, "Preference link ==" + theme);
+        
+       // CHANGING APP THEME
+        themeSwitch = findPreference(getString(R.string.pref_theme_dark));
+        if (themeSwitch != null) {
+            themeSwitch.setOnPreferenceChangeListener((preference, newValue) -> {
+                boolean switchValue = (boolean) newValue;
+                if (switchValue) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                   } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                }
+                return true;
+            });
+        }
     }
-
+    
     @Override
     public void onActivityResult(int requestCode, int resultCode, final Intent resultData) {
         // The ACTION_OPEN_DOCUMENT intent was sent with the request code OPEN_DIRECTORY_REQUEST_CODE.
@@ -62,11 +74,11 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 // provided to this method as a parameter.
                 if (resultData != null && resultData.getData() != null) {
                     Uri uri = resultData.getData();
-
+                    
                     String fileDisplayName = TableUtil.getFileDisplayName(getContext(), uri);
                     if (TableUtil.checkIfExcelFile(fileDisplayName)) {
                         loadData.setSummary(fileDisplayName);
-
+                        
                         AppExecutors.getInstance().diskIO().execute(() -> {
                             try {
                                 TableUtil.readContentFromTable(getContext(), uri);
@@ -84,5 +96,5 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             }
         }
     }
-
+    
 }

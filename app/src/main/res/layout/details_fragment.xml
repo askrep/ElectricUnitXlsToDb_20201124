@@ -15,10 +15,8 @@
 
         <TextView
             android:id="@+id/unit_label"
-            style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:textAppearance="?attr/textAppearanceListItem"
             app:layout_constraintBottom_toBottomOf="@+id/title"
             app:layout_constraintStart_toStartOf="parent"
@@ -27,7 +25,6 @@
 
         <EditText
             android:id="@+id/title"
-            style="@style/TextAppearance.AppCompat.Small"
             android:enabled="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,7 +36,6 @@
 
         <TextView
             android:id="@+id/unit_description_label"
-            style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -50,8 +46,6 @@
 
         <EditText
             android:id="@+id/unit_description"
-            style="@style/TextAppearance.AppCompat.Small"
-            android:editable="true"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textAppearance="?attr/textAppearanceListItem"
@@ -63,7 +57,6 @@
 
         <Button
             android:id="@+id/details_button"
-            style="@style/TextAppearance.AppCompat.Large"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -74,7 +67,6 @@
 
         <Button
             android:id="@+id/delete_button"
-            style="@style/TextAppearance.AppCompat.Large"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="invisible"

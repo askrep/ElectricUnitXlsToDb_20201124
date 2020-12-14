@@ -3,7 +3,7 @@
 
     <PreferenceCategory app:title="@string/design_header">
         <SwitchPreferenceCompat
-            app:key="pref_theme_dark"
+            app:key="@string/pref_theme_dark"
             app:summaryOff="Disabled"
             app:summaryOn="Enabled"
             app:title="@string/theme_dark" />

@@ -2,8 +2,8 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
     android:id="@+id/fragment_unit_double"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
@@ -11,8 +11,8 @@
         android:id="@+id/unit_icon"
         android:layout_width="@dimen/icon_size"
         android:layout_height="@dimen/icon_size"
+        android:layout_gravity="center"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="16dp"
         android:contentDescription="Image"
         android:src="@android:drawable/ic_menu_today" />
 
