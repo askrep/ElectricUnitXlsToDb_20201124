@@ -2,6 +2,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory app:title="@string/design_header">
+        <SwitchPreferenceCompat
+            app:key="@string/pref_theme_dark"
+            app:summaryOff="Disabled"
+            app:summaryOn="Enabled"
+            app:title="@string/theme_dark" />
 
         <SwitchPreferenceCompat
             app:key="pref_sync"
@@ -26,10 +31,6 @@
 
     <PreferenceCategory app:title="@string/data_header">
 
-        <EditTextPreference
-            app:key="pref_signature"
-            app:title="@string/signature_title"
-            app:useSimpleSummaryProvider="true" />
 
         <ListPreference
             app:defaultValue="data"
@@ -40,9 +41,8 @@
             app:useSimpleSummaryProvider="true" />
 
         <Preference
-            android:key="@string/pref_load_data"
             android:defaultValue="DEFAULT"
-
+            android:key="@string/pref_load_data"
             android:summary="@string/data_uri"
             android:title="Load data">
 

@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
+
     <LinearLayout
         android:id="@+id/search_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#C0E0DB"
+        android:elevation="6dp"
+        android:background="@drawable/rectangle"
         android:gravity="center"
+        android:translationZ="4dp"
         android:orientation="horizontal">
 
         <ImageView
@@ -13,16 +16,16 @@
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:layout_margin="8dp"
-            android:src="@drawable/ic_baseline_search_24" />
+            android:src="@drawable/ic_baseline_find_in_page_24" />
 
         <EditText
-            android:padding="4dp"
             android:id="@+id/search_field"
             android:layout_width="match_parent"
-            android:background="#ffff"
             android:layout_height="wrap_content"
             android:layout_marginRight="18dp"
+            android:background="#ffff"
             android:contentDescription="Edit Filter"
+            android:padding="4dp"
             android:textSize="18dp"
             android:tooltipText="edit filter" />
     </LinearLayout>

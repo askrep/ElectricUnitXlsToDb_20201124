@@ -26,4 +26,6 @@
     <string name="settings">Settings</string>
     <string name="data_uri">data_summary</string>
     <string name="change_button">Change</string>
+    <string name="pref_theme_dark">Dark Theme</string>
+    <string name="theme_dark">Dark Theme</string>
 </resources>

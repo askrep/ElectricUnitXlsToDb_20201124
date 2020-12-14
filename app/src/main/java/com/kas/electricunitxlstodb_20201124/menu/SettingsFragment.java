@@ -6,8 +6,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.SwitchPreferenceCompat;
 
 import com.kas.electricunitxlstodb_20201124.AppExecutors;
 import com.kas.electricunitxlstodb_20201124.R;
@@ -17,17 +19,17 @@ import java.io.IOException;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
     
-    final static private String LOG_TAG = "# SETTINGS FRAGMENT";
+    final static private String TAG = "#_SETTINGS_FRAGMENT";
     static final private int OPEN_DIRECTORY_REQUEST_CODE = 364;
+    
     private Preference loadData;
+    private SwitchPreferenceCompat themeSwitch;
     
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey);
+        
         loadData = findPreference(getString(R.string.pref_load_data));
-        
-        Log.d(LOG_TAG, "Preference link ==" + loadData);
-        
         loadData.setOnPreferenceClickListener(preference -> {
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -40,11 +42,24 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
                 startActivityForResult(Intent.createChooser(intent, "messageTitle"), OPEN_DIRECTORY_REQUEST_CODE);
             } else {
-                Log.d(LOG_TAG, "Unable to resolve Intent.ACTION_OPEN_DOCUMENT {}");
+                Log.d(TAG, "Unable to resolve Intent.ACTION_OPEN_DOCUMENT {}");
             }
             return true;
         });
         
+       // CHANGING APP THEME
+        themeSwitch = findPreference(getString(R.string.pref_theme_dark));
+        if (themeSwitch != null) {
+            themeSwitch.setOnPreferenceChangeListener((preference, newValue) -> {
+                boolean switchValue = (boolean) newValue;
+                if (switchValue) {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                   } else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                }
+                return true;
+            });
+        }
     }
     
     @Override
@@ -69,15 +84,15 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                                 TableUtil.readContentFromTable(getContext(), uri);
                             } catch (IOException e) {
                                 e.printStackTrace();
-                                Log.d(LOG_TAG, "Failed read file " + e.getMessage());
+                                Log.d(TAG, "Failed read file " + e.getMessage());
                             }
                         });
                     }
                 } else {
-                    Log.d(LOG_TAG, "File uri not found {}");
+                    Log.d(TAG, "File uri not found {}");
                 }
             } else {
-                Log.d(LOG_TAG, "User cancelled file browsing {}");
+                Log.d(TAG, "User cancelled file browsing {}");
             }
         }
     }

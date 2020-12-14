@@ -43,4 +43,22 @@ public class Repository {
         return instance;
     }
 
+    public LiveData<UnitEntry> getUnitById(int id) { //database.unitDao().loadUnitById(unitId);;
+        return unitDao.loadUnitById(id);
+    }
+
+    //  database.unitDao().insertUnit(unitEntry);
+    public void insertUnit(UnitEntry unitEntry) {
+        unitDao.insertUnit(unitEntry);
+    }
+
+    // database.unitDao().updateUnit(unitEntry);
+    public void updateUnit(UnitEntry unitEntry) {
+        unitDao.updateUnit(unitEntry);
+    }
+
+// database.unitDao().deleteUnit(unitId);
+    public void deleteUnit(int unitId) {
+        unitDao.deleteUnit(unitId);
+    }
 }
