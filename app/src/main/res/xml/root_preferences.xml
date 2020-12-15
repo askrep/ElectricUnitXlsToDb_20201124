@@ -8,6 +8,17 @@
             app:summaryOn="Enabled"
             app:title="@string/theme_dark" />
 
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/data_header">
+        <Preference
+            android:key="@string/pref_load_data"
+            android:summary="@string/load_data_uri"
+            android:title="@string/load_data_uri" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="SPARE">
         <SwitchPreferenceCompat
             app:key="pref_sync"
             app:title="@string/sync_title" />
@@ -27,10 +38,6 @@
             app:title="@string/reply_title"
             app:useSimpleSummaryProvider="true" />
 
-    </PreferenceCategory>
-
-    <PreferenceCategory app:title="@string/data_header">
-
 
         <ListPreference
             app:defaultValue="data"
@@ -40,13 +47,6 @@
             app:title="@string/data_title"
             app:useSimpleSummaryProvider="true" />
 
-        <Preference
-            android:defaultValue="DEFAULT"
-            android:key="@string/pref_load_data"
-            android:summary="@string/data_uri"
-            android:title="Load data">
-
-        </Preference>
-
     </PreferenceCategory>
+
 </PreferenceScreen>

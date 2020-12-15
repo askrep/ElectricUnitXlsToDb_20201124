@@ -17,19 +17,28 @@ import com.kas.electricunitxlstodb_20201124.data.TableUtil;
 
 import java.io.IOException;
 
-public class SettingsFragment extends PreferenceFragmentCompat {
-    
+public class SettingsFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
+
     final static private String TAG = "#_SETTINGS_FRAGMENT";
     static final private int OPEN_DIRECTORY_REQUEST_CODE = 364;
-    
+
     private Preference loadData;
     private SwitchPreferenceCompat themeSwitch;
-    
+
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey);
-        
+
         loadData = findPreference(getString(R.string.pref_load_data));
+        loadData.setPersistent(true);
+        initLoadData();
+
+        // CHANGING APP THEME
+        themeSwitch = findPreference(getString(R.string.pref_theme_dark));
+        initThemeSwitch();
+    }
+
+    private void initLoadData() {
         loadData.setOnPreferenceClickListener(preference -> {
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -38,7 +47,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             intent.setType("application/vnd.ms-excel"); //application/*
             String[] mimeTypes = new String[]{"application/vnd.ms-excel,application/*"}; //{"application/x-binary,application/octet-stream"}
             intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
-            
+
             if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
                 startActivityForResult(Intent.createChooser(intent, "messageTitle"), OPEN_DIRECTORY_REQUEST_CODE);
             } else {
@@ -46,22 +55,22 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             }
             return true;
         });
-        
-       // CHANGING APP THEME
-        themeSwitch = findPreference(getString(R.string.pref_theme_dark));
+    }
+
+    private void initThemeSwitch() {
         if (themeSwitch != null) {
             themeSwitch.setOnPreferenceChangeListener((preference, newValue) -> {
                 boolean switchValue = (boolean) newValue;
                 if (switchValue) {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                   } else {
+                } else {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                 }
                 return true;
             });
         }
     }
-    
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, final Intent resultData) {
         // The ACTION_OPEN_DOCUMENT intent was sent with the request code OPEN_DIRECTORY_REQUEST_CODE.
@@ -73,12 +82,12 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 // Instead, a URI to that document will be contained in the return intent
                 // provided to this method as a parameter.
                 if (resultData != null && resultData.getData() != null) {
+
                     Uri uri = resultData.getData();
-                    
                     String fileDisplayName = TableUtil.getFileDisplayName(getContext(), uri);
+
                     if (TableUtil.checkIfExcelFile(fileDisplayName)) {
-                        loadData.setSummary(fileDisplayName);
-                        
+
                         AppExecutors.getInstance().diskIO().execute(() -> {
                             try {
                                 TableUtil.readContentFromTable(getContext(), uri);
@@ -87,6 +96,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                                 Log.d(TAG, "Failed read file " + e.getMessage());
                             }
                         });
+                        loadData.setSummary(fileDisplayName);
                     }
                 } else {
                     Log.d(TAG, "File uri not found {}");
@@ -96,5 +106,24 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             }
         }
     }
-    
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        //getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    public boolean onPreferenceChange(Preference preference, Object newValue) {
+        if (preference.equals(findPreference(getString(R.string.pref_load_data)))) {
+            preference.setSummary("Summary");
+        }
+        return true;
+    }
 }
