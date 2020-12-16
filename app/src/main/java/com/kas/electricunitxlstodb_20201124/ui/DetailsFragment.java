@@ -75,8 +75,6 @@ public class DetailsFragment extends Fragment {
         if (unitId == DEFAULT_UNIT_ID) {
             unitId = intent.getIntExtra(EXTRA_UNIT_ID, DEFAULT_UNIT_ID);
             Log.d(TAG, "ID==" + unitId);
-
-
             sharedViewModel.getUnitEntry(unitId).observe(getViewLifecycleOwner(), unitEntry -> {
                 Log.d(TAG, "On Changed unitEntry");
                 if (null != unitEntry) {
@@ -101,7 +99,7 @@ public class DetailsFragment extends Fragment {
         Log.d(TAG, "onCommonButtonClicked: " + title + " " + description + " id=" + unitId);
         AppExecutors.getInstance().diskIO().execute(() -> {
             if (unitId == DEFAULT_UNIT_ID) {
-                   sharedViewModel.insertUnit(unitEntry);
+                sharedViewModel.insertUnit(unitEntry);
             } else {
                 unitEntry.setId(unitId);
                 sharedViewModel.updateUnit(unitEntry);

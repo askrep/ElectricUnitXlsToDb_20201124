@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.kas.electricunitxlstodb_20201124.R;
 import com.kas.electricunitxlstodb_20201124.dao.UnitEntry;
+import com.kas.electricunitxlstodb_20201124.databinding.FragmentUnitDoubleBinding;
 
 import java.util.List;
 
@@ -20,11 +21,8 @@ import java.util.List;
 public class UnitRecyclerViewAdapter extends RecyclerView.Adapter<UnitRecyclerViewAdapter.ViewHolder> {
 
     private List<UnitEntry> units;
-    private final ItemClickListener itemClickListener;
+    private final UnitClickListener unitClickListener;
     private Context context;
-    // private final List<UnitEntry> unitEntries;
-    //private FragmentUnitListBinding binding;
-
 
     /********** INNER ViewHolder CLASS ************/
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -33,37 +31,34 @@ public class UnitRecyclerViewAdapter extends RecyclerView.Adapter<UnitRecyclerVi
         public final TextView titleView;
         public final TextView descriptionView;
         public UnitEntry item;
+        FragmentUnitDoubleBinding doubleBinding;
 
         public ViewHolder(View view) {
             super(view);
             this.view = view.findViewById(R.id.fragment_unit_double);
             titleView = (TextView) view.findViewById(R.id.unit_title);
             descriptionView = (TextView) view.findViewById(R.id.unit_description);
-
             view.setOnClickListener(this);
-        }
-        @Override
-        public String toString() {
-            return super.toString() + " '" + descriptionView.getText() + "'";
+    
         }
 
         @Override
         public void onClick(View view) {
-            int elementId = units.get(getAdapterPosition()).getId();
-
-            itemClickListener.onItemClickListener(elementId);
+            int adapterPosition = getAdapterPosition();
+            int elementId = units.get(adapterPosition).getId();
+            unitClickListener.onUnitClick(elementId);
         }
     }/********** END VIEW HOLDER CLASS ************/
 
 
     /********** INNER ItemClick INTERFACE ************/
-    public interface ItemClickListener {
-        void onItemClickListener(int itemId);
+    public interface UnitClickListener {
+        void onUnitClick(int itemId);
     }
 
-    public UnitRecyclerViewAdapter(Context context, ItemClickListener itemClickListener) {
+    public UnitRecyclerViewAdapter(Context context, UnitClickListener unitClickListener) {
         this.context = context;
-        this.itemClickListener = itemClickListener;
+        this.unitClickListener = unitClickListener;
     }
 
     @Override
@@ -76,6 +71,7 @@ public class UnitRecyclerViewAdapter extends RecyclerView.Adapter<UnitRecyclerVi
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         UnitEntry unitEntry = units.get(position);
+
         String title = unitEntry.getTitle();
         String description = unitEntry.getDescription();
         holder.item = units.get(position);
