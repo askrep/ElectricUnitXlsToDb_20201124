@@ -11,22 +11,25 @@ import java.util.List;
 
 @Dao
 public interface UnitDao {
-    
+
     @Query("Select * From units")
     LiveData<List<UnitEntry>> selectAll(); // SELECT ALL
-    
+
     @Query("Select * From units Where title Like :text OR description Like :text")
     LiveData<List<UnitEntry>> loadUnitListFiltered(String text);
-    
+
     @Query("Select * From units Where id = :unitId")
     LiveData<UnitEntry> loadUnitById(int unitId);
-    
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertUnit(UnitEntry unitEntry); // INSERT
-    
+
     @Update(onConflict = OnConflictStrategy.REPLACE)
     void updateUnit(UnitEntry unitEntry); // UPDATE
-    
+
     @Query("Delete From units Where id = :unitId")
     void deleteUnit(int unitId);
+
+    @Query("DELETE FROM units")
+    void deleteAll();
 }

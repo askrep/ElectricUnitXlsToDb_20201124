@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.kas.electricunitxlstodb_20201124.R;
 import com.kas.electricunitxlstodb_20201124.dao.UnitEntry;
 import com.kas.electricunitxlstodb_20201124.databinding.FragmentUnitDoubleBinding;
 
@@ -27,19 +26,19 @@ public class UnitRecyclerViewAdapter extends RecyclerView.Adapter<UnitRecyclerVi
     /********** INNER ViewHolder CLASS ************/
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private static final String LOG_TAG = "# VIEW HOLDER";
-        public final View view;
+        //    public final View view;
         public final TextView titleView;
         public final TextView descriptionView;
-        public UnitEntry item;
+        public UnitEntry unit;
         FragmentUnitDoubleBinding doubleBinding;
 
-        public ViewHolder(View view) {
-            super(view);
-            this.view = view.findViewById(R.id.fragment_unit_double);
-            titleView = (TextView) view.findViewById(R.id.unit_title);
-            descriptionView = (TextView) view.findViewById(R.id.unit_description);
-            view.setOnClickListener(this);
-    
+        public ViewHolder(FragmentUnitDoubleBinding binding) {
+            super(binding.getRoot());
+            doubleBinding = binding;
+            titleView = binding.unitTitle;
+            descriptionView = binding.unitDescription;
+            binding.getRoot().setOnClickListener((View.OnClickListener)this);
+
         }
 
         @Override
@@ -63,20 +62,19 @@ public class UnitRecyclerViewAdapter extends RecyclerView.Adapter<UnitRecyclerVi
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_unit_double, parent, false);
-        return new ViewHolder(view);
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        //ViewHolder Data bindings
+        FragmentUnitDoubleBinding binding = FragmentUnitDoubleBinding.inflate(inflater, parent, false);
+        return new ViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         UnitEntry unitEntry = units.get(position);
 
-        String title = unitEntry.getTitle();
-        String description = unitEntry.getDescription();
-        holder.item = units.get(position);
-        holder.titleView.setText(title);
-        holder.descriptionView.setText(description);
+        holder.unit = units.get(position);
+        holder.titleView.setText(unitEntry.title);
+        holder.descriptionView.setText(unitEntry.description);
     }
 
     @Override

@@ -1,13 +1,12 @@
 package com.kas.electricunitxlstodb_20201124;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -24,20 +23,26 @@ public class MainActivity extends AppCompatActivity {
     private MainActivityBinding mainActivityBinding;
     private static final String TAG = "#_MAIN_ACTIVITY";
     private SharedViewModel sharedViewModel;
+    private boolean isEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       // setContentView(R.layout.main_activity);
+        // setContentView(R.layout.main_activity);
         mainActivityBinding = DataBindingUtil.setContentView(this, R.layout.main_activity);
-
         sharedViewModel = new ViewModelProvider(this).get(SharedViewModel.class);
+        isEdit = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getBoolean(getString(R.string.pref_edit_enable), false);
 
         FloatingActionButton fab = findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(view -> {
             Intent detailsUnitIntent = new Intent(MainActivity.this, DetailsActivity.class);
             startActivity(detailsUnitIntent);
         });
+
+        if (!isEdit) {
+            fab.setVisibility(View.INVISIBLE);
+
+        }
 
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getString(R.string.pref_theme_dark), false)) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
@@ -63,10 +68,6 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
-
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        //SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
-
         return true;
     }
 
@@ -74,8 +75,4 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
-
-    private void showLoadingDialog() {
-    }
-
 }

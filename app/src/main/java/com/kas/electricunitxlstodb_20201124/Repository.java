@@ -57,8 +57,12 @@ public class Repository {
         unitDao.updateUnit(unitEntry);
     }
 
-// database.unitDao().deleteUnit(unitId);
+    // database.unitDao().deleteUnit(unitId);
     public void deleteUnit(int unitId) {
         unitDao.deleteUnit(unitId);
+    }
+
+    public void deleteAll() {
+        unitDao.deleteAll();
     }
 }

@@ -11,8 +11,10 @@ import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 
 import com.kas.electricunitxlstodb_20201124.AppExecutors;
 import com.kas.electricunitxlstodb_20201124.R;
@@ -48,12 +50,16 @@ public class DetailsFragment extends Fragment {
         View inflate = binding.getRoot();
         Context context = getContext();
         database = AppDatabase.getInstance(context);
-
         detailsButton = binding.detailsButton;
         deleteButton = binding.deleteButton;
         detailsButton.setOnClickListener(view -> onCommonButtonClicked());
         deleteButton.setOnClickListener(view -> onDeleteButtonClicked());
 
+        isChanging = PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean(getString(R.string.pref_edit_enable), false);
+        if (isChanging) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            Log.d(TAG, "onCreate: NIGHT MODE");
+        }
         return inflate;
     }
 
@@ -70,13 +76,22 @@ public class DetailsFragment extends Fragment {
     private void unitSelectedFromList(Intent intent) {
         detailsButton.setText(R.string.update_button);
         deleteButton.setVisibility(View.VISIBLE);
-        deleteButton.setClickable(true);
+
+        if (isChanging) {
+            deleteButton.setClickable(true);
+        } else {
+            deleteButton.setClickable(false);
+            detailsButton.setClickable(false);
+            deleteButton.setActivated(false);
+            detailsButton.setActivated(false);
+            deleteButton.setBackgroundColor(getResources().getColor(R.color.gray_deactivated));
+            detailsButton.setBackgroundColor(getResources().getColor(R.color.gray_deactivated));
+        }
 
         if (unitId == DEFAULT_UNIT_ID) {
             unitId = intent.getIntExtra(EXTRA_UNIT_ID, DEFAULT_UNIT_ID);
-            Log.d(TAG, "ID==" + unitId);
+
             sharedViewModel.getUnitEntry(unitId).observe(getViewLifecycleOwner(), unitEntry -> {
-                Log.d(TAG, "On Changed unitEntry");
                 if (null != unitEntry) {
                     fillingUi(unitEntry);
                 }
@@ -96,7 +111,7 @@ public class DetailsFragment extends Fragment {
         String title = binding.title.getText().toString();
         String description = binding.unitDescription.getText().toString();
         UnitEntry unitEntry = new UnitEntry(title, description);
-        Log.d(TAG, "onCommonButtonClicked: " + title + " " + description + " id=" + unitId);
+
         AppExecutors.getInstance().diskIO().execute(() -> {
             if (unitId == DEFAULT_UNIT_ID) {
                 sharedViewModel.insertUnit(unitEntry);

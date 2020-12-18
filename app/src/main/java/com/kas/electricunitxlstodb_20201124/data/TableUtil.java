@@ -23,22 +23,26 @@ import java.util.Iterator;
 
 public class TableUtil {
     
-    private static final String LOG_TAG = "#UTIL";
+    private static final String TAG = "#_TABLE_UTIL";
     static AppDatabase database;
     
     @NonNull
     public static String readContentFromTable(Context context, final Uri uri) throws IOException {
         InputStream inputStream = context.getContentResolver().openInputStream(uri); // Uri uri
-        Log.d(LOG_TAG, "Uri is " + uri.toString());
+        Log.d(TAG, "Uri is " + uri.toString());
         
         database = AppDatabase.getInstance(context);
         if (inputStream != null) {
             Row row;
             XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
+            if(workbook== null){
+                Log.d(TAG, "readContentFromTable: " + workbook);
+                return TAG+" XSSFWorkbook"+" is Null";
+            }
             XSSFSheet spreadsheet = workbook.getSheetAt(0);
             
             Iterator<Row> iterator = spreadsheet.iterator();
-            Log.d(LOG_TAG, "inputStream created");
+            Log.d(TAG, "inputStream created");
             while (iterator.hasNext()) {
                 row = iterator.next();
                 Iterator<Cell> cellIterator = row.cellIterator();
@@ -62,10 +66,10 @@ public class TableUtil {
                                 unitEntry.setDescription(description);
                             }
                             
-                            Log.d(LOG_TAG, "CellType is String: " + stringCellValue + " \t\t ");
+                            Log.d(TAG, "CellType is String: " + stringCellValue + " \t\t ");
                             break;
                         case Cell.CELL_TYPE_NUMERIC:
-                            Log.d(LOG_TAG, "CellType is Numeric: " + cell.getNumericCellValue() + " \t\t ");
+                            Log.d(TAG, "CellType is Numeric: " + cell.getNumericCellValue() + " \t\t ");
                             break;
                     }
                 }
@@ -87,7 +91,7 @@ public class TableUtil {
             if (cursor != null && cursor.moveToFirst()) {
                 displayName = cursor.getString(
                         cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
-                Log.i(LOG_TAG, "Display Name {}" + displayName);
+                Log.i(TAG, "Display Name {}" + displayName);
                 
             }
         }
@@ -99,7 +103,7 @@ public class TableUtil {
             return false;
         }
         boolean isExcelFile = fileName.contains("xls") || fileName.contains("xlsx");
-        Log.d(LOG_TAG, "checkIfExcelFile == " + isExcelFile);
+        Log.d(TAG, "checkIfExcelFile == " + isExcelFile);
         return isExcelFile;
     }
 }

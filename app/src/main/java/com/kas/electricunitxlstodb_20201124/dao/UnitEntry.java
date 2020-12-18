@@ -10,9 +10,9 @@ import com.kas.electricunitxlstodb_20201124.ElectricalUnit;
 public class UnitEntry implements ElectricalUnit {
 
     @PrimaryKey(autoGenerate = true)
-    private int id;
-    private String title;
-    private String description;
+    public int id;
+    public String title;
+    public String description;
 
     public UnitEntry(int id, String title, String description) {
         this.id = id;

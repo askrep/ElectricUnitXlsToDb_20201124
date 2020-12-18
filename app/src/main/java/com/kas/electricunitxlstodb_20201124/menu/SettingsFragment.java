@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreferenceCompat;
@@ -14,6 +16,7 @@ import androidx.preference.SwitchPreferenceCompat;
 import com.kas.electricunitxlstodb_20201124.AppExecutors;
 import com.kas.electricunitxlstodb_20201124.R;
 import com.kas.electricunitxlstodb_20201124.data.TableUtil;
+import com.kas.electricunitxlstodb_20201124.ui.SharedViewModel;
 
 import java.io.IOException;
 
@@ -21,40 +24,63 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
 
     final static private String TAG = "#_SETTINGS_FRAGMENT";
     static final private int OPEN_DIRECTORY_REQUEST_CODE = 364;
-
-    private Preference loadData;
+    private SharedViewModel sharedViewModel;
+    private Preference addData;
     private SwitchPreferenceCompat themeSwitch;
+    private Preference clearData;
+    private Preference updateData;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey);
+        sharedViewModel = new ViewModelProvider(getActivity()).get(SharedViewModel.class);
 
-        loadData = findPreference(getString(R.string.pref_load_data));
-        loadData.setPersistent(true);
-        initLoadData();
+        addData = findPreference(getString(R.string.pref_add_data));
+        clearData = findPreference(getString(R.string.pref_clear_data));
+        updateData = findPreference(getString(R.string.pref_update_data));
+
+        addData.setOnPreferenceClickListener(preference -> {
+            getIntentLoadUriData();
+
+            return true;
+        });
+
+        clearData.setOnPreferenceClickListener(preference -> {
+            AppExecutors.getInstance().diskIO().execute(() -> {
+                sharedViewModel.deleteAll();
+            });
+            Toast.makeText(getContext(), "Data cleared", Toast.LENGTH_SHORT).show();
+
+            return true;
+        });
+        updateData.setOnPreferenceClickListener(preference -> {
+            AppExecutors.getInstance().diskIO().execute(() -> {
+                sharedViewModel.deleteAll();
+            });
+            getIntentLoadUriData();
+            Toast.makeText(getContext(), "Data updated", Toast.LENGTH_SHORT).show();
+            return true;
+        });
 
         // CHANGING APP THEME
         themeSwitch = findPreference(getString(R.string.pref_theme_dark));
         initThemeSwitch();
     }
 
-    private void initLoadData() {
-        loadData.setOnPreferenceClickListener(preference -> {
-            Intent intent = new Intent();
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
-            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-            intent.setType("application/vnd.ms-excel"); //application/*
-            String[] mimeTypes = new String[]{"application/vnd.ms-excel,application/*"}; //{"application/x-binary,application/octet-stream"}
-            intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+    private void getIntentLoadUriData() {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+        intent.setType("application/vnd.ms-excel"); //application/*
+        String[] mimeTypes = new String[]{"application/vnd.ms-excel,application/*"}; //{"application/x-binary,application/octet-stream"}
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
 
-            if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
-                startActivityForResult(Intent.createChooser(intent, "messageTitle"), OPEN_DIRECTORY_REQUEST_CODE);
-            } else {
-                Log.d(TAG, "Unable to resolve Intent.ACTION_OPEN_DOCUMENT {}");
-            }
-            return true;
-        });
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivityForResult(Intent.createChooser(intent, "messageTitle"), OPEN_DIRECTORY_REQUEST_CODE);
+        } else {
+            Log.d(TAG, "Unable to resolve Intent.ACTION_OPEN_DOCUMENT {}");
+        }
     }
 
     private void initThemeSwitch() {
@@ -96,7 +122,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
                                 Log.d(TAG, "Failed read file " + e.getMessage());
                             }
                         });
-                        loadData.setSummary(fileDisplayName);
+                        addData.setSummary(fileDisplayName);
+                        Toast.makeText(getContext(), "Data added", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Log.d(TAG, "File uri not found {}");
@@ -121,7 +148,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
 
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
-        if (preference.equals(findPreference(getString(R.string.pref_load_data)))) {
+        if (preference.equals(findPreference(getString(R.string.pref_add_data)))) {
             preference.setSummary("Summary");
         }
         return true;

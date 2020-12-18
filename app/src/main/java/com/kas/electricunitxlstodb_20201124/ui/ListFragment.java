@@ -70,6 +70,7 @@ public class ListFragment extends Fragment implements UnitRecyclerViewAdapter.Un
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             adapter = new UnitRecyclerViewAdapter(this.getContext(), this);
+            adapter.setUnits(sharedViewModel.getAllUnitsLiveData().getValue());
             recyclerView.setAdapter(adapter);
         }
         DividerItemDecoration decoration = new DividerItemDecoration(getContext(), VERTICAL);
@@ -90,7 +91,6 @@ public class ListFragment extends Fragment implements UnitRecyclerViewAdapter.Un
     public void onUnitClick(int unitId) {
         Intent intent = new Intent(getActivity().getBaseContext(), DetailsActivity.class);
         intent.putExtra(DetailsFragment.EXTRA_UNIT_ID, unitId);
-
         startActivity(intent);
     }
 }
