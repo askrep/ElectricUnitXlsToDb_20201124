@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -15,26 +14,29 @@ import androidx.preference.SwitchPreferenceCompat;
 
 import com.kas.electricunitxlstodb_20201124.AppExecutors;
 import com.kas.electricunitxlstodb_20201124.R;
-import com.kas.electricunitxlstodb_20201124.data.TableUtil;
+import com.kas.electricunitxlstodb_20201124.ui.PreferencesViewModel;
 import com.kas.electricunitxlstodb_20201124.ui.SharedViewModel;
-
-import java.io.IOException;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
 
     final static private String TAG = "#_SETTINGS_FRAGMENT";
     static final private int OPEN_DIRECTORY_REQUEST_CODE = 364;
+
     private SharedViewModel sharedViewModel;
-    private Preference addData;
+    private PreferencesViewModel preferencesViewModel;
+
     private SwitchPreferenceCompat themeSwitch;
     private Preference clearData;
     private Preference updateData;
+    private Preference addData;
+    private SettingsViewModel settingsViewModel;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey);
         sharedViewModel = new ViewModelProvider(getActivity()).get(SharedViewModel.class);
-
+        preferencesViewModel = new ViewModelProvider(this).get(PreferencesViewModel.class);
+        settingsViewModel = new ViewModelProvider(this).get(SettingsViewModel.class);
         addData = findPreference(getString(R.string.pref_add_data));
         clearData = findPreference(getString(R.string.pref_clear_data));
         updateData = findPreference(getString(R.string.pref_update_data));
@@ -88,9 +90,9 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
             themeSwitch.setOnPreferenceChangeListener((preference, newValue) -> {
                 boolean switchValue = (boolean) newValue;
                 if (switchValue) {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    preferencesViewModel.setThemeModeDarkOn();
                 } else {
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    preferencesViewModel.setThemeModeDarkOff();
                 }
                 return true;
             });
@@ -109,19 +111,13 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
                 // provided to this method as a parameter.
                 if (resultData != null && resultData.getData() != null) {
 
+                    //TODO
                     Uri uri = resultData.getData();
-                    String fileDisplayName = TableUtil.getFileDisplayName(getContext(), uri);
+                    String fileDisplayName = settingsViewModel.getFileName(getContext(), uri);
 
-                    if (TableUtil.checkIfExcelFile(fileDisplayName)) {
-
-                        AppExecutors.getInstance().diskIO().execute(() -> {
-                            try {
-                                TableUtil.readContentFromTable(getContext(), uri);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                                Log.d(TAG, "Failed read file " + e.getMessage());
-                            }
-                        });
+                    //TODO
+                    if (settingsViewModel.checkIsExcelFile(fileDisplayName)) {
+                        settingsViewModel.readContentFromExcel(getContext(), uri);
                         addData.setSummary(fileDisplayName);
                         Toast.makeText(getContext(), "Data added", Toast.LENGTH_SHORT).show();
                     }
@@ -132,18 +128,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
                 Log.d(TAG, "User cancelled file browsing {}");
             }
         }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        //getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
-
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
     }
 
     @Override

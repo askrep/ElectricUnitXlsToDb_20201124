@@ -76,4 +76,5 @@ public class SharedViewModel extends AndroidViewModel {
     public LiveData<String> getFilterLiveData() {
         return filterLiveData;
     }
+
 }

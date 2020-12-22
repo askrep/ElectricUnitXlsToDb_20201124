@@ -12,12 +12,12 @@
     <string name="data_header">Data settings</string>
     <string name="design_header">Design</string>
 
-    <!-- Messages Preferences -->
+    <!-- Messages UnitPreferences -->
     <string name="signature_title">Your signature</string>
     <string name="reply_title">Default reply action</string>
     <string name="data_title">Default data source</string>
 
-    <!-- Sync Preferences -->
+    <!-- Sync UnitPreferences -->
     <string name="sync_title">Sync email periodically</string>
     <string name="attachment_title">Download incoming attachments</string>
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
