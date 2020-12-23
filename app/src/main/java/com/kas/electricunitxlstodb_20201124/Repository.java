@@ -2,13 +2,14 @@ package com.kas.electricunitxlstodb_20201124;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
 import com.kas.electricunitxlstodb_20201124.dao.AppDatabase;
 import com.kas.electricunitxlstodb_20201124.dao.UnitDao;
 import com.kas.electricunitxlstodb_20201124.dao.UnitEntry;
-import com.kas.electricunitxlstodb_20201124.data.UnitPreferences;
+import com.kas.electricunitxlstodb_20201124.data.PreferencesUnit;
 
 import java.util.List;
 
@@ -21,11 +22,11 @@ public class Repository {
 
     private LiveData<List<UnitEntry>> unitsLiveData;
 
+
     public Repository(Application application) {
         AppDatabase appDatabase = AppDatabase.getInstance(application);
         unitDao = appDatabase.unitDao();
         unitsLiveData = unitDao.selectAll();
-
 
     }
 
@@ -52,17 +53,14 @@ public class Repository {
         return unitDao.loadUnitById(id);
     }
 
-    //  database.unitDao().insertUnit(unitEntry);
     public void insertUnit(UnitEntry unitEntry) {
         unitDao.insertUnit(unitEntry);
     }
 
-    // database.unitDao().updateUnit(unitEntry);
     public void updateUnit(UnitEntry unitEntry) {
         unitDao.updateUnit(unitEntry);
     }
 
-    // database.unitDao().deleteUnit(unitId);
     public void deleteUnit(int unitId) {
         unitDao.deleteUnit(unitId);
     }
@@ -71,19 +69,21 @@ public class Repository {
         unitDao.deleteAll();
     }
 
-    public boolean getPrefThemeMode(Context context) {
-        return UnitPreferences.getPrefThemeModeState(context);
+    public boolean isPrefThemeMode(Context context) {
+        Log.d(TAG, "isPrefThemeMode: " + PreferencesUnit.isThemeModeDark(context));
+        return PreferencesUnit.isThemeModeDark(context);
     }
-
     public void setThemeModeDarkOn() {
-        UnitPreferences.setThemeModeDarkOn();
+        PreferencesUnit.setThemeModeDarkOn();
     }
 
     public void setThemeModeDarkOff() {
-        UnitPreferences.setThemeModeDarkOff();
+        PreferencesUnit.setThemeModeDarkOff();
     }
 
-    public boolean getPrefEditModeState(Context context) {
-        return UnitPreferences.getPrefEditModeState(context);
+    public boolean isPrefEditModeState(Application application) {
+        Log.d(TAG, "isPrefEditModeState: " + PreferencesUnit.isEditMode(application));
+        return PreferencesUnit.isEditMode(application);
     }
+
 }

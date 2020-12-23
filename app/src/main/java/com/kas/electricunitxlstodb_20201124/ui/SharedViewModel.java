@@ -9,6 +9,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
 
+import com.kas.electricunitxlstodb_20201124.AppExecutors;
 import com.kas.electricunitxlstodb_20201124.Repository;
 import com.kas.electricunitxlstodb_20201124.dao.UnitEntry;
 
@@ -57,19 +58,27 @@ public class SharedViewModel extends AndroidViewModel {
     }
 
     public void insertUnit(UnitEntry unitEntry) {
-        repository.insertUnit(unitEntry);
+        AppExecutors.getInstance().diskIO().execute(() -> {
+            repository.insertUnit(unitEntry);
+        });
     }
 
     public void updateUnit(UnitEntry unitEntry) {
-        repository.updateUnit(unitEntry);
+        AppExecutors.getInstance().diskIO().execute(() -> {
+            repository.updateUnit(unitEntry);
+        });
     }
 
     public void deleteUnit(int unitId) {
-        repository.deleteUnit(unitId);
+        AppExecutors.getInstance().diskIO().execute(() -> {
+            repository.deleteUnit(unitId);
+        });
     }
 
     public void deleteAll() {
-        repository.deleteAll();
+        AppExecutors.getInstance().diskIO().execute(() -> {
+            repository.deleteAll();
+        });
     }
 
     @NonNull

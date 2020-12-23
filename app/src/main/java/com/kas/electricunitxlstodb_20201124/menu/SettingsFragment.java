@@ -12,7 +12,6 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreferenceCompat;
 
-import com.kas.electricunitxlstodb_20201124.AppExecutors;
 import com.kas.electricunitxlstodb_20201124.R;
 import com.kas.electricunitxlstodb_20201124.ui.PreferencesViewModel;
 import com.kas.electricunitxlstodb_20201124.ui.SharedViewModel;
@@ -30,6 +29,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
     private Preference updateData;
     private Preference addData;
     private SettingsViewModel settingsViewModel;
+    private SwitchPreferenceCompat editModeSwitch;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -37,35 +37,32 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
         sharedViewModel = new ViewModelProvider(getActivity()).get(SharedViewModel.class);
         preferencesViewModel = new ViewModelProvider(this).get(PreferencesViewModel.class);
         settingsViewModel = new ViewModelProvider(this).get(SettingsViewModel.class);
+
         addData = findPreference(getString(R.string.pref_add_data));
         clearData = findPreference(getString(R.string.pref_clear_data));
         updateData = findPreference(getString(R.string.pref_update_data));
 
         addData.setOnPreferenceClickListener(preference -> {
             getIntentLoadUriData();
-
             return true;
         });
 
         clearData.setOnPreferenceClickListener(preference -> {
-            AppExecutors.getInstance().diskIO().execute(() -> {
-                sharedViewModel.deleteAll();
-            });
+            sharedViewModel.deleteAll();
             Toast.makeText(getContext(), "Data cleared", Toast.LENGTH_SHORT).show();
-
             return true;
         });
+
         updateData.setOnPreferenceClickListener(preference -> {
-            AppExecutors.getInstance().diskIO().execute(() -> {
-                sharedViewModel.deleteAll();
-            });
+            sharedViewModel.deleteAll();
             getIntentLoadUriData();
             Toast.makeText(getContext(), "Data updated", Toast.LENGTH_SHORT).show();
             return true;
         });
-
         // CHANGING APP THEME
         themeSwitch = findPreference(getString(R.string.pref_theme_dark));
+        editModeSwitch = findPreference(getString(R.string.pref_edit_mode));
+        Log.d(TAG, "onCreatePreferences: "+editModeSwitch.getSummary());
         initThemeSwitch();
     }
 
@@ -88,8 +85,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
     private void initThemeSwitch() {
         if (themeSwitch != null) {
             themeSwitch.setOnPreferenceChangeListener((preference, newValue) -> {
-                boolean switchValue = (boolean) newValue;
-                if (switchValue) {
+                if ((boolean) newValue) {
                     preferencesViewModel.setThemeModeDarkOn();
                 } else {
                     preferencesViewModel.setThemeModeDarkOff();
@@ -110,14 +106,11 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
                 // Instead, a URI to that document will be contained in the return intent
                 // provided to this method as a parameter.
                 if (resultData != null && resultData.getData() != null) {
-
-                    //TODO
                     Uri uri = resultData.getData();
-                    String fileDisplayName = settingsViewModel.getFileName(getContext(), uri);
+                    String fileDisplayName = settingsViewModel.getFileName(uri);
 
-                    //TODO
                     if (settingsViewModel.checkIsExcelFile(fileDisplayName)) {
-                        settingsViewModel.readContentFromExcel(getContext(), uri);
+                        settingsViewModel.readContentFromExcel(uri);
                         addData.setSummary(fileDisplayName);
                         Toast.makeText(getContext(), "Data added", Toast.LENGTH_SHORT).show();
                     }

@@ -25,7 +25,6 @@ public class SearchWidgetFragment extends Fragment {
         View view = searchWidgetBinding.getRoot();
 
         sharedViewModel = new ViewModelProvider(getActivity()).get(SharedViewModel.class);
-
         SearchView searchWidget = searchWidgetBinding.searchWidget;
         initSearchWidget(searchWidget);
         return view;

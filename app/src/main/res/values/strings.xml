@@ -12,12 +12,12 @@
     <string name="data_header">Data settings</string>
     <string name="design_header">Design</string>
 
-    <!-- Messages UnitPreferences -->
+    <!-- Messages PreferencesUnit -->
     <string name="signature_title">Your signature</string>
     <string name="reply_title">Default reply action</string>
     <string name="data_title">Default data source</string>
 
-    <!-- Sync UnitPreferences -->
+    <!-- Sync PreferencesUnit -->
     <string name="sync_title">Sync email periodically</string>
     <string name="attachment_title">Download incoming attachments</string>
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
@@ -28,7 +28,7 @@
     <string name="add_data_title">Add data from Table</string>
     <string name="change_button">Change</string>
     <string name="pref_theme_dark">Dark-Theme</string>
-    <string name="theme_dark">Dark Theme</string>
+    <string name="pref_theme_dark_title">Dark Theme</string>
 
     <string name="search_hint">Search electrical units</string>
     <string name="unit_icon_description">Unit icon</string>
@@ -41,4 +41,5 @@
     <string name="pref_update_data_title">Update data</string>
     <string name="pref_edit_enable">Edit-Enable</string>
     <string name="pref_edit_enable_title">Edit enable</string>
+    <string name="pref_edit_mode">Edit-Mode</string>
 </resources>

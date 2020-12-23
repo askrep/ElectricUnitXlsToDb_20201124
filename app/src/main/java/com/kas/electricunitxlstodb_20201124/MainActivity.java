@@ -22,32 +22,27 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "#_MAIN_ACTIVITY";
     private SharedViewModel sharedViewModel;
     private PreferencesViewModel preferencesViewModel;
-    private boolean isEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // setContentView(R.layout.main_activity);
         mainActivityBinding = DataBindingUtil.setContentView(this, R.layout.main_activity);
+
         preferencesViewModel = new ViewModelProvider(this).get(PreferencesViewModel.class);
         sharedViewModel = new ViewModelProvider(this).get(SharedViewModel.class);
-        isEdit = preferencesViewModel.getPrefEditModeState();
+
         FloatingActionButton fab = findViewById(R.id.floatingActionButton);
         fab.setOnClickListener(view -> {
             Intent detailsUnitIntent = new Intent(MainActivity.this, DetailsActivity.class);
             startActivity(detailsUnitIntent);
         });
 
+        boolean isEdit = preferencesViewModel.isEditModeState();
         if (!isEdit) {
             fab.setVisibility(View.INVISIBLE);
-
         }
-//PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getString(R.string.pref_theme_dark), false)
-  /*      if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getString(R.string.pref_theme_dark), false)) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            Log.d(TAG, "onCreate: NIGHT MODE");
-        }*/
-        if (preferencesViewModel.getThemeModeState()) {
+
+        if (preferencesViewModel.isThemeModeState()) {
             preferencesViewModel.setThemeModeDarkOn();
         }
     }
