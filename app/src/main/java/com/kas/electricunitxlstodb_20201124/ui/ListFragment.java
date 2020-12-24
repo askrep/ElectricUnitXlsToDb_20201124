@@ -21,7 +21,7 @@ import com.kas.electricunitxlstodb_20201124.R;
 /**
  * A fragment representing a list of Items.
  */
-public class ListFragment extends Fragment implements UnitRecyclerViewAdapter.ItemClickListener {
+public class ListFragment extends Fragment implements UnitRecyclerViewAdapter.UnitClickListener {
 
     private static final String LOG_TAG = "#_LIST_FRAGMENT";
     private ListViewModel listViewModel;
@@ -70,6 +70,7 @@ public class ListFragment extends Fragment implements UnitRecyclerViewAdapter.It
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             adapter = new UnitRecyclerViewAdapter(this.getContext(), this);
+            adapter.setUnits(sharedViewModel.getAllUnitsLiveData().getValue());
             recyclerView.setAdapter(adapter);
         }
         DividerItemDecoration decoration = new DividerItemDecoration(getContext(), VERTICAL);
@@ -87,7 +88,7 @@ public class ListFragment extends Fragment implements UnitRecyclerViewAdapter.It
     }
 
     @Override
-    public void onItemClickListener(int unitId) {
+    public void onUnitClick(int unitId) {
         Intent intent = new Intent(getActivity().getBaseContext(), DetailsActivity.class);
         intent.putExtra(DetailsFragment.EXTRA_UNIT_ID, unitId);
         startActivity(intent);

@@ -1,11 +1,16 @@
 package com.kas.electricunitxlstodb_20201124.ui;
 
-import androidx.lifecycle.ViewModel;
+import android.app.Application;
 
-public class DetailsViewModel extends ViewModel {
+import androidx.lifecycle.AndroidViewModel;
 
+public class DetailsViewModel extends AndroidViewModel {
 
-    public DetailsViewModel() {
+    private Application application;
+
+    public DetailsViewModel(Application application) {
+        super(application);
+        this.application = application;
 
     }
 

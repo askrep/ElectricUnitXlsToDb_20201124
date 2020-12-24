@@ -10,18 +10,21 @@ import com.kas.electricunitxlstodb_20201124.ElectricalUnit;
 public class UnitEntry implements ElectricalUnit {
 
     @PrimaryKey(autoGenerate = true)
-    private int id;
-    private String title;
-    private String description;
+    public int id;
+    public String title;
+    public String description;
+    public String location;
 
-    public UnitEntry(int id, String title, String description) {
+    public UnitEntry(int id, String location, String title, String description) {
         this.id = id;
+        this.location = location;
         this.title = title;
         this.description = description;
     }
 
     @Ignore
-    public UnitEntry(String title, String description) {
+    public UnitEntry(String location, String title, String description) {
+        this.location = location;
         this.title = title;
         this.description = description;
     }
@@ -36,6 +39,13 @@ public class UnitEntry implements ElectricalUnit {
         this.id = id;
     }
 
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
     @Override
     public String getTitle() {
         return title;
