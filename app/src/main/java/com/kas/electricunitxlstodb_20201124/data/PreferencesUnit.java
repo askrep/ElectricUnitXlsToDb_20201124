@@ -1,6 +1,5 @@
 package com.kas.electricunitxlstodb_20201124.data;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
@@ -46,8 +45,8 @@ public class PreferencesUnit {
      *
      * @param context Context used to get the SharedPreferences
      */
-    public static boolean isEditMode(Application application) {
-        SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(application.getApplicationContext());
+    public static boolean isEditMode(Context Context) {
+        SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(Context);
         boolean aBoolean = defaultSharedPreferences.getBoolean(String.valueOf(R.string.pref_edit_mode), false);
         Log.d(TAG, "isEditMode: " + aBoolean);
         return aBoolean;

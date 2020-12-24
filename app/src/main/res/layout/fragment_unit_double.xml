@@ -38,7 +38,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/unit_icon"
             app:layout_constraintStart_toEndOf="@+id/unit_icon"
             app:layout_constraintTop_toTopOf="@+id/unit_icon"
-            tools:text="Unit title" />
+            tools:text="Unit title " />
 
         <TextView
             android:id="@+id/unit_description"

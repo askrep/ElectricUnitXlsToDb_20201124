@@ -1,6 +1,7 @@
 package com.kas.electricunitxlstodb_20201124;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -10,6 +11,7 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.kas.electricunitxlstodb_20201124.databinding.MainActivityBinding;
@@ -37,12 +39,15 @@ public class MainActivity extends AppCompatActivity {
             startActivity(detailsUnitIntent);
         });
 
-        boolean isEdit = preferencesViewModel.isEditModeState();
-        if (!isEdit) {
+        //boolean isEditMode = sharedViewModel.isEditModeState();
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean isEditMode = sharedPreferences.getBoolean(getString(R.string.pref_edit_mode), false);
+        if (!isEditMode) {
             fab.setVisibility(View.INVISIBLE);
         }
 
-        if (preferencesViewModel.isThemeModeState()) {
+        boolean isThemeDarkMode = sharedPreferences.getBoolean(getString(R.string.pref_theme_dark), false);
+        if (isThemeDarkMode) {
             preferencesViewModel.setThemeModeDarkOn();
         }
     }

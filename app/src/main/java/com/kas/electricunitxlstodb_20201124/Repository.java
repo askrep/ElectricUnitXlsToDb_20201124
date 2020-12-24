@@ -1,8 +1,6 @@
 package com.kas.electricunitxlstodb_20201124;
 
 import android.app.Application;
-import android.content.Context;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 
@@ -21,13 +19,13 @@ public class Repository {
     private UnitDao unitDao;
 
     private LiveData<List<UnitEntry>> unitsLiveData;
-
+    private Application application;
 
     public Repository(Application application) {
+        this.application = application;
         AppDatabase appDatabase = AppDatabase.getInstance(application);
         unitDao = appDatabase.unitDao();
         unitsLiveData = unitDao.selectAll();
-
     }
 
     public static Repository getInstance(Application application) {
@@ -69,10 +67,6 @@ public class Repository {
         unitDao.deleteAll();
     }
 
-    public boolean isPrefThemeMode(Context context) {
-        Log.d(TAG, "isPrefThemeMode: " + PreferencesUnit.isThemeModeDark(context));
-        return PreferencesUnit.isThemeModeDark(context);
-    }
     public void setThemeModeDarkOn() {
         PreferencesUnit.setThemeModeDarkOn();
     }
@@ -81,9 +75,14 @@ public class Repository {
         PreferencesUnit.setThemeModeDarkOff();
     }
 
-    public boolean isPrefEditModeState(Application application) {
+    /*NOT WORK*/
+    /*    public boolean isPrefThemeMode(Context context) {
+        Log.d(TAG, "isPrefThemeMode: " + PreferencesUnit.isThemeModeDark(context));
+        return PreferencesUnit.isThemeModeDark(context);
+    }*/
+/*
+    public boolean isPrefEditModeState() {
         Log.d(TAG, "isPrefEditModeState: " + PreferencesUnit.isEditMode(application));
         return PreferencesUnit.isEditMode(application);
-    }
-
+    }*/
 }

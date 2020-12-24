@@ -21,14 +21,15 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
     final static private String TAG = "#_SETTINGS_FRAGMENT";
     static final private int OPEN_DIRECTORY_REQUEST_CODE = 364;
 
+    private SettingsViewModel settingsViewModel;
     private SharedViewModel sharedViewModel;
     private PreferencesViewModel preferencesViewModel;
 
-    private SwitchPreferenceCompat themeSwitch;
     private Preference clearData;
     private Preference updateData;
     private Preference addData;
-    private SettingsViewModel settingsViewModel;
+
+    private SwitchPreferenceCompat themeSwitch;
     private SwitchPreferenceCompat editModeSwitch;
 
     @Override
@@ -62,7 +63,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
         // CHANGING APP THEME
         themeSwitch = findPreference(getString(R.string.pref_theme_dark));
         editModeSwitch = findPreference(getString(R.string.pref_edit_mode));
-        Log.d(TAG, "onCreatePreferences: "+editModeSwitch.getSummary());
+        Log.d(TAG, "onCreatePreferences: EDIT" + editModeSwitch.getSummary());
         initThemeSwitch();
     }
 

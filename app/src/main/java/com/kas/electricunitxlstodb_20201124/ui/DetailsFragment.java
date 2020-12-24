@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 
 import com.kas.electricunitxlstodb_20201124.R;
 import com.kas.electricunitxlstodb_20201124.dao.UnitEntry;
@@ -33,6 +34,7 @@ public class DetailsFragment extends Fragment {
     private boolean isEditMode;
     private Button detailsButton;
     private Button deleteButton;
+    private EditText location;
     private EditText title;
     private EditText description;
 
@@ -51,9 +53,9 @@ public class DetailsFragment extends Fragment {
         deleteButton = binding.deleteButton;
         detailsButton.setOnClickListener(view -> onCommonButtonClicked());
         deleteButton.setOnClickListener(view -> onDeleteButtonClicked());
+        location = binding.location;
         title = binding.title;
         description = binding.unitDescription;
-
 
         return inflate;
     }
@@ -64,12 +66,9 @@ public class DetailsFragment extends Fragment {
         Intent intent = getActivity().getIntent();
 
         sharedViewModel = new ViewModelProvider(getActivity()).get(SharedViewModel.class);
-
         preferencesViewModel = new ViewModelProvider(getActivity()).get(PreferencesViewModel.class);
-        isEditMode = preferencesViewModel.isEditModeState();
-        //isEditMode = PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean(getString(R.string.pref_edit_mode), false);
-
-        Log.d(TAG, "onActivityCreated: " + isEditMode);
+        //isEditMode = preferencesViewModel.isEditModeState();
+        isEditMode = PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean(getString(R.string.pref_edit_mode), false);
 
         if (null != intent && intent.hasExtra(EXTRA_UNIT_ID)) {
             unitSelectedFromList(intent);
@@ -124,17 +123,17 @@ public class DetailsFragment extends Fragment {
 
     private void fillingUi(UnitEntry unitEntry) {
         if (unitEntry == null) return;
-        String entryTitle = unitEntry.getTitle();
-        String entryDescription = unitEntry.getDescription();
-        title.setText(entryTitle);
-        description.setText(entryDescription);
+         location.setText(unitEntry.getLocation());
+        title.setText(unitEntry.getTitle());
+        description.setText(unitEntry.getDescription());
     }
 
 
     public void onCommonButtonClicked() {
+        String entryLocation = location.getText().toString();
         String entryTitle = title.getText().toString();
         String entryDescription = description.getText().toString();
-        UnitEntry unitEntry = new UnitEntry(entryTitle, entryDescription);
+        UnitEntry unitEntry = new UnitEntry(entryLocation, entryTitle, entryDescription);
 
         if (unitId == DEFAULT_UNIT_ID) {
             sharedViewModel.insertUnit(unitEntry);
