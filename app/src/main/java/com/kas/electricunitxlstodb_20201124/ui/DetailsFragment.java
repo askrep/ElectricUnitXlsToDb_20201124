@@ -1,7 +1,6 @@
 package com.kas.electricunitxlstodb_20201124.ui;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,41 +13,40 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.preference.PreferenceManager;
 
 import com.kas.electricunitxlstodb_20201124.R;
 import com.kas.electricunitxlstodb_20201124.dao.UnitEntry;
 import com.kas.electricunitxlstodb_20201124.databinding.DetailsFragmentBinding;
 
 public class DetailsFragment extends Fragment {
-
+    
     public static final String EXTRA_UNIT_ID = "extraUnitId";
     private static final int DEFAULT_UNIT_ID = -1;
     private int unitId = DEFAULT_UNIT_ID;
-
+    
     private static final String TAG = "#_DETAILS_FRAGMENT";
     private SharedViewModel sharedViewModel;
     private PreferencesViewModel preferencesViewModel;
     private DetailsFragmentBinding binding;
-
+    
     private boolean isEditMode;
     private Button detailsButton;
     private Button deleteButton;
     private EditText location;
     private EditText title;
     private EditText description;
-
+    
     public static DetailsFragment newInstance() {
         return new DetailsFragment();
     }
-
+    
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         binding = DetailsFragmentBinding.inflate(inflater, container, false);
         View inflate = binding.getRoot();
-
+        
         detailsButton = binding.detailsButton;
         deleteButton = binding.deleteButton;
         detailsButton.setOnClickListener(view -> onCommonButtonClicked());
@@ -56,38 +54,38 @@ public class DetailsFragment extends Fragment {
         location = binding.location;
         title = binding.title;
         description = binding.unitDescription;
-
+        
         return inflate;
     }
-
+    
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Intent intent = getActivity().getIntent();
-
+        
         sharedViewModel = new ViewModelProvider(getActivity()).get(SharedViewModel.class);
         preferencesViewModel = new ViewModelProvider(getActivity()).get(PreferencesViewModel.class);
-        //isEditMode = preferencesViewModel.isEditModeState();
-        isEditMode = PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean(getString(R.string.pref_edit_mode), false);
-
+        
+        isEditMode = preferencesViewModel.isEditModeState();
+        
         if (null != intent && intent.hasExtra(EXTRA_UNIT_ID)) {
             unitSelectedFromList(intent);
         }
     }
-
+    
     private void unitSelectedFromList(Intent intent) {
         detailsButton.setText(R.string.update_button);
         deleteButton.setVisibility(View.VISIBLE);
-
+        
         if (isEditMode) {
             isEditModeConfig();
         } else {
             isOnlyReadModeConfig();
         }
-
+        
         if (unitId == DEFAULT_UNIT_ID) {
             unitId = intent.getIntExtra(EXTRA_UNIT_ID, DEFAULT_UNIT_ID);
-
+            
             sharedViewModel.getUnitEntry(unitId).observe(getViewLifecycleOwner(), unitEntry -> {
                 if (null != unitEntry) {
                     fillingUi(unitEntry);
@@ -95,46 +93,42 @@ public class DetailsFragment extends Fragment {
             });
         }
     }
-
+    
     private void isEditModeConfig() {
         deleteButton.setClickable(true);
         title.setEnabled(true);
         description.setEnabled(true);
-        description.setTextColor(Color.BLUE);
+        location.setEnabled(true);
         deleteButton.setClickable(true);
         detailsButton.setClickable(true);
-        deleteButton.setActivated(true);
-        detailsButton.setActivated(true);
         Log.d(TAG, "isEditModeConfig: on");
     }
-
+    
     private void isOnlyReadModeConfig() {
         title.setEnabled(false);
         description.setEnabled(false);
+        location.setEnabled(false);
         //description.setTextColor(Color.BLUE);
         deleteButton.setClickable(false);
         detailsButton.setClickable(false);
-        deleteButton.setActivated(false);
-        detailsButton.setActivated(false);
         deleteButton.setBackgroundColor(getResources().getColor(R.color.gray_deactivated));
         detailsButton.setBackgroundColor(getResources().getColor(R.color.gray_deactivated));
         Log.d(TAG, "isOnlyReadModeConfig: off");
     }
-
+    
     private void fillingUi(UnitEntry unitEntry) {
         if (unitEntry == null) return;
-         location.setText(unitEntry.getLocation());
+        location.setText(unitEntry.getLocation());
         title.setText(unitEntry.getTitle());
         description.setText(unitEntry.getDescription());
     }
-
-
+    
     public void onCommonButtonClicked() {
         String entryLocation = location.getText().toString();
         String entryTitle = title.getText().toString();
         String entryDescription = description.getText().toString();
         UnitEntry unitEntry = new UnitEntry(entryLocation, entryTitle, entryDescription);
-
+        
         if (unitId == DEFAULT_UNIT_ID) {
             sharedViewModel.insertUnit(unitEntry);
         } else {
@@ -143,7 +137,7 @@ public class DetailsFragment extends Fragment {
         }
         getActivity().finish();
     }
-
+    
     public void onDeleteButtonClicked() {
         sharedViewModel.deleteUnit(unitId); //database.unitDao().deleteUnit(unitId);
         getActivity().finish();
