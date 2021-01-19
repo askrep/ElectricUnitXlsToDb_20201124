@@ -1,6 +1,6 @@
 package com.kas.electricunitxlstodb_20201124.di;
 
-import android.app.Application;
+import android.content.Context;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -14,13 +14,13 @@ import java.util.List;
 
 public class UnitLocalDataSource {
     private static final String TAG = "UnitLocalDataSource";
-    private final Application application;
+    private final Context context;
     private final UnitDao unitDao;
     private final LiveData<List<UnitEntry>> unitsLiveData;
 
-    public UnitLocalDataSource(Application application) {
-        this.application = application;
-        AppDatabase appDatabase = AppDatabase.getInstance(application);
+    public UnitLocalDataSource(Context context) {
+        this.context = context;
+        AppDatabase appDatabase = AppDatabase.getInstance(context);
         unitDao = appDatabase.unitDao();
 
         unitsLiveData = unitDao.selectAll();
@@ -64,12 +64,12 @@ public class UnitLocalDataSource {
 
     /*NOT WORK*/
     public boolean isPrefThemeMode() {
-        Log.d(TAG, "isPrefThemeMode: " + PreferencesUtil.isThemeModeDark(application));
-        return PreferencesUtil.isThemeModeDark(application);
+        Log.d(TAG, "isPrefThemeMode: " + PreferencesUtil.isThemeModeDark(context));
+        return PreferencesUtil.isThemeModeDark(context);
     }
 
     public boolean isPrefEditModeState() {
-        Log.d(TAG, "isPrefEditModeState: " + PreferencesUtil.isEditMode(application));
-        return PreferencesUtil.isEditMode(application);
+        Log.d(TAG, "isPrefEditModeState: " + PreferencesUtil.isEditMode(context));
+        return PreferencesUtil.isEditMode(context);
     }
 }
