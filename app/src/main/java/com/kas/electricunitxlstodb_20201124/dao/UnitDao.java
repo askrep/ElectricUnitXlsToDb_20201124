@@ -16,7 +16,7 @@ public interface UnitDao {
     LiveData<List<UnitEntry>> selectAll(); // SELECT ALL
 
     @Query("Select * From units Where location Like :text OR title Like :text OR description Like :text")
-    LiveData<List<UnitEntry>> loadUnitListFiltered(String text);
+    LiveData<List<UnitEntry>> getFilteredUnitList(String text);
 
     @Query("Select * From units Where id = :unitId")
     LiveData<UnitEntry> loadUnitById(int unitId);

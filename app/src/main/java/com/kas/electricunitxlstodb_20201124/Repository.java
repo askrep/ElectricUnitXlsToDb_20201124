@@ -46,7 +46,7 @@ public class Repository {
     }
     
     public LiveData<List<UnitEntry>> getFilteredUnitsLiveData(String filter) {
-        return unitDao.loadUnitListFiltered(filter);
+        return unitDao.getFilteredUnitList(filter);
     }
     
     public LiveData<UnitEntry> getUnitById(int id) { //database.unitDao().loadUnitById(unitId);;

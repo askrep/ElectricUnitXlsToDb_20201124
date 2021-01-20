@@ -22,7 +22,6 @@ public class UnitLocalDataSource {
         this.context = context;
         AppDatabase appDatabase = AppDatabase.getInstance(context);
         unitDao = appDatabase.unitDao();
-
         unitsLiveData = unitDao.selectAll();
     }
 
@@ -31,7 +30,7 @@ public class UnitLocalDataSource {
     }
 
     public LiveData<List<UnitEntry>> getFilteredUnitsLiveData(String filter) {
-        return unitDao.loadUnitListFiltered(filter);
+        return unitDao.getFilteredUnitList(filter);
     }
 
     public LiveData<UnitEntry> getUnitById(int id) { //database.unitDao().loadUnitById(unitId);;

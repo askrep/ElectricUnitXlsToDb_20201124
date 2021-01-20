@@ -15,22 +15,20 @@ import java.util.List;
 
 public class MySharedViewModel extends ViewModel {
     private static final String TAG = "#_MY-SHARED_VM";
-    private UnitRepository repository;
+    private UnitRepository myRepository;
 
     private LiveData<List<UnitEntry>> unitsLiveData;
     private MutableLiveData<String> filterLiveData = new MutableLiveData<>("");
 
-    public MySharedViewModel(UnitRepository repository) {
-        this.repository = repository;
-         unitsLiveData = repository.getAllUnitsLiveData();
+    public MySharedViewModel(UnitRepository myRepository) {
+        this.myRepository = myRepository;
+        unitsLiveData = myRepository.getAllUnitsLiveData();
     }
 
     public LiveData<List<UnitEntry>> getUnitsLiveData() {
         Function<String, LiveData<List<UnitEntry>>> stringLiveDataFunction;
         stringLiveDataFunction = string -> (string == null || string.isEmpty()) ? getAllUnitsLiveData() : getFilteredUnitsLiveData();
-        LiveData<List<UnitEntry>> listLiveData = Transformations.switchMap(filterLiveData,
-                stringLiveDataFunction);
-        return listLiveData;
+        return Transformations.switchMap(filterLiveData, stringLiveDataFunction);
     }
 
     @NonNull
@@ -41,7 +39,7 @@ public class MySharedViewModel extends ViewModel {
     @NonNull
     public LiveData<List<UnitEntry>> getFilteredUnitsLiveData() {
         LiveData<List<UnitEntry>> listLiveData = Transformations.switchMap(filterLiveData,
-                filter -> repository.getFilteredUnitsLiveData(filter));
+                filter -> myRepository.getFilteredUnitsLiveData(filter));
         return listLiveData;
     }
 
@@ -51,30 +49,30 @@ public class MySharedViewModel extends ViewModel {
     }
 
     public LiveData<UnitEntry> getUnitEntry(int id) {
-        return repository.getUnitById(id);
+        return myRepository.getUnitById(id);
     }
 
     public void insertUnit(UnitEntry unitEntry) {
         AppExecutors.getInstance().diskIO().execute(() -> {
-            repository.insertUnit(unitEntry);
+            myRepository.insertUnit(unitEntry);
         });
     }
 
     public void updateUnit(UnitEntry unitEntry) {
         AppExecutors.getInstance().diskIO().execute(() -> {
-            repository.updateUnit(unitEntry);
+            myRepository.updateUnit(unitEntry);
         });
     }
 
     public void deleteUnit(int unitId) {
         AppExecutors.getInstance().diskIO().execute(() -> {
-            repository.deleteUnit(unitId);
+            myRepository.deleteUnit(unitId);
         });
     }
 
     public void deleteAll() {
         AppExecutors.getInstance().diskIO().execute(() -> {
-            repository.deleteAll();
+            myRepository.deleteAll();
         });
     }
 

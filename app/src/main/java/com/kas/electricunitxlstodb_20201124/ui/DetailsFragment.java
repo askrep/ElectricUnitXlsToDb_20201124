@@ -41,8 +41,6 @@ public class DetailsFragment extends Fragment {
     private EditText title;
     private EditText description;
 
-    //Dependency injection
-    private AppContainer appContainer;
 
     @Nullable
     @Override
@@ -60,11 +58,10 @@ public class DetailsFragment extends Fragment {
         description = binding.unitDescription;
 
         //Dependency injection
-        MyApplication application =(MyApplication) getActivity().getApplication();
-        appContainer = application.appContainer;
+        AppContainer appContainer = ((MyApplication) getActivity().getApplication()).appContainer;
+        appContainer.initSharedContainer(getActivity().getApplication());
 
-        appContainer.setContext(getActivity().getApplicationContext());
-        appContainer.sharedContainer = new SharedContainer(appContainer.repository);
+        appContainer.sharedContainer = new SharedContainer(appContainer.myRepository);
 
         MySharedViewModel mySharedViewModel = appContainer.sharedContainer.sharedViewModelFactory.create();
         Toast.makeText(getContext(), "MySVM " + mySharedViewModel, Toast.LENGTH_LONG).show();
@@ -75,7 +72,6 @@ public class DetailsFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Intent intent = getActivity().getIntent();
-
 
 
         sharedViewModel = new ViewModelProvider(getActivity()).get(SharedViewModel.class);

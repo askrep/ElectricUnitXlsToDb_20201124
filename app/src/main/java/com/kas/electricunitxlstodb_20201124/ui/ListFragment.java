@@ -17,6 +17,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.kas.electricunitxlstodb_20201124.DetailsActivity;
 import com.kas.electricunitxlstodb_20201124.R;
+import com.kas.electricunitxlstodb_20201124.di.AppContainer;
+import com.kas.electricunitxlstodb_20201124.di.MyApplication;
+import com.kas.electricunitxlstodb_20201124.di.MySharedViewModel;
+import com.kas.electricunitxlstodb_20201124.di.SharedContainer;
 
 /**
  * A fragment representing a list of Items.
@@ -25,7 +29,7 @@ public class ListFragment extends Fragment implements UnitRecyclerViewAdapter.Un
 
     private static final String LOG_TAG = "#_LIST_FRAGMENT";
     private ListViewModel listViewModel;
-    private SharedViewModel sharedViewModel;
+    //private SharedViewModel sharedViewModel;
     private RecyclerView recyclerView;
     private UnitRecyclerViewAdapter adapter;
 
@@ -33,6 +37,8 @@ public class ListFragment extends Fragment implements UnitRecyclerViewAdapter.Un
     private int mColumnCount = 1;
     public static final int HORIZONTAL = 0;
     public static final int VERTICAL = 1;
+
+    private MySharedViewModel mySharedViewModel;
 
     public ListFragment() {
         super(R.layout.fragment_unit_list);
@@ -52,8 +58,14 @@ public class ListFragment extends Fragment implements UnitRecyclerViewAdapter.Un
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
-        sharedViewModel = new ViewModelProvider(getActivity()).get(SharedViewModel.class);
+        //sharedViewModel = new ViewModelProvider(getActivity()).get(SharedViewModel.class);
         listViewModel = new ViewModelProvider(getActivity()).get(ListViewModel.class);
+
+        AppContainer appContainer = ((MyApplication) getActivity().getApplication()).appContainer;
+        appContainer.initSharedContainer(getActivity().getApplication());
+        appContainer.sharedContainer = new SharedContainer(appContainer.myRepository);
+        mySharedViewModel = appContainer.sharedContainer.sharedViewModelFactory.create();
+
     }
 
     @Override
@@ -70,7 +82,8 @@ public class ListFragment extends Fragment implements UnitRecyclerViewAdapter.Un
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             adapter = new UnitRecyclerViewAdapter(this.getContext(), this);
-            adapter.setUnits(sharedViewModel.getAllUnitsLiveData().getValue());
+            //adapter.setUnits(sharedViewModel.getAllUnitsLiveData().getValue());
+            adapter.setUnits(mySharedViewModel.getAllUnitsLiveData().getValue());
             recyclerView.setAdapter(adapter);
         }
         DividerItemDecoration decoration = new DividerItemDecoration(getContext(), VERTICAL);
@@ -82,9 +95,13 @@ public class ListFragment extends Fragment implements UnitRecyclerViewAdapter.Un
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        sharedViewModel.getUnitsLiveData().observe(getActivity(), filteredUnits -> {
+/*        sharedViewModel.getUnitsLiveData().observe(getActivity(), filteredUnits -> {
+            adapter.setUnits(filteredUnits);
+        });*/
+        mySharedViewModel.getUnitsLiveData().observe(getActivity(), filteredUnits -> {
             adapter.setUnits(filteredUnits);
         });
+
     }
 
     @Override
