@@ -3,6 +3,7 @@ package com.kas.electricunitxlstodb_20201124.ui;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
+import androidx.hilt.lifecycle.ViewModelInject;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
@@ -16,7 +17,7 @@ public class ListViewModel extends AndroidViewModel {
 
     @NonNull
     private LiveData<List<UnitEntry>> unitsLiveData;
-
+    @ViewModelInject
     public ListViewModel(@NonNull Application application) {
         super(application);
     }

@@ -1,6 +1,11 @@
 plugins {
     id 'com.android.application'
+    //
+    id "kotlin-android"
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
+
 
 android {
     compileSdkVersion 29
@@ -33,7 +38,16 @@ android {
 }
 
 dependencies {
-
+    // Hilt
+    def hiltVersion = "2.28-alpha"
+    implementation "com.google.dagger:hilt-android:$hiltVersion"
+    kapt "com.google.dagger:hilt-android-compiler:$hiltVersion"
+    // Hilt Inject ViewModel
+    def hiltVMVersion = "1.0.0-alpha01"
+    implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hiltVMVersion"
+    annotationProcessor "androidx.hilt:hilt-compiler:$hiltVMVersion"
+    implementation "androidx.activity:activity-ktx:1.1.0"
+    // Hilt end
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'

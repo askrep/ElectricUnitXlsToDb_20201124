@@ -4,6 +4,7 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.arch.core.util.Function;
+import androidx.hilt.lifecycle.ViewModelInject;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -11,6 +12,7 @@ import androidx.lifecycle.Transformations;
 import androidx.preference.PreferenceManager;
 
 import com.kas.electricunitxlstodb_20201124.AppExecutors;
+import com.kas.electricunitxlstodb_20201124.ElectricalUnitApplication;
 import com.kas.electricunitxlstodb_20201124.R;
 import com.kas.electricunitxlstodb_20201124.Repository;
 import com.kas.electricunitxlstodb_20201124.dao.UnitEntry;
@@ -24,8 +26,8 @@ public class SharedViewModel extends AndroidViewModel {
     private Application context;
     private LiveData<List<UnitEntry>> unitsLiveData;
     private MutableLiveData<String> filterLiveData = new MutableLiveData<>("");
-    
-    public SharedViewModel(Application application) {
+    @ViewModelInject
+    public SharedViewModel(ElectricalUnitApplication application) {
         super(application);
         repository = Repository.getInstance(application);
         context = application;

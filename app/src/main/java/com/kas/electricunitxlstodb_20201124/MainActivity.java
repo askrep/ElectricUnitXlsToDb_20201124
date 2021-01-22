@@ -19,11 +19,16 @@ import com.kas.electricunitxlstodb_20201124.menu.SettingsActivity;
 import com.kas.electricunitxlstodb_20201124.ui.PreferencesViewModel;
 import com.kas.electricunitxlstodb_20201124.ui.SharedViewModel;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
     
     private static final String TAG = "#_MAIN_ACTIVITY";
     private MainActivityBinding mainActivityBinding;
     private SharedViewModel sharedViewModel;
+
+
     private PreferencesViewModel preferencesViewModel;
     
     @Override
