@@ -1,4 +1,4 @@
-package com.kas.electricunitxlstodb_20201124.ui;
+package com.kas.electricunitxlstodb_20201124.viewmodels;
 
 import android.app.Application;
 

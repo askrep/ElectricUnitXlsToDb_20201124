@@ -1,4 +1,4 @@
-package com.kas.electricunitxlstodb_20201124.ui;
+package com.kas.electricunitxlstodb_20201124.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,11 +12,21 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.kas.electricunitxlstodb_20201124.databinding.FragmentSearchWidgetBinding;
+import com.kas.electricunitxlstodb_20201124.viewmodels.SharedViewModel;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class SearchWidgetFragment extends Fragment {
     private SharedViewModel sharedViewModel;
     private static final String TAG = "#_SEARCH_WIDGET";
     FragmentSearchWidgetBinding searchWidgetBinding;
+
+    @Inject
+    public SearchWidgetFragment() {
+    }
 
     @Nullable
     @Override

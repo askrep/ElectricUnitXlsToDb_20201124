@@ -22,7 +22,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <!--            <androidx.fragment.app.FragmentContainerView
-                        android:name="com.kas.electricunitxlstodb_20201124.ui.SearchFragment"
+                        android:name="com.kas.electricunitxlstodb_20201124.fragments.SearchFragment"
                         android:id="@+id/search_fragment_container"
                         layout="@layout/fragment_search"
                         android:layout_width="match_parent"

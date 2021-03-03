@@ -38,16 +38,7 @@ android {
 }
 
 dependencies {
-    // Hilt
-    def hiltVersion = "2.28-alpha"
-    implementation "com.google.dagger:hilt-android:$hiltVersion"
-    kapt "com.google.dagger:hilt-android-compiler:$hiltVersion"
-    // Hilt Inject ViewModel
-    def hiltVMVersion = "1.0.0-alpha01"
-    implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hiltVMVersion"
-    annotationProcessor "androidx.hilt:hilt-compiler:$hiltVMVersion"
-    implementation "androidx.activity:activity-ktx:1.1.0"
-    // Hilt end
+
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
@@ -67,4 +58,17 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     annotationProcessor 'androidx.room:room-compiler:2.2.5'
+///
+    def hilt_version = "2.31.2-alpha"
+    // Hilt dependencies
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+
+    // Hilt testing dependencies
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
+    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
+
+    //Hilt ViewModel
+    implementation 'androidx.hilt:hilt-work:1.0.0-alpha03'
+    annotationProcessor 'androidx.hilt:hilt-compiler:1.0.0-alpha03'
 }

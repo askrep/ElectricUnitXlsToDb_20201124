@@ -1,4 +1,4 @@
-package com.kas.electricunitxlstodb_20201124.ui;
+package com.kas.electricunitxlstodb_20201124.fragments;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,14 +17,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.kas.electricunitxlstodb_20201124.DetailsActivity;
 import com.kas.electricunitxlstodb_20201124.R;
+import com.kas.electricunitxlstodb_20201124.viewmodels.SharedViewModel;
 
-/**
- * A fragment representing a list of Items.
- */
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class ListFragment extends Fragment implements UnitRecyclerViewAdapter.UnitClickListener {
 
     private static final String LOG_TAG = "#_LIST_FRAGMENT";
-    private ListViewModel listViewModel;
+
     private SharedViewModel sharedViewModel;
     private RecyclerView recyclerView;
     private UnitRecyclerViewAdapter adapter;
@@ -34,17 +37,8 @@ public class ListFragment extends Fragment implements UnitRecyclerViewAdapter.Un
     public static final int HORIZONTAL = 0;
     public static final int VERTICAL = 1;
 
-    public ListFragment() {
-        super(R.layout.fragment_unit_list);
-    }
-
-    public static ListFragment newInstance(int columnCount) {
-        ListFragment fragment = new ListFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    @Inject
+    public ListFragment() {    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,12 +47,11 @@ public class ListFragment extends Fragment implements UnitRecyclerViewAdapter.Un
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
         sharedViewModel = new ViewModelProvider(getActivity()).get(SharedViewModel.class);
-        listViewModel = new ViewModelProvider(getActivity()).get(ListViewModel.class);
+
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_unit_list, container, false);
 
         if (view instanceof RecyclerView) {

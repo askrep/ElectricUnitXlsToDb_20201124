@@ -13,9 +13,14 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreferenceCompat;
 
 import com.kas.electricunitxlstodb_20201124.R;
-import com.kas.electricunitxlstodb_20201124.ui.PreferencesViewModel;
-import com.kas.electricunitxlstodb_20201124.ui.SharedViewModel;
+import com.kas.electricunitxlstodb_20201124.viewmodels.PreferencesViewModel;
+import com.kas.electricunitxlstodb_20201124.viewmodels.SharedViewModel;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class SettingsFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
 
     final static private String TAG = "#_SETTINGS_FRAGMENT";
@@ -31,6 +36,10 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
 
     private SwitchPreferenceCompat themeSwitch;
     private SwitchPreferenceCompat editModeSwitch;
+
+    @Inject
+    public SettingsFragment() {
+    }
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {

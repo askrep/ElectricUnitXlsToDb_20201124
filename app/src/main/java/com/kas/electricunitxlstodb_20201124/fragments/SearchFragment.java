@@ -1,4 +1,4 @@
-package com.kas.electricunitxlstodb_20201124.ui;
+package com.kas.electricunitxlstodb_20201124.fragments;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -15,7 +15,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.kas.electricunitxlstodb_20201124.R;
+import com.kas.electricunitxlstodb_20201124.viewmodels.SharedViewModel;
 
+@Deprecated
 public class SearchFragment extends Fragment {
 
     private static final String TAG = "#_SEARCH_FRAGMENT";
