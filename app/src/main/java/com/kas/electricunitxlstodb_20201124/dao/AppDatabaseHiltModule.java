@@ -4,6 +4,8 @@ import android.content.Context;
 
 import androidx.room.Room;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 import dagger.hilt.InstallIn;
@@ -14,14 +16,16 @@ import dagger.hilt.components.SingletonComponent;
 @Module
 public class AppDatabaseHiltModule {
 
+    @Singleton
     @Provides
-    public AppDatabase provideAppDatabase(@ApplicationContext Context context) {
+    public static AppDatabase provideAppDatabase(@ApplicationContext Context context) {
         return Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class,
                 AppDatabase.DATABASE_NAME).build();
     }
 
+    @Singleton
     @Provides
-    public UnitDao provideUnitDao(AppDatabase database) {
+    public static UnitDao provideUnitDao(AppDatabase database) {
         return database.unitDao();
     }
 }

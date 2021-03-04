@@ -9,5 +9,5 @@ public abstract class AppDatabase extends RoomDatabase {
     private static final String LOG_TAG = "#_APP_DATABASE";
     public static final String DATABASE_NAME = "units_db";
 
-    public abstract UnitDao unitDao();
+    abstract UnitDao unitDao();
 }

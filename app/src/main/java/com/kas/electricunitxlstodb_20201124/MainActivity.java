@@ -5,11 +5,15 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.kas.electricunitxlstodb_20201124.data.PreferencesUtil;
+import com.kas.electricunitxlstodb_20201124.databinding.MainActivityBinding;
 import com.kas.electricunitxlstodb_20201124.menu.SettingsActivity;
 import com.kas.electricunitxlstodb_20201124.viewmodels.PreferencesViewModel;
 
@@ -17,26 +21,26 @@ import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
-
     private static final String TAG = "#_MAIN_ACTIVITY";
-
+    private MainActivityBinding mainActivityBinding;
     private PreferencesViewModel preferencesViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        mainActivityBinding = DataBindingUtil.setContentView(this, R.layout.main_activity);
         preferencesViewModel = new ViewModelProvider(this).get(PreferencesViewModel.class);
 
-/*        FloatingActionButton fab = findViewById(R.id.floatingActionButton);
+        //FloatingActionButton fab = findViewById(R.id.floatingActionButton);
+        FloatingActionButton fab = mainActivityBinding.floatingActionButton;
         fab.setOnClickListener(view -> {
             Intent detailsUnitIntent = new Intent(MainActivity.this, DetailsActivity.class);
             startActivity(detailsUnitIntent);
-        });*/
+        });
 
         boolean isEditMode = PreferencesUtil.isEditMode(this.getApplication());
         if (!isEditMode) {
-            //fab.setVisibility(View.INVISIBLE);
+            fab.setVisibility(View.INVISIBLE);
         }
 
         boolean isThemeDarkMode = PreferencesUtil.isThemeModeDark(this.getApplication());
