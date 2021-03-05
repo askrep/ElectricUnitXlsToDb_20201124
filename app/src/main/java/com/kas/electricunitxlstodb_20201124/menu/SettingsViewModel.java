@@ -10,7 +10,6 @@ import androidx.lifecycle.AndroidViewModel;
 import com.kas.electricunitxlstodb_20201124.AppExecutors;
 import com.kas.electricunitxlstodb_20201124.Repository;
 import com.kas.electricunitxlstodb_20201124.dao.UnitEntry;
-import com.kas.electricunitxlstodb_20201124.data.TableUtil;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,19 +32,12 @@ public class SettingsViewModel extends AndroidViewModel {
         this.repository = repository;
     }
 
-    public String getFileName(Uri uri) {
-        return TableUtil.getFileDisplayName(application.getApplicationContext(), uri);
-    }
-
-    public boolean checkIsExcelFile(String fileName) {
-        return TableUtil.checkIfExcelFile(fileName);
-    }
-
     public void readContentFromExcel(Uri uri) {
         AppExecutors.getInstance().diskIO().execute(() -> {
             try {
-                InputStream inputStream = getApplication().getContentResolver().openInputStream(uri); // Uri uri
-                List<UnitEntry> unitEntries = TableUtil.readContentFromTable(inputStream, uri);
+                InputStream inputStream = getApplication().getContentResolver().openInputStream(
+                        uri); // Uri uri
+                List<UnitEntry> unitEntries = repository.getUnitEntryListFromInputStream(inputStream);
                 for (UnitEntry entry : unitEntries) {
                     repository.insertUnit(entry);
                 }
@@ -54,5 +46,21 @@ public class SettingsViewModel extends AndroidViewModel {
                 Log.d(TAG, "Failed read file " + e.getMessage());
             }
         });
+    }
+
+    public boolean checkIfExcelFile(String fileName) {
+        if (fileName == null) {
+            return false;
+        }
+        boolean isExcelFile = fileName.contains("xls") || fileName.contains("xlsx");
+        return isExcelFile;
+    }
+
+    public String getFileName(Uri uri) {
+        return repository.getFileDisplayName(application.getApplicationContext(), uri);
+    }
+
+    public boolean checkIsExcelFile(String fileName) {
+        return checkIfExcelFile(fileName);
     }
 }

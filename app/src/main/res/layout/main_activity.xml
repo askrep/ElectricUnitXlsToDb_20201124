@@ -12,7 +12,6 @@
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragment_unit_list"
             android:name="com.kas.electricunitxlstodb_20201124.fragments.ListFragment"
-            layout="@layout/fragment_unit_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_gravity="top"
@@ -48,7 +47,7 @@
             android:layout_marginEnd="@dimen/fab_margin_horizontal"
             android:layout_marginBottom="@dimen/fab_margin_vertical"
             android:clickable="true"
-            android:contentDescription="Add unit"
+            android:contentDescription="@string/main_fab_description"
             android:focusable="true"
             android:src="@android:drawable/ic_input_add"
             android:tint="@android:color/white"

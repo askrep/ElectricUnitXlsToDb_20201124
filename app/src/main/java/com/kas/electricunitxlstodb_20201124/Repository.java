@@ -1,10 +1,16 @@
 package com.kas.electricunitxlstodb_20201124;
 
+import android.content.Context;
+import android.net.Uri;
+
 import androidx.lifecycle.LiveData;
 
-import com.kas.electricunitxlstodb_20201124.dao.UnitDao;
 import com.kas.electricunitxlstodb_20201124.dao.UnitEntry;
+import com.kas.electricunitxlstodb_20201124.data.LocalData;
+import com.kas.electricunitxlstodb_20201124.data.RemoteData;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -12,15 +18,24 @@ import javax.inject.Inject;
 public class Repository {
 
     private static final String TAG = "#_REPOSITORY";
-
-    private UnitDao unitDao;
+    private LocalData localData;
+    private RemoteData remoteData;
     private LiveData<List<UnitEntry>> unitsLiveData;
 
-
     @Inject
-    public Repository(UnitDao unitDao) {
-        this.unitDao = unitDao;
-         unitsLiveData = unitDao.selectAll();
+    public Repository(LocalData localData, RemoteData remoteData) {
+        this.localData = localData;
+        this.remoteData = remoteData;
+
+        unitsLiveData = localData.selectAll();
+    }
+
+    public List<UnitEntry> getUnitEntryListFromInputStream(InputStream inputStream) throws IOException {
+        return localData.getUnitEntryListFromInputStream(inputStream);
+    }
+
+    public LiveData<UnitEntry> getUnitById(int id) { //database.unitDao().loadUnitById(unitId);;
+        return localData.loadUnitById(id);
     }
 
     public LiveData<List<UnitEntry>> getAllUnitsLiveData() {
@@ -28,28 +43,26 @@ public class Repository {
     }
 
     public LiveData<List<UnitEntry>> getFilteredUnitsLiveData(String filter) {
-        return unitDao.loadUnitListFiltered(filter);
-    }
-
-    public LiveData<UnitEntry> getUnitById(int id) { //database.unitDao().loadUnitById(unitId);;
-        return unitDao.loadUnitById(id);
+        return localData.loadUnitListFiltered(filter);
     }
 
     public void insertUnit(UnitEntry unitEntry) {
-        unitDao.insertUnit(unitEntry);
+        localData.insertUnit(unitEntry);
     }
 
     public void updateUnit(UnitEntry unitEntry) {
-        unitDao.updateUnit(unitEntry);
+        localData.updateUnit(unitEntry);
     }
 
     public void deleteUnit(int unitId) {
-        unitDao.deleteUnit(unitId);
+        localData.deleteUnit(unitId);
     }
 
     public void deleteAll() {
-        unitDao.deleteAll();
+        localData.deleteAll();
     }
 
-
+    public String getFileDisplayName(Context applicationContext, Uri uri) {
+        return localData.getFileDisplayName(applicationContext, uri);
+    }
 }

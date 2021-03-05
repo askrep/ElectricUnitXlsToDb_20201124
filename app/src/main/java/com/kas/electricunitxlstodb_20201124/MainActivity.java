@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
         mainActivityBinding = DataBindingUtil.setContentView(this, R.layout.main_activity);
         preferencesViewModel = new ViewModelProvider(this).get(PreferencesViewModel.class);
 
-        //FloatingActionButton fab = findViewById(R.id.floatingActionButton);
         FloatingActionButton fab = mainActivityBinding.floatingActionButton;
         fab.setOnClickListener(view -> {
             Intent detailsUnitIntent = new Intent(MainActivity.this, DetailsActivity.class);
