@@ -50,7 +50,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
         settingsViewModel = new ViewModelProvider(this).get(SettingsViewModel.class);
 
         addData = findPreference(getString(R.string.pref_add_data));
-        //
+
+        //TODO add working save/load method for name of last opened file
         addData.setSummary(PreferencesUtil.getLastOpenedFileName(getContext(),"Load data from table"));
 
         clearData = findPreference(getString(R.string.pref_clear_data));
@@ -113,7 +114,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
                     if (settingsViewModel.checkIsExcelFile(fileDisplayName)) {
                         settingsViewModel.readContentFromExcel(uri);
                         addData.setSummary(fileDisplayName);
-                        //
+
+                        //TODO save opened file name
                         PreferencesUtil.setPrefSummaryString(getContext(),"Load data from table");
 
                         Toast.makeText(getContext(), "Data added", Toast.LENGTH_SHORT).show();
