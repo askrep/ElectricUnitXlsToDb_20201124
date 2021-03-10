@@ -13,9 +13,15 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreferenceCompat;
 
 import com.kas.electricunitxlstodb_20201124.R;
-import com.kas.electricunitxlstodb_20201124.ui.PreferencesViewModel;
-import com.kas.electricunitxlstodb_20201124.ui.SharedViewModel;
+import com.kas.electricunitxlstodb_20201124.data.PreferencesUtil;
+import com.kas.electricunitxlstodb_20201124.viewmodels.PreferencesViewModel;
+import com.kas.electricunitxlstodb_20201124.viewmodels.SharedViewModel;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class SettingsFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
 
     final static private String TAG = "#_SETTINGS_FRAGMENT";
@@ -32,6 +38,10 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
     private SwitchPreferenceCompat themeSwitch;
     private SwitchPreferenceCompat editModeSwitch;
 
+    @Inject
+    public SettingsFragment() {
+    }
+
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.root_preferences, rootKey);
@@ -40,6 +50,10 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
         settingsViewModel = new ViewModelProvider(this).get(SettingsViewModel.class);
 
         addData = findPreference(getString(R.string.pref_add_data));
+
+        //TODO add working save/load method for name of last opened file
+        addData.setSummary(PreferencesUtil.getLastOpenedFileName(getContext(),"Load data from table"));
+
         clearData = findPreference(getString(R.string.pref_clear_data));
         updateData = findPreference(getString(R.string.pref_update_data));
 
@@ -73,26 +87,13 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
         intent.setType("application/vnd.ms-excel"); //application/*
-        String[] mimeTypes = new String[]{"application/vnd.ms-excel,application/*"}; //{"application/x-binary,application/octet-stream"}
+        String[] mimeTypes = new String[]{"application/vnd.ms-excel,application/*"};
         intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
 
         if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
             startActivityForResult(Intent.createChooser(intent, "messageTitle"), OPEN_DIRECTORY_REQUEST_CODE);
         } else {
             Log.d(TAG, "Unable to resolve Intent.ACTION_OPEN_DOCUMENT {}");
-        }
-    }
-
-    private void initThemeSwitch() {
-        if (themeSwitch != null) {
-            themeSwitch.setOnPreferenceChangeListener((preference, newValue) -> {
-                if ((boolean) newValue) {
-                    preferencesViewModel.setThemeModeDarkOn();
-                } else {
-                    preferencesViewModel.setThemeModeDarkOff();
-                }
-                return true;
-            });
         }
     }
 
@@ -113,6 +114,10 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
                     if (settingsViewModel.checkIsExcelFile(fileDisplayName)) {
                         settingsViewModel.readContentFromExcel(uri);
                         addData.setSummary(fileDisplayName);
+
+                        //TODO save opened file name
+                        PreferencesUtil.setPrefSummaryString(getContext(),"Load data from table");
+
                         Toast.makeText(getContext(), "Data added", Toast.LENGTH_SHORT).show();
                     }
                 } else {
@@ -121,6 +126,19 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
             } else {
                 Log.d(TAG, "User cancelled file browsing {}");
             }
+        }
+    }
+
+    private void initThemeSwitch() {
+        if (themeSwitch != null) {
+            themeSwitch.setOnPreferenceChangeListener((preference, newValue) -> {
+                if ((boolean) newValue) {
+                    preferencesViewModel.setThemeModeDarkOn();
+                } else {
+                    preferencesViewModel.setThemeModeDarkOff();
+                }
+                return true;
+            });
         }
     }
 

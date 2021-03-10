@@ -11,8 +11,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragment_unit_list"
-            android:name="com.kas.electricunitxlstodb_20201124.ui.ListFragment"
-            layout="@layout/fragment_unit_list"
+            android:name="com.kas.electricunitxlstodb_20201124.fragments.ListFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_gravity="top"
@@ -22,7 +21,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <!--            <androidx.fragment.app.FragmentContainerView
-                        android:name="com.kas.electricunitxlstodb_20201124.ui.SearchFragment"
+                        android:name="com.kas.electricunitxlstodb_20201124.fragments.SearchFragment"
                         android:id="@+id/search_fragment_container"
                         layout="@layout/fragment_search"
                         android:layout_width="match_parent"
@@ -33,7 +32,7 @@
                         tools:text="Sample text" />-->
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/search_fragment_container"
-            android:name="com.kas.electricunitxlstodb_20201124.ui.SearchWidgetFragment"
+            android:name="com.kas.electricunitxlstodb_20201124.fragments.SearchWidgetFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
@@ -48,7 +47,7 @@
             android:layout_marginEnd="@dimen/fab_margin_horizontal"
             android:layout_marginBottom="@dimen/fab_margin_vertical"
             android:clickable="true"
-            android:contentDescription="Add unit"
+            android:contentDescription="@string/main_fab_description"
             android:focusable="true"
             android:src="@android:drawable/ic_input_add"
             android:tint="@android:color/white"

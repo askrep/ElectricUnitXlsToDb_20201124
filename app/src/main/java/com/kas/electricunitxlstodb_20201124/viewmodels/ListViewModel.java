@@ -1,24 +1,27 @@
-package com.kas.electricunitxlstodb_20201124.ui;
-
-import android.app.Application;
+package com.kas.electricunitxlstodb_20201124.viewmodels;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
 
 import com.kas.electricunitxlstodb_20201124.dao.UnitEntry;
 
 import java.util.List;
 
-public class ListViewModel extends AndroidViewModel {
+import javax.inject.Inject;
+
+import dagger.hilt.android.lifecycle.HiltViewModel;
+
+@HiltViewModel
+public class ListViewModel extends ViewModel {
 
     private static final String LOG_TAG = "#_LIST_ViewModel";
 
     @NonNull
     private LiveData<List<UnitEntry>> unitsLiveData;
 
-    public ListViewModel(@NonNull Application application) {
-        super(application);
+    @Inject
+    public ListViewModel() {
     }
 
 }

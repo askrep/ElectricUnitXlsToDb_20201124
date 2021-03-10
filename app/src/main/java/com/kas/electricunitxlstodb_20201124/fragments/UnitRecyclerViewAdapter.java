@@ -1,4 +1,4 @@
-package com.kas.electricunitxlstodb_20201124.ui;
+package com.kas.electricunitxlstodb_20201124.fragments;
 
 import android.content.Context;
 import android.view.LayoutInflater;
