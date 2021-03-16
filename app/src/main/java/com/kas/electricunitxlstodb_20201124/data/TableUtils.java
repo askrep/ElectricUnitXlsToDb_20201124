@@ -29,25 +29,33 @@ public class TableUtils {
     public TableUtils() {
     }
 
+    //TODO Refactor table utils
     public List<UnitEntry> getUnitEntryListFromInputStream(InputStream inputStream) throws IOException {
 
         if (inputStream != null) {
             Row row;
-            XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
-            XSSFSheet spreadsheet = workbook.getSheetAt(0);
-            Iterator<Row> iterator = spreadsheet.iterator();
+            XSSFSheet sheet;
             List<UnitEntry> unitList = new ArrayList<>();
+            XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
 
-            while (iterator.hasNext()) {
-                row = iterator.next();
-                Iterator<Cell> cellIterator = row.cellIterator();
-                UnitEntry unitEntry = new UnitEntry(null, null, null);
 
-                while (cellIterator.hasNext()) {
-                    fillUnitEntry(cellIterator, unitEntry);
+            Iterator<XSSFSheet> sheetIterator = workbook.iterator();
+
+            while (sheetIterator.hasNext()) {
+                sheet = sheetIterator.next();
+                Iterator<Row> rowIterator = sheet.iterator();
+
+                while (rowIterator.hasNext()) {
+                    row = rowIterator.next();
+                    Iterator<Cell> cellIterator = row.cellIterator();
+                    UnitEntry unitEntry = new UnitEntry(null, null, null);
+
+                    while (cellIterator.hasNext()) {
+                        fillUnitEntry(cellIterator, unitEntry);
+                    }
+
+                    unitList.add(unitEntry);
                 }
-
-                unitList.add(unitEntry);
             }
             inputStream.close();
             return unitList;

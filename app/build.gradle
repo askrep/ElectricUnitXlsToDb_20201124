@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId "com.kas.electricunitxlstodb_20201124"
-        minSdkVersion 26
+        minSdkVersion 23
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -46,15 +46,15 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
-    implementation 'androidx.navigation:navigation-fragment:2.3.3'
-    implementation 'androidx.navigation:navigation-ui:2.3.3'
+    implementation 'androidx.navigation:navigation-fragment:2.3.4'
+    implementation 'androidx.navigation:navigation-ui:2.3.4'
 
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.preference:preference:1.1.1'
     implementation fileTree(dir: 'G:\\Projects\\Android\\ElectricUnitXlsToDb_20201124\\app\\libs', include: ['*.aar', '*.jar'], exclude: [])
     implementation fileTree(dir: 'F:\\temp\\android\\ElectricUnitXlsToDb_20201124\\app\\libs', include: ['*.aar', '*.jar'], exclude: [])
 
-    testImplementation 'junit:junit:4.+'
+    testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
@@ -64,8 +64,8 @@ dependencies {
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 
     //Hilt ViewModel
-    implementation 'androidx.hilt:hilt-work:1.0.0-alpha03'
-    annotationProcessor 'androidx.hilt:hilt-compiler:1.0.0-alpha03'
+    implementation 'androidx.hilt:hilt-work:1.0.0-beta01'
+    annotationProcessor 'androidx.hilt:hilt-compiler:1.0.0-beta01'
 
     //Room
     def room_version = "2.2.6"
