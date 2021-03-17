@@ -11,6 +11,7 @@ import com.kas.electricunitxlstodb_20201124.dao.UnitEntry;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -53,9 +54,14 @@ public class LocalData {
         unitDao.deleteAll();
     }
 
+    public Map<String, List<String[]>> parseInputStreamToSheetMap(InputStream inputStream) throws IOException {
+        return ParseXlsxTableUtil.parseXlsxToSheetMap(inputStream);
+    }
+
     public List<UnitEntry> getUnitEntryListFromInputStream(InputStream inputStream) throws IOException {
         return tableUtils.getUnitEntryListFromInputStream(inputStream);
     }
+
 
     public String getFileDisplayName(Context applicationContext, Uri uri) {
          return tableUtils.getFileName(uri);

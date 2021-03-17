@@ -36,20 +36,23 @@ public class TableUtils {
             Row row;
             XSSFSheet sheet;
             List<UnitEntry> unitList = new ArrayList<>();
+            /**read table*/
             XSSFWorkbook workbook = new XSSFWorkbook(inputStream);
-
 
             Iterator<XSSFSheet> sheetIterator = workbook.iterator();
 
+            /**read all sheets*/
             while (sheetIterator.hasNext()) {
                 sheet = sheetIterator.next();
                 Iterator<Row> rowIterator = sheet.iterator();
 
+                /**read all rows*/
                 while (rowIterator.hasNext()) {
                     row = rowIterator.next();
+
                     Iterator<Cell> cellIterator = row.cellIterator();
                     UnitEntry unitEntry = new UnitEntry(null, null, null);
-
+                    /**read all cells*/
                     while (cellIterator.hasNext()) {
                         fillUnitEntry(cellIterator, unitEntry);
                     }

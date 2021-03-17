@@ -12,6 +12,7 @@ import com.kas.electricunitxlstodb_20201124.data.RemoteData;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -28,6 +29,11 @@ public class Repository {
         this.remoteData = remoteData;
 
         unitsLiveData = localData.selectAll();
+    }
+
+    public Map<String, List<String[]>> parseInputStreamToUnitEntryList(InputStream inputStream) throws IOException {
+        return localData.parseInputStreamToSheetMap(inputStream);
+
     }
 
     public List<UnitEntry> getUnitEntryListFromInputStream(InputStream inputStream) throws IOException {

@@ -32,6 +32,13 @@ public class SettingsViewModel extends AndroidViewModel {
         this.repository = repository;
     }
 
+    //TODO Use new parse table method
+    public void getContentFromXlsx(Uri uri) {
+        AppExecutors.getInstance().diskIO().execute(() -> {
+
+        });
+    }
+
     public void readContentFromExcel(Uri uri) {
         AppExecutors.getInstance().diskIO().execute(() -> {
             try {
