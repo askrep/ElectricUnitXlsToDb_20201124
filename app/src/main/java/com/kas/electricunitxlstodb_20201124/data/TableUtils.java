@@ -51,7 +51,7 @@ public class TableUtils {
                     row = rowIterator.next();
 
                     Iterator<Cell> cellIterator = row.cellIterator();
-                    UnitEntry unitEntry = new UnitEntry(null, null, null);
+                    UnitEntry unitEntry = new UnitEntry(null, null, null,null);
                     /**read all cells*/
                     while (cellIterator.hasNext()) {
                         fillUnitEntry(cellIterator, unitEntry);

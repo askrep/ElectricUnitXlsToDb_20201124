@@ -7,11 +7,11 @@ import androidx.lifecycle.LiveData;
 
 import com.kas.electricunitxlstodb_20201124.dao.UnitDao;
 import com.kas.electricunitxlstodb_20201124.dao.UnitEntry;
+import com.kas.electricunitxlstodb_20201124.dao.UnitEntryUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -54,10 +54,13 @@ public class LocalData {
         unitDao.deleteAll();
     }
 
-    public Map<String, List<String[]>> parseInputStreamToSheetMap(InputStream inputStream) throws IOException {
+    public List<List<String>> parseInputStreamToSheetMap(InputStream inputStream) throws IOException {
         return ParseXlsxTableUtil.parseXlsxToSheetMap(inputStream);
     }
 
+    public List<UnitEntry> parseXlsxInputStreamToUnitEntryList(InputStream inputStream) throws IOException {
+        return UnitEntryUtils.getUnitEntryList(ParseXlsxTableUtil.parseXlsxToSheetMap(inputStream));
+    }
     public List<UnitEntry> getUnitEntryListFromInputStream(InputStream inputStream) throws IOException {
         return tableUtils.getUnitEntryListFromInputStream(inputStream);
     }

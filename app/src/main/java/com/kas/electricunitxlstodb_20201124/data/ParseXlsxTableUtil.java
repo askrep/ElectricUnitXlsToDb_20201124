@@ -14,46 +14,48 @@ import java.util.Map;
 
 public class ParseXlsxTableUtil {
 
-    public static Map<String, List<String[]>> parseXlsxToSheetMap(InputStream inputStream) throws IOException {
-        Map<String, List<String[]>> outputSheetsMap = new HashMap<>();
+    public static List<List<String>> parseXlsxToSheetMap(InputStream inputStream) throws IOException {
+        List<List<String>> outputRowList = new ArrayList<>();
 
         XSSFWorkbook book = ParseXlsxTableUtil.getBookFromXlsxInputStream(inputStream);
-        Map<String, XSSFSheet> sheetsMap = ParseXlsxTableUtil.getBookSheetsMap(book);
+        List<XSSFSheet> sheetList = ParseXlsxTableUtil.getBookSheetList(book);
 
-        sheetsMap.forEach((sheetName, sheet) -> {
+        /** SHEETS */
+        sheetList.forEach((sheet) -> {
 
-            List<String[]> outputRowList = new ArrayList<>();
-
+            String sheetName = sheet.getSheetName();
             List<Row> rowList = ParseXlsxTableUtil.getSheetRowsList(sheet);
 
+            /** ROWS */
             for (Row row : rowList) {
                 List<String> cellList = ParseXlsxTableUtil.getRowCellsListAsString(row);
-                String[] cells = new String[row.getRowNum()];
-                cells[0] = sheetName;
+                List<String> outputCellList = new ArrayList<>();
 
-                for (int i = 0; i < cellList.size(); i++) {
-                    String stringCell = cellList.get(i);
-                    cells[1 + i] = stringCell;
+                outputCellList.add(sheetName);
+
+                /** CELLS */
+                for (String cell : cellList) {
+                    outputCellList.add(cell);    //Fill Cell list
+
                 }
-                outputRowList.add(cells);
+                outputRowList.add(outputCellList);  //Fill Row list
             }
-            outputSheetsMap.put(sheetName, outputRowList);
         });
 
-        return outputSheetsMap;
+        return outputRowList;
     }
 
     public static XSSFWorkbook getBookFromXlsxInputStream(InputStream inputStream) throws IOException {
         return new XSSFWorkbook(inputStream);
     }
 
-    public static Map<String, XSSFSheet> getBookSheetsMap(XSSFWorkbook workbook) {
-        Map<String, XSSFSheet> sheetMap = new HashMap<>();
+    public static List<XSSFSheet> getBookSheetList(XSSFWorkbook workbook) {
+        List<XSSFSheet> sheetList = new ArrayList<>();
 
         for (XSSFSheet sheet : workbook) {
-            sheetMap.put(sheet.getSheetName(), sheet);
+            sheetList.add(sheet);
         }
-        return sheetMap;
+        return sheetList;
     }
 
     public static List<Row> getSheetRowsList(XSSFSheet sheet) {

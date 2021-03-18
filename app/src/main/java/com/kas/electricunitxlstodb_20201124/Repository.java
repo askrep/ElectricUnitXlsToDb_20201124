@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 
 import com.kas.electricunitxlstodb_20201124.dao.UnitEntry;
 import com.kas.electricunitxlstodb_20201124.data.LocalData;
+import com.kas.electricunitxlstodb_20201124.data.ParseXlsxTableUtil;
 import com.kas.electricunitxlstodb_20201124.data.RemoteData;
 
 import java.io.IOException;
@@ -31,9 +32,8 @@ public class Repository {
         unitsLiveData = localData.selectAll();
     }
 
-    public Map<String, List<String[]>> parseInputStreamToUnitEntryList(InputStream inputStream) throws IOException {
+    public List<List<String>> parseInputStreamToSheetMap(InputStream inputStream) throws IOException {
         return localData.parseInputStreamToSheetMap(inputStream);
-
     }
 
     public List<UnitEntry> getUnitEntryListFromInputStream(InputStream inputStream) throws IOException {

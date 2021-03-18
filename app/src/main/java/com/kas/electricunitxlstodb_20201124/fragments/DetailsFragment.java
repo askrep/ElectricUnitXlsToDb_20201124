@@ -134,7 +134,7 @@ public class DetailsFragment extends Fragment {
         String entryLocation = location.getText().toString();
         String entryTitle = title.getText().toString();
         String entryDescription = description.getText().toString();
-        UnitEntry unitEntry = new UnitEntry(entryLocation, entryTitle, entryDescription);
+        UnitEntry unitEntry = new UnitEntry(entryLocation, entryTitle, entryDescription,null);
 
         if (unitId == DEFAULT_UNIT_ID) {
             sharedViewModel.insertUnit(unitEntry);

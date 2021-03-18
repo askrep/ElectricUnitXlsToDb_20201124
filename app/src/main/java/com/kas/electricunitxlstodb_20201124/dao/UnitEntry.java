@@ -7,21 +7,25 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "units")
 public class UnitEntry {
 
-    @PrimaryKey(autoGenerate = true) public int id;
+    @PrimaryKey(autoGenerate = true)
+    public int id;
+    public String location;
+    public String cabinet;
     public String title;
     public String description;
-    public String location;
 
-    public UnitEntry(int id, String location, String title, String description) {
+    public UnitEntry(int id, String location, String cabinet, String title, String description) {
         this.id = id;
         this.location = location;
+        this.cabinet = cabinet;
         this.title = title;
         this.description = description;
     }
 
     @Ignore
-    public UnitEntry(String location, String title, String description) {
+    public UnitEntry(String location, String cabinet, String title, String description) {
         this.location = location;
+        this.cabinet = cabinet;
         this.title = title;
         this.description = description;
     }
@@ -40,6 +44,14 @@ public class UnitEntry {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getCabinet() {
+        return cabinet;
+    }
+
+    public void setCabinet(String cabinet) {
+        this.cabinet = cabinet;
     }
 
     public String getTitle() {
