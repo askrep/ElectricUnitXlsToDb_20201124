@@ -9,11 +9,14 @@ public class UnitEntryUtils {
         unitEntry.location = fields.get(0);
         unitEntry.cabinet = fields.get(1);
         unitEntry.title = fields.get(2);
-        unitEntry.description = fields.get(3);
+        //todo fix stupid check
+        if (fields.size() > 3) {
+            unitEntry.description = fields.get(3);
+        }
         return unitEntry;
     }
 
-    public static List<UnitEntry> getUnitEntryList(List<List<String>> doubleListsOfString){
+    public static List<UnitEntry> getUnitEntryList(List<List<String>> doubleListsOfString) {
         List<UnitEntry> unitEntryList = new ArrayList<>();
         for (List<String> stringList : doubleListsOfString) {
             unitEntryList.add(getUnitEntryWithVariousStringFields(stringList));

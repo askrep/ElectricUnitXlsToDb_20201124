@@ -44,8 +44,9 @@ public class SettingsViewModel extends AndroidViewModel {
             try {
                 InputStream inputStream = getApplication().getContentResolver().openInputStream(
                         uri); // Uri uri
-                List<UnitEntry> unitEntries = repository.getUnitEntryListFromInputStream(inputStream);
-                for (UnitEntry entry : unitEntries) {
+                //List<UnitEntry> unitEntries = repository.getUnitEntryListFromInputStream(inputStream);
+
+                for (UnitEntry entry : repository.parseXlsxInputStreamToUnitEntryList(inputStream)) {
                     repository.insertUnit(entry);
                 }
             } catch (IOException e) {

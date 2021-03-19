@@ -32,12 +32,13 @@ public class Repository {
         unitsLiveData = localData.selectAll();
     }
 
-    public List<List<String>> parseInputStreamToSheetMap(InputStream inputStream) throws IOException {
-        return localData.parseInputStreamToSheetMap(inputStream);
-    }
-
     public List<UnitEntry> getUnitEntryListFromInputStream(InputStream inputStream) throws IOException {
         return localData.getUnitEntryListFromInputStream(inputStream);
+    }
+
+    //new
+    public List<UnitEntry> parseXlsxInputStreamToUnitEntryList(InputStream inputStream) throws IOException {
+        return localData.parseXlsxInputStreamToUnitEntryList(inputStream);
     }
 
     public LiveData<UnitEntry> getUnitById(int id) { //database.unitDao().loadUnitById(unitId);;

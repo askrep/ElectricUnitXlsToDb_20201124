@@ -54,12 +54,9 @@ public class LocalData {
         unitDao.deleteAll();
     }
 
-    public List<List<String>> parseInputStreamToSheetMap(InputStream inputStream) throws IOException {
-        return ParseXlsxTableUtil.parseXlsxToSheetMap(inputStream);
-    }
-
     public List<UnitEntry> parseXlsxInputStreamToUnitEntryList(InputStream inputStream) throws IOException {
-        return UnitEntryUtils.getUnitEntryList(ParseXlsxTableUtil.parseXlsxToSheetMap(inputStream));
+        //todo call TableParser
+        return UnitEntryUtils.getUnitEntryList();
     }
     public List<UnitEntry> getUnitEntryListFromInputStream(InputStream inputStream) throws IOException {
         return tableUtils.getUnitEntryListFromInputStream(inputStream);

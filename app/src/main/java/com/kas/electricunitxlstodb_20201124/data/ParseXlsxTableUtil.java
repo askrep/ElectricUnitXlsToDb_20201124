@@ -14,37 +14,6 @@ import java.util.Map;
 
 public class ParseXlsxTableUtil {
 
-    public static List<List<String>> parseXlsxToSheetMap(InputStream inputStream) throws IOException {
-        List<List<String>> outputRowList = new ArrayList<>();
-
-        XSSFWorkbook book = ParseXlsxTableUtil.getBookFromXlsxInputStream(inputStream);
-        List<XSSFSheet> sheetList = ParseXlsxTableUtil.getBookSheetList(book);
-
-        /** SHEETS */
-        sheetList.forEach((sheet) -> {
-
-            String sheetName = sheet.getSheetName();
-            List<Row> rowList = ParseXlsxTableUtil.getSheetRowsList(sheet);
-
-            /** ROWS */
-            for (Row row : rowList) {
-                List<String> cellList = ParseXlsxTableUtil.getRowCellsListAsString(row);
-                List<String> outputCellList = new ArrayList<>();
-
-                outputCellList.add(sheetName);
-
-                /** CELLS */
-                for (String cell : cellList) {
-                    outputCellList.add(cell);    //Fill Cell list
-
-                }
-                outputRowList.add(outputCellList);  //Fill Row list
-            }
-        });
-
-        return outputRowList;
-    }
-
     public static XSSFWorkbook getBookFromXlsxInputStream(InputStream inputStream) throws IOException {
         return new XSSFWorkbook(inputStream);
     }
@@ -70,10 +39,10 @@ public class ParseXlsxTableUtil {
         List<String> cellList = new ArrayList<>();
 
         for (Cell cell : row) {
-            if (cell.getCellType() == Cell.CELL_TYPE_STRING) {
+            if (cell.getCellType() == Cell.CELL_TYPE_STRING || cell.getCellType() == Cell.CELL_TYPE_BLANK) {
                 cellList.add(cell.getStringCellValue());
             } else {
-                throw new IllegalArgumentException("Cell of Row is not String type, Row: " + row.getRowNum() + "; Cell: " + cell.getColumnIndex());
+//                throw new IllegalArgumentException("Cell of Row is not String type, Row: " + row.getRowNum() + "; Cell: " + cell.getColumnIndex());
             }
         }
         return cellList;

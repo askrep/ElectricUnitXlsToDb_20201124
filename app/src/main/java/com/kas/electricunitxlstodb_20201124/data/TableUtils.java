@@ -68,7 +68,8 @@ public class TableUtils {
 
     private void fillUnitEntry(@NotNull Iterator<Cell> cellIterator, UnitEntry unitEntry) {
         Cell cell = cellIterator.next();
-        String location = "";
+        String location;
+        String cabinet;
         String title;
         String description;
 
@@ -77,9 +78,10 @@ public class TableUtils {
                 String stringCellValue = cell.getStringCellValue();
 
                 switch (cell.getColumnIndex()) {
+
                     case 0:
-                        location = stringCellValue;
-                        unitEntry.setLocation(location.trim());
+                        cabinet = stringCellValue;
+                        unitEntry.setCabinet(cabinet.trim());
                         break;
                     case 1:
                         title = stringCellValue;
