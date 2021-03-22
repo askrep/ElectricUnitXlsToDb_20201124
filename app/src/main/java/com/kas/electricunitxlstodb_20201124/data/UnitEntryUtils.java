@@ -1,4 +1,6 @@
-package com.kas.electricunitxlstodb_20201124.dao;
+package com.kas.electricunitxlstodb_20201124.data;
+
+import com.kas.electricunitxlstodb_20201124.dao.UnitEntry;
 
 import java.util.ArrayList;
 import java.util.List;

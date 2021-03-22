@@ -14,10 +14,6 @@ import com.kas.electricunitxlstodb_20201124.databinding.FragmentUnitTripleBindin
 
 import java.util.List;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link UnitEntry}.
- * TODO: Replace the implementation with code for your data type.
- */
 public class UnitRecyclerViewAdapter extends RecyclerView.Adapter<UnitRecyclerViewAdapter.ViewHolderTriple> {
 
     private List<UnitEntry> units;

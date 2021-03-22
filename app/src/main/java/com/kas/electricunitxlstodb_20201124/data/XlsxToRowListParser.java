@@ -1,5 +1,7 @@
 package com.kas.electricunitxlstodb_20201124.data;
 
+import android.util.Log;
+
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -9,17 +11,21 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 public class XlsxToRowListParser implements TableParser {
+    private static final String TAG = "#_XLSX_TO_ROW";
 
     private int validCellNumber;
+    private List<List<String>> rowListOfCellLists;
 
-    public XlsxToRowListParser(int validCellNumber) {
-        this.validCellNumber = validCellNumber;
+    @Inject
+    public XlsxToRowListParser() {
+        this.validCellNumber = 5;
     }
 
-    public List<List<String>> parseXlsx(InputStream inputStream) throws IOException {
-        //TODO move parsing to upper layer
-        List<List<String>> outputRowList = new ArrayList<>();
+    public List<List<String>> parseTable(InputStream inputStream) throws IOException {
+         rowListOfCellLists = new ArrayList<>();
 
         XSSFWorkbook book = ParseXlsxTableUtil.getBookFromXlsxInputStream(inputStream);
         List<XSSFSheet> sheetList = ParseXlsxTableUtil.getBookSheetList(book);
@@ -38,17 +44,27 @@ public class XlsxToRowListParser implements TableParser {
                 outputCellList.add(sheetName);
 
                 /** CELLS */
-                for (String cell : cellList) {
+                for (int i = 0; i < cellList.size(); i++) {
+                    String cell = cellList.get(i);
                     outputCellList.add(cell);    //Fill Cell list
-
+                    Log.d(TAG, "parseTable: SHEET: \"" + sheetName + "\" ROW: " + row.getRowNum() + " Cell_no:" + i + " - CELL: " + cell);
                 }
-                while (outputCellList.size() != validCellNumber) {
-                    outputCellList.add("null");
-                }
-                outputRowList.add(outputCellList);  //Fill Row list
+                rowListOfCellLists.add(outputCellList);  //Fill Row list
             }
         });
 
-        return outputRowList;
+        return rowListOfCellLists;
+    }
+
+    public List<List<String>> getRowListOfCellLists() {
+        return rowListOfCellLists;
+    }
+
+    public int getValidCellNumber() {
+        return validCellNumber;
+    }
+
+    public void setValidCellNumber(int validCellNumber) {
+        this.validCellNumber = validCellNumber;
     }
 }

@@ -38,7 +38,8 @@ public class ListFragment extends Fragment implements UnitRecyclerViewAdapter.Un
     public static final int VERTICAL = 1;
 
     @Inject
-    public ListFragment() {    }
+    public ListFragment() {
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,8 +74,8 @@ public class ListFragment extends Fragment implements UnitRecyclerViewAdapter.Un
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         sharedViewModel.getUnitsLiveData().observe(getActivity(), filteredUnits -> {
             adapter.setUnits(filteredUnits);
         });

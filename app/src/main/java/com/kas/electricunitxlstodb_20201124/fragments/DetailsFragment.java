@@ -66,8 +66,8 @@ public class DetailsFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         Intent intent = getActivity().getIntent();
 
         sharedViewModel = new ViewModelProvider(getActivity()).get(SharedViewModel.class);
@@ -134,7 +134,7 @@ public class DetailsFragment extends Fragment {
         String entryLocation = location.getText().toString();
         String entryTitle = title.getText().toString();
         String entryDescription = description.getText().toString();
-        UnitEntry unitEntry = new UnitEntry(entryLocation, entryTitle, entryDescription,null);
+        UnitEntry unitEntry = new UnitEntry(entryLocation, entryTitle, entryDescription, null);
 
         if (unitId == DEFAULT_UNIT_ID) {
             sharedViewModel.insertUnit(unitEntry);

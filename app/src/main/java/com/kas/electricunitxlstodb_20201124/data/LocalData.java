@@ -7,7 +7,6 @@ import androidx.lifecycle.LiveData;
 
 import com.kas.electricunitxlstodb_20201124.dao.UnitDao;
 import com.kas.electricunitxlstodb_20201124.dao.UnitEntry;
-import com.kas.electricunitxlstodb_20201124.dao.UnitEntryUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,11 +18,12 @@ public class LocalData {
 
     private UnitDao unitDao;
     private TableUtils tableUtils;
+    private XlsxToRowListParser tableParser;
 
     @Inject
-    public LocalData(UnitDao unitDao, TableUtils tableUtils) {
+    public LocalData(UnitDao unitDao,  XlsxToRowListParser tableParser) {
         this.unitDao = unitDao;
-        this.tableUtils = tableUtils;
+         this.tableParser = tableParser;
     }
 
     public LiveData<UnitEntry> loadUnitById(int id) {
@@ -55,8 +55,8 @@ public class LocalData {
     }
 
     public List<UnitEntry> parseXlsxInputStreamToUnitEntryList(InputStream inputStream) throws IOException {
-        //todo call TableParser
-        return UnitEntryUtils.getUnitEntryList();
+         List<List<String>> lists = tableParser.parseTable(inputStream);
+        return UnitEntryUtils.getUnitEntryList(lists);
     }
     public List<UnitEntry> getUnitEntryListFromInputStream(InputStream inputStream) throws IOException {
         return tableUtils.getUnitEntryListFromInputStream(inputStream);
