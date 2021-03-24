@@ -9,8 +9,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kas.electricunitxlstodb_20201124.dao.UnitEntry;
-import com.kas.electricunitxlstodb_20201124.databinding.FragmentUnitDoubleBinding;
-import com.kas.electricunitxlstodb_20201124.databinding.FragmentUnitTripleBinding;
+import com.kas.electricunitxlstodb_20201124.databinding.FragmentThreeFieldsBinding;
 
 import java.util.List;
 
@@ -20,21 +19,20 @@ public class UnitRecyclerViewAdapter extends RecyclerView.Adapter<UnitRecyclerVi
     private final UnitClickListener unitClickListener;
     private Context context;
 
-    /********** INNER ViewHolderTriple CLASS ************/
-    public class ViewHolderDouble extends RecyclerView.ViewHolder implements View.OnClickListener {
+/*    public class ViewHolderDouble extends RecyclerView.ViewHolder implements View.OnClickListener {
         private static final String LOG_TAG = "# VIEW HOLDER";
         //    public final View view;
         public final TextView titleView;
         public final TextView descriptionView;
         public UnitEntry unit;
         FragmentUnitDoubleBinding doubleBinding;
-        FragmentUnitTripleBinding tripleBinding;
+        FragmentThreeFieldsBinding tripleBinding;
 
         public ViewHolderDouble(FragmentUnitDoubleBinding binding) {
             super(binding.getRoot());
             doubleBinding = binding;
 
-            titleView = binding.unitTitle;
+            titleView = binding.;
             descriptionView = binding.unitDescription;
             binding.getRoot().setOnClickListener((View.OnClickListener) this);
         }
@@ -45,25 +43,24 @@ public class UnitRecyclerViewAdapter extends RecyclerView.Adapter<UnitRecyclerVi
             int elementId = units.get(adapterPosition).getId();
             unitClickListener.onUnitClick(elementId);
         }
-    }
+    }*/
 
-    /********** END VIEW HOLDER CLASS ************/
+    /********** INNER ViewHolderTriple CLASS ************/
     public class ViewHolderTriple extends RecyclerView.ViewHolder implements View.OnClickListener {
         private static final String LOG_TAG = "# VIEW HOLDER";
 
-        private final TextView unitLocation;
-        public final TextView titleView;
-        public final TextView descriptionView;
+        private final TextView firstField;
+        private final TextView secondField;
+        private final TextView thirdField;
 
         public UnitEntry unit;
-        FragmentUnitTripleBinding tripleBinding;
 
-        public ViewHolderTriple(FragmentUnitTripleBinding binding) {
+        public ViewHolderTriple(FragmentThreeFieldsBinding binding) {
             super(binding.getRoot());
-            tripleBinding = binding;
-            unitLocation = binding.unitLocation;
-            titleView = binding.unitTitle;
-            descriptionView = binding.unitDescription;
+
+            firstField = binding.firstField;
+            secondField = binding.secondField;
+            thirdField = binding.thirdField;
             binding.getRoot().setOnClickListener((View.OnClickListener) this);
         }
 
@@ -89,7 +86,7 @@ public class UnitRecyclerViewAdapter extends RecyclerView.Adapter<UnitRecyclerVi
     public ViewHolderTriple onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         //ViewHolderTriple Data bindings
-        FragmentUnitTripleBinding binding = FragmentUnitTripleBinding.inflate(inflater, parent, false);
+        FragmentThreeFieldsBinding binding = FragmentThreeFieldsBinding.inflate(inflater, parent, false);
         return new ViewHolderTriple(binding);
     }
 
@@ -98,9 +95,9 @@ public class UnitRecyclerViewAdapter extends RecyclerView.Adapter<UnitRecyclerVi
         UnitEntry unitEntry = units.get(position);
 
         holder.unit = units.get(position);
-        holder.unitLocation.setText(unitEntry.location);
-        holder.titleView.setText(unitEntry.title);
-        holder.descriptionView.setText(unitEntry.description);
+        holder.firstField.setText(unitEntry.getLocation());
+        holder.secondField.setText(unitEntry.getTitle());
+        holder.thirdField.setText(unitEntry.getDescription());
     }
 
     @Override

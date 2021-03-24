@@ -34,7 +34,6 @@ public class DetailsFragment extends Fragment {
 
     private static final String TAG = "#_DETAILS_FRAGMENT";
     private SharedViewModel sharedViewModel;
-    private PreferencesViewModel preferencesViewModel;
     private DetailsFragmentBinding binding;
 
     private boolean isEditMode;
@@ -43,6 +42,7 @@ public class DetailsFragment extends Fragment {
     private EditText location;
     private EditText title;
     private EditText description;
+    private EditText cabinet;
 
     @Inject
     public DetailsFragment() {
@@ -59,8 +59,9 @@ public class DetailsFragment extends Fragment {
         detailsButton.setOnClickListener(view -> onCommonButtonClicked());
         deleteButton.setOnClickListener(view -> onDeleteButtonClicked());
         location = binding.location;
+        cabinet = binding.cabinet;
         title = binding.title;
-        description = binding.unitDescription;
+        description = binding.thirdField;
 
         return inflate;
     }
@@ -71,7 +72,7 @@ public class DetailsFragment extends Fragment {
         Intent intent = getActivity().getIntent();
 
         sharedViewModel = new ViewModelProvider(getActivity()).get(SharedViewModel.class);
-        preferencesViewModel = new ViewModelProvider(getActivity()).get(PreferencesViewModel.class);
+        PreferencesViewModel preferencesViewModel = new ViewModelProvider(getActivity()).get(PreferencesViewModel.class);
 
         isEditMode = PreferencesUtil.isEditMode(this.getContext());
 
@@ -102,22 +103,24 @@ public class DetailsFragment extends Fragment {
     }
 
     private void isEditModeConfig() {
-        deleteButton.setClickable(true);
+        location.setEnabled(true);
+        cabinet.setEnabled(true);
         title.setEnabled(true);
         description.setEnabled(true);
-        location.setEnabled(true);
         deleteButton.setClickable(true);
         detailsButton.setClickable(true);
         Log.d(TAG, "isEditModeConfig: on");
     }
 
     private void isOnlyReadModeConfig() {
+        location.setEnabled(false);
+        cabinet.setEnabled(false);
         title.setEnabled(false);
         description.setEnabled(false);
-        location.setEnabled(false);
         //description.setTextColor(Color.BLUE);
         deleteButton.setClickable(false);
         detailsButton.setClickable(false);
+        //todo replace deprecated method
         deleteButton.setBackgroundColor(getResources().getColor(R.color.gray_deactivated));
         detailsButton.setBackgroundColor(getResources().getColor(R.color.gray_deactivated));
         Log.d(TAG, "isOnlyReadModeConfig: off");
@@ -126,15 +129,17 @@ public class DetailsFragment extends Fragment {
     private void fillingUi(UnitEntry unitEntry) {
         if (unitEntry == null) return;
         location.setText(unitEntry.getLocation());
+        cabinet.setText(unitEntry.getCabinet());
         title.setText(unitEntry.getTitle());
         description.setText(unitEntry.getDescription());
     }
 
     public void onCommonButtonClicked() {
         String entryLocation = location.getText().toString();
+        String entryCabinet = cabinet.getText().toString();
         String entryTitle = title.getText().toString();
         String entryDescription = description.getText().toString();
-        UnitEntry unitEntry = new UnitEntry(entryLocation, entryTitle, entryDescription, null);
+        UnitEntry unitEntry = new UnitEntry(entryLocation, entryCabinet, entryTitle, entryDescription);
 
         if (unitId == DEFAULT_UNIT_ID) {
             sharedViewModel.insertUnit(unitEntry);

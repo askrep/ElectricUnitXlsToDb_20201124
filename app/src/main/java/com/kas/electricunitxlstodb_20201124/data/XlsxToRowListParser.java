@@ -21,7 +21,7 @@ public class XlsxToRowListParser implements TableParser {
 
     @Inject
     public XlsxToRowListParser() {
-        this.validCellNumber = 5;
+        this.validCellNumber = 4;
     }
 
     public List<List<String>> parseTable(InputStream inputStream) throws IOException {
@@ -41,13 +41,11 @@ public class XlsxToRowListParser implements TableParser {
                 List<String> cellList = ParseXlsxTableUtil.getRowCellsListAsString(row);
                 List<String> outputCellList = new ArrayList<>();
 
-                outputCellList.add(sheetName);
-
                 /** CELLS */
                 for (int i = 0; i < cellList.size(); i++) {
                     String cell = cellList.get(i);
                     outputCellList.add(cell);    //Fill Cell list
-                    Log.d(TAG, "parseTable: SHEET: \"" + sheetName + "\" ROW: " + row.getRowNum() + " Cell_no:" + i + " - CELL: " + cell);
+                    //Log.d(TAG, "parseTable: SHEET: \"" + sheetName + "\" ROW: " + row.getRowNum() + " Cell_no:" + i + " - CELL: " + cell);
                 }
                 rowListOfCellLists.add(outputCellList);  //Fill Row list
             }

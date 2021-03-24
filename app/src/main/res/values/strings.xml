@@ -44,4 +44,8 @@
     <string name="pref_edit_mode">Edit-Mode</string>
     <string name="location_label">Location</string>
     <string name="main_fab_description">Add unit</string>
+    <string name="cabinet_label">Cabinet</string>
+    <string name="pref_save_data">Save-data</string>
+    <string name="pref_save_data_summary">Save data to table</string>
+    <string name="pref_save_data_title">Save data</string>
 </resources>

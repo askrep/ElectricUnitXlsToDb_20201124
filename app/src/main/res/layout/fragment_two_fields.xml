@@ -30,7 +30,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/unit_title"
+            android:id="@+id/second_field"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -41,14 +41,14 @@
             tools:text="Unit title " />
 
         <TextView
-            android:id="@+id/unit_description"
+            android:id="@+id/third_field"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/text_margin"
             android:textAppearance="?attr/textAppearanceListItem"
-            app:layout_constraintBottom_toBottomOf="@+id/unit_title"
-            app:layout_constraintStart_toEndOf="@+id/unit_title"
-            app:layout_constraintTop_toTopOf="@+id/unit_title"
+            app:layout_constraintBottom_toBottomOf="@+id/second_field"
+            app:layout_constraintStart_toEndOf="@+id/second_field"
+            app:layout_constraintTop_toTopOf="@+id/second_field"
             tools:text="Unit description" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

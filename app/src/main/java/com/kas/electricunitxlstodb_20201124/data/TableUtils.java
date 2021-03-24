@@ -3,6 +3,7 @@ package com.kas.electricunitxlstodb_20201124.data;
 import android.net.Uri;
 import android.util.Log;
 
+import com.kas.electricunitxlstodb_20201124.BuildConfig;
 import com.kas.electricunitxlstodb_20201124.dao.UnitEntry;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -20,6 +21,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+@Deprecated
 @Singleton
 public class TableUtils {
 
@@ -51,7 +53,7 @@ public class TableUtils {
                     row = rowIterator.next();
 
                     Iterator<Cell> cellIterator = row.cellIterator();
-                    UnitEntry unitEntry = new UnitEntry(null, null, null,null);
+                    UnitEntry unitEntry = new UnitEntry(null, null, null, null);
                     /**read all cells*/
                     while (cellIterator.hasNext()) {
                         fillUnitEntry(cellIterator, unitEntry);
@@ -78,19 +80,26 @@ public class TableUtils {
                 String stringCellValue = cell.getStringCellValue();
 
                 switch (cell.getColumnIndex()) {
-
                     case 0:
+                        location = stringCellValue;
+                        unitEntry.setCabinet(location.trim());
+                        break;
+                    case 1:
                         cabinet = stringCellValue;
                         unitEntry.setCabinet(cabinet.trim());
                         break;
-                    case 1:
+                    case 2:
                         title = stringCellValue;
                         unitEntry.setTitle(title.trim());
                         break;
-                    case 2:
+                    case 3:
                         description = stringCellValue;
                         unitEntry.setDescription(description.trim());
                         break;
+                    default:
+                        if (BuildConfig.DEBUG) {
+                            throw new AssertionError(TAG + " Missing Column index: " + cell.getColumnIndex());
+                        }
                 }
 
                 Log.d(TAG, "CellType is String: " + stringCellValue + " \t\t ");
@@ -107,7 +116,7 @@ public class TableUtils {
      * @param uri of file
      * @return String of file name
      */
-    public String getFileName(Uri uri) {
+    public String getFileNameFromUri(Uri uri) {
         String[] string = uri.toString().split("%2F");
         return string[string.length - 1];
     }

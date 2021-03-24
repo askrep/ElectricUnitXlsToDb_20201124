@@ -1,6 +1,5 @@
 package com.kas.electricunitxlstodb_20201124.data;
 
-import android.content.Context;
 import android.net.Uri;
 
 import androidx.lifecycle.LiveData;
@@ -21,9 +20,10 @@ public class LocalData {
     private XlsxToRowListParser tableParser;
 
     @Inject
-    public LocalData(UnitDao unitDao,  XlsxToRowListParser tableParser) {
+    public LocalData(UnitDao unitDao,  XlsxToRowListParser tableParser,TableUtils tableUtils) {
         this.unitDao = unitDao;
          this.tableParser = tableParser;
+        this.tableUtils = tableUtils;
     }
 
     public LiveData<UnitEntry> loadUnitById(int id) {
@@ -56,14 +56,14 @@ public class LocalData {
 
     public List<UnitEntry> parseXlsxInputStreamToUnitEntryList(InputStream inputStream) throws IOException {
          List<List<String>> lists = tableParser.parseTable(inputStream);
-        return UnitEntryUtils.getUnitEntryList(lists);
+        return UnitEntryUtils.getUnitEntryListFromRowList(lists);
     }
     public List<UnitEntry> getUnitEntryListFromInputStream(InputStream inputStream) throws IOException {
         return tableUtils.getUnitEntryListFromInputStream(inputStream);
     }
 
 
-    public String getFileDisplayName(Context applicationContext, Uri uri) {
-         return tableUtils.getFileName(uri);
+    public String getFileDisplayName(Uri uri) {
+         return tableUtils.getFileNameFromUri(uri);
     }
 }

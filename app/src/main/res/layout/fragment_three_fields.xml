@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
-        android:id="@+id/fragment_unit_triple"
+        android:id="@+id/fragment_three_fields"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -14,7 +14,7 @@
             android:layout_height="@dimen/icon_size"
             android:layout_gravity="center"
             android:layout_marginStart="0dp"
-              android:src="@android:drawable/ic_menu_today" />
+            android:src="@android:drawable/ic_menu_today" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,35 +28,35 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/unit_location"
+                    android:id="@+id/first_field"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="0.7"
+                    android:autofillHints="First field"
                     android:singleLine="true"
-                    android:autofillHints="Unit title"
                     android:textAppearance="?attr/textAppearanceListItem"
-                    tools:text="Unit Location" />
+                    tools:text="First field" />
 
                 <TextView
-                    android:id="@+id/unit_title"
-                    android:singleLine="true"
+                    android:id="@+id/second_field"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="0.3"
-                    android:autofillHints="Unit title"
+                    android:autofillHints="Second field"
+                    android:singleLine="true"
                     android:textAppearance="?attr/textAppearanceListItem"
-                    tools:text="Unit title" />
+                    tools:text="Second field" />
             </LinearLayout>
 
             <TextView
-                android:singleLine="true"
-                android:id="@+id/unit_description"
+                android:id="@+id/third_field"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
-                android:autofillHints="Unit description"
+                android:autofillHints="Third field"
+                android:singleLine="true"
                 android:textAppearance="?attr/textAppearanceListItem"
-                tools:text="Unit description" />
+                tools:text="Third field" />
         </LinearLayout>
     </LinearLayout>
 </layout>

@@ -32,13 +32,6 @@ public class SettingsViewModel extends AndroidViewModel {
         this.repository = repository;
     }
 
-    //TODO Use new parse table method
-    public void getContentFromXlsx(Uri uri) {
-        AppExecutors.getInstance().diskIO().execute(() -> {
-
-        });
-    }
-
     public void readContentFromExcel(Uri uri) {
         AppExecutors.getInstance().diskIO().execute(() -> {
             try {
@@ -65,7 +58,7 @@ public class SettingsViewModel extends AndroidViewModel {
     }
 
     public String getFileName(Uri uri) {
-        return repository.getFileDisplayName(application.getApplicationContext(), uri);
+        return repository.getFileDisplayName(uri);
     }
 
     public boolean checkIsExcelFile(String fileName) {

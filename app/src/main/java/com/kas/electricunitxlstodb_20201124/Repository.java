@@ -69,7 +69,7 @@ public class Repository {
         localData.deleteAll();
     }
 
-    public String getFileDisplayName(Context applicationContext, Uri uri) {
-        return localData.getFileDisplayName(applicationContext, uri);
+    public String getFileDisplayName(Uri uri) {
+        return localData.getFileDisplayName(uri);
     }
 }

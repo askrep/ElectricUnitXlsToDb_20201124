@@ -30,6 +30,14 @@ public class UnitEntry {
         this.description = description;
     }
 
+    @Ignore
+    public UnitEntry() {
+        this.location = null;
+        this.cabinet = null;
+        this.title = null;
+        this.description = null;
+    }
+
     public int getId() {
         return id;
     }

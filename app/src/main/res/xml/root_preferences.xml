@@ -31,6 +31,10 @@
             android:key="@string/pref_update_data"
             android:summary="@string/pref_update_data_summary"
             android:title="@string/pref_update_data_title" />
+        <Preference
+            android:key="@string/pref_save_data"
+            android:summary="@string/pref_save_data_summary"
+            android:title="@string/pref_save_data_title" />
     </PreferenceCategory>
 
     <!--<PreferenceCategory app:title="SPARE">

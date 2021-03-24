@@ -3,6 +3,7 @@ package com.kas.electricunitxlstodb_20201124.menu;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -16,6 +17,8 @@ import com.kas.electricunitxlstodb_20201124.R;
 import com.kas.electricunitxlstodb_20201124.data.PreferencesUtil;
 import com.kas.electricunitxlstodb_20201124.viewmodels.PreferencesViewModel;
 import com.kas.electricunitxlstodb_20201124.viewmodels.SharedViewModel;
+
+import java.time.LocalDateTime;
 
 import javax.inject.Inject;
 
@@ -31,12 +34,9 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
     private SharedViewModel sharedViewModel;
     private PreferencesViewModel preferencesViewModel;
 
-    private Preference clearData;
-    private Preference updateData;
     private Preference addData;
 
     private SwitchPreferenceCompat themeSwitch;
-    private SwitchPreferenceCompat editModeSwitch;
 
     @Inject
     public SettingsFragment() {
@@ -52,14 +52,16 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
         addData = findPreference(getString(R.string.pref_add_data));
 
         //TODO add working save/load method for name of last opened file
-        addData.setSummary(PreferencesUtil.getLastOpenedFileName(getContext(),"Load data from table"));
+        if (addData != null) {
+            addData.setSummary(PreferencesUtil.getLastOpenedFileName(getContext(), "Load data from table"));
+        }
 
-        clearData = findPreference(getString(R.string.pref_clear_data));
-        updateData = findPreference(getString(R.string.pref_update_data));
+        Preference clearData = findPreference(getString(R.string.pref_clear_data));
+        Preference updateData = findPreference(getString(R.string.pref_update_data));
+        Preference saveData = findPreference(getString(R.string.pref_save_data));
 
         addData.setOnPreferenceClickListener(preference -> {
-            getIntentLoadUriData();
-            return true;
+            return getIntentLoadUriData();
         });
 
         clearData.setOnPreferenceClickListener(preference -> {
@@ -70,31 +72,57 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
 
         updateData.setOnPreferenceClickListener(preference -> {
             sharedViewModel.deleteAll();
-            getIntentLoadUriData();
             Toast.makeText(getContext(), "Data updated", Toast.LENGTH_SHORT).show();
-            return true;
+            return getIntentLoadUriData();
+        });
+        saveData.setOnPreferenceClickListener(preference -> {
+            boolean res = saveDataToTable();
+            Toast.makeText(getContext(), "Data saved", Toast.LENGTH_SHORT).show();
+
+            return res;
         });
         // CHANGING APP THEME
         themeSwitch = findPreference(getString(R.string.pref_theme_dark));
-        editModeSwitch = findPreference(getString(R.string.pref_edit_mode));
+        SwitchPreferenceCompat editModeSwitch = findPreference(getString(R.string.pref_edit_mode));
         Log.d(TAG, "onCreatePreferences: EDIT" + editModeSwitch.getSummary());
         initThemeSwitch();
     }
 
-    private void getIntentLoadUriData() {
+    private boolean saveDataToTable() {
+        //TODO add save data functionality
         Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-        intent.setType("application/vnd.ms-excel"); //application/*
-        String[] mimeTypes = new String[]{"application/vnd.ms-excel,application/*"};
-        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+        intent.setAction(Intent.ACTION_CREATE_DOCUMENT);
+        //"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        intent.setType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 
+        //TODO add getter for earlier api
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            intent.putExtra(Intent.EXTRA_TITLE, "Table"+ LocalDateTime.now());
+        }
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
         if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
             startActivityForResult(Intent.createChooser(intent, "messageTitle"), OPEN_DIRECTORY_REQUEST_CODE);
         } else {
             Log.d(TAG, "Unable to resolve Intent.ACTION_OPEN_DOCUMENT {}");
         }
+        return false;
+    }
+
+    private boolean getIntentLoadUriData() {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+        intent.setType("application/vnd.ms-excel"); //application/*
+        String[] mimeTypes = new String[]{"application/vnd.ms-excel","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"};
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+//TODO replace deprecated api
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivityForResult(Intent.createChooser(intent, "messageTitle"), OPEN_DIRECTORY_REQUEST_CODE);
+        } else {
+            Log.d(TAG, "Unable to resolve Intent.ACTION_OPEN_DOCUMENT {}");
+        }
+        return true;
     }
 
     @Override
@@ -116,7 +144,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
                         addData.setSummary(fileDisplayName);
 
                         //TODO save opened file name
-                        PreferencesUtil.setPrefSummaryString(getContext(),"Load data from table");
+                        PreferencesUtil.setPrefSummaryString(getContext(), "Load data from table");
 
                         Toast.makeText(getContext(), "Data added", Toast.LENGTH_SHORT).show();
                     }
