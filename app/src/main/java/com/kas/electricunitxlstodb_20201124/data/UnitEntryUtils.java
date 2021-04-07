@@ -10,6 +10,10 @@ import java.util.List;
 
 public class UnitEntryUtils {
     private static final String TAG = "#_UnitEntryUtils";
+    public static final int LOCATION_CELL_INDEX = 0;
+    public static final int CABINET_CELL_INDEX = 1;
+    public static final int TITLE_CELL_INDEX = 2;
+    public static final int DESCRIPTION_CELL_INDEX = 3;
 
     /**
      * Filling fields of the UnitEntry from String List with size == 4
@@ -28,23 +32,23 @@ public class UnitEntryUtils {
             Log.d(TAG, "getUnitEntryWithVariousStringFields: UnitEntry == NULL");
             throw new UnsupportedOperationException();
         }
-        if (fields.size() == 0) {
-            Log.d(TAG, "fillUnitEntryFromStringList: fields size==" + fields.size());
-        }
+
         for (int i = 0; i < fields.size(); i++) {
             switch (i) {
                 case 0:
-                    unitEntry.setLocation(fields.get(0));
+                    unitEntry.setLocation(fields.get(LOCATION_CELL_INDEX));
                     break;
                 case 1:
-                    unitEntry.setCabinet(fields.get(1));
+                    unitEntry.setCabinet(fields.get(CABINET_CELL_INDEX));
                     break;
                 case 2:
-                    unitEntry.setTitle(fields.get(2));
+                    unitEntry.setTitle(fields.get(TITLE_CELL_INDEX));
                     break;
                 case 3:
-                    unitEntry.setDescription(fields.get(3));
+                    unitEntry.setDescription(fields.get(DESCRIPTION_CELL_INDEX));
                     break;
+                default:
+                    Log.d(TAG, "fillUnitEntryFromStringList: Wrong Index");
             }
         }
         return unitEntry;
@@ -77,6 +81,7 @@ public class UnitEntryUtils {
     /**
      * Return List of filled UnitEntries from two-dimensional List<List<String>>
      * Where first list is a Row list, second (inner) is a Cell list
+     * Minimum size == 4 and Title () not empty
      *
      * @param rowList two-dimensional List<List<String>>
      * @return List<UnitEntry> List of filled UnitEntries
@@ -85,8 +90,11 @@ public class UnitEntryUtils {
         List<UnitEntry> unitEntryList = new ArrayList<>();
         for (List<String> stringList : rowList) {
             Log.d(TAG, "getUnitEntryList: CELL LIST size: " + stringList.size());
-            UnitEntry unitEntry = new UnitEntry();
-            unitEntryList.add(fillUnitEntryFromStringList(unitEntry, stringList));
+
+            if (stringList.size() >= 4 && !stringList.get(TITLE_CELL_INDEX).isEmpty()) {
+                UnitEntry unitEntry = new UnitEntry();
+                unitEntryList.add(fillUnitEntryFromStringList(unitEntry, stringList));
+            }
         }
         return unitEntryList;
     }

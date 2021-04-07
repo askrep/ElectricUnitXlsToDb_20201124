@@ -1,7 +1,5 @@
 package com.kas.electricunitxlstodb_20201124.data;
 
-import android.util.Log;
-
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -25,7 +23,7 @@ public class XlsxToRowListParser implements TableParser {
     }
 
     public List<List<String>> parseTable(InputStream inputStream) throws IOException {
-         rowListOfCellLists = new ArrayList<>();
+        rowListOfCellLists = new ArrayList<>();
 
         XSSFWorkbook book = ParseXlsxTableUtil.getBookFromXlsxInputStream(inputStream);
         List<XSSFSheet> sheetList = ParseXlsxTableUtil.getBookSheetList(book);
@@ -42,12 +40,15 @@ public class XlsxToRowListParser implements TableParser {
                 List<String> outputCellList = new ArrayList<>();
 
                 /** CELLS */
+
+
                 for (int i = 0; i < cellList.size(); i++) {
                     String cell = cellList.get(i);
                     outputCellList.add(cell);    //Fill Cell list
                     //Log.d(TAG, "parseTable: SHEET: \"" + sheetName + "\" ROW: " + row.getRowNum() + " Cell_no:" + i + " - CELL: " + cell);
                 }
                 rowListOfCellLists.add(outputCellList);  //Fill Row list
+
             }
         });
 
