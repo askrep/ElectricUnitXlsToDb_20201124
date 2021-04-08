@@ -6,7 +6,7 @@
         android:id="@+id/fragment_unit_first"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/first_item_shape"
+        android:background="@drawable/shape_solid_rounded_rect"
         android:orientation="horizontal">
 
         <ImageView
@@ -25,56 +25,60 @@
 
             <LinearLayout
 
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/first_field"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.7"
-                        android:autofillHints="First field"
-                        android:singleLine="true"
-                        android:textAppearance="?attr/textAppearanceListItem"
-                        tools:text="First field" />
-
-                    <TextView
-                        android:id="@+id/second_field"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.3"
-                        android:autofillHints="Second field"
-                        android:singleLine="true"
-                        android:textAppearance="?attr/textAppearanceListItem"
-                        tools:text="Second field" />
-                </LinearLayout>
-
                 <TextView
-                    android:id="@+id/third_field"
-                    android:layout_width="match_parent"
+                    android:id="@+id/first_field"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="8dp"
-                    android:autofillHints="Third field"
+
+                    android:autofillHints="First field"
+                    android:padding="4dp"
                     android:singleLine="true"
                     android:textAppearance="?attr/textAppearanceListItem"
                     android:textSize="20sp"
+                    android:textStyle="bold"
+                    tools:text="First field" />
+                <TextView
+                    android:id="@+id/third_field"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="4dp"
+                    android:layout_weight="0.5"
+                    android:autofillHints="Third field"
+                    android:background="@drawable/shape_solid_rounded_rect"
+                    android:gravity="center"
+                    android:padding="4dp"
+                    android:singleLine="true"
+                    android:textAppearance="?attr/textAppearanceListItem"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
                     tools:text="Third field" />
+
+                <TextView
+                    android:id="@+id/second_field"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:autofillHints="Second field"
+                    android:padding="4dp"
+                    android:singleLine="true"
+
+                    android:textAppearance="?attr/textAppearanceListItem"
+                    tools:text="Second field" />
             </LinearLayout>
 
             <TextView
                 android:id="@+id/fourth_field"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:autofillHints="Third field"
                 android:minLines="2"
-                android:singleLine="true"
+                android:padding="4dp"
+                android:singleLine="false"
                 android:textAppearance="?attr/textAppearanceListItem"
                 android:textSize="20sp"
                 tools:text="Fourth field" />

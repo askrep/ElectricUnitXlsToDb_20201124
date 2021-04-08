@@ -29,34 +29,49 @@
 
                 <TextView
                     android:id="@+id/first_field"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.7"
                     android:autofillHints="First field"
                     android:singleLine="true"
+                    android:textStyle="bold"
+                    android:padding="4dp"
                     android:textAppearance="?attr/textAppearanceListItem"
                     tools:text="First field" />
 
                 <TextView
-                    android:id="@+id/second_field"
-                    android:layout_width="match_parent"
+                    android:id="@+id/third_field"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.3"
+                    android:layout_marginStart="8dp"
+                    android:autofillHints="Third field"
+                    android:textStyle="bold"
+                    android:singleLine="true"
+                    android:padding="4dp"
+                    android:textAppearance="?attr/textAppearanceListItem"
+                    tools:text="Third field" />
+
+                <TextView
+                    android:id="@+id/second_field"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="8dp"
                     android:autofillHints="Second field"
                     android:singleLine="true"
+                    android:padding="4dp"
                     android:textAppearance="?attr/textAppearanceListItem"
                     tools:text="Second field" />
             </LinearLayout>
 
             <TextView
-                android:id="@+id/third_field"
-                android:layout_width="match_parent"
+                android:id="@+id/fourth_field"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginTop="8dp"
-                android:autofillHints="Third field"
+          android:padding="4dp"
+                android:autofillHints="Fourth field"
                 android:singleLine="true"
                 android:textAppearance="?attr/textAppearanceListItem"
                 tools:text="Third field" />
+
         </LinearLayout>
     </LinearLayout>
 </layout>

@@ -14,12 +14,22 @@ public class UnitEntry {
     public String title;
     public String description;
 
+    @Ignore
+    private boolean isExpanded;
+    @Ignore
+    private int type;
+    @Ignore
+    public static final int VIEW_TYPE_SELECTED = 1;
+    @Ignore
+    public static final int VIEW_TYPE_SIMPLE = 0;
+
     public UnitEntry(int id, String location, String cabinet, String title, String description) {
         this.id = id;
         this.location = location;
         this.cabinet = cabinet;
         this.title = title;
         this.description = description;
+        type = VIEW_TYPE_SIMPLE;
     }
 
     @Ignore
@@ -76,5 +86,22 @@ public class UnitEntry {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public boolean isExpanded() {
+        return isExpanded;
+    }
+
+    public void setExpanded(boolean expanded) {
+        isExpanded = expanded;
+        type = isExpanded ? VIEW_TYPE_SELECTED : VIEW_TYPE_SIMPLE;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 }
