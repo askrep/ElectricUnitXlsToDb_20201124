@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/fragment_unit_first"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_solid_rounded_rect"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/unit_icon"
+            android:layout_width="8dp"
+            android:layout_height="0dp"
+
+           android:background="@drawable/rect_simple"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_margin="4dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/unit_icon"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/first_field"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:autofillHints="First field"
+                android:gravity="center"
+                android:textAppearance="?attr/textAppearanceListItem"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:text="First field" />
+
+            <TextView
+                android:id="@+id/third_field"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:autofillHints="Third field"
+                android:background="@drawable/shape_solid_rounded_rect"
+                android:padding="4dp"
+                android:singleLine="true"
+                android:textAppearance="?attr/textAppearanceListItem"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:text="Third field" />
+
+            <TextView
+                android:id="@+id/second_field"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:autofillHints="Second field"
+                android:gravity="center"
+                android:singleLine="true"
+                android:textAppearance="?attr/textAppearanceListItem"
+                tools:text="Second field" />
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/fourth_field"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:autofillHints="Third field"
+            android:gravity="center_vertical"
+            android:minLines="2"
+            android:padding="4dp"
+            android:singleLine="false"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/linearLayout"
+            app:layout_constraintTop_toTopOf="@+id/linearLayout"
+            tools:text="Fourth field attr/textAppearanceListItem attr/textAppearanceListItem" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
